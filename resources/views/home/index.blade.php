@@ -3,13 +3,16 @@
 
 @section('content')
     <div class="containerTitulo">
-        <img class="patternTitulo" src="../images/curvePattern.svg" alt="pattern" />
-        <img class="patternTitulo" src="../images/curvePattern.svg" alt="pattern" />
-        <h1>DACOMP</h1>
+        <img class="patternTitulo" src="../images/curvePattern.svg" alt="Pattern" />
+        <img class="patternTitulo" src="../images/curvePattern.svg" alt="Pattern" />
+        <div><h1>DA<span>COMP</span></h1></div>
         <h3>Personalizados</h3>
     </div>
     <div class="containerProdutos">
-        <div class="containerProdutosTitulo"><h4>Nossos Produtos</h4></div>
+        <div class="containerProdutosTitulo">
+            <img class="titleIcon" src="../images/shoppingCart.svg" alt="Shopping cart icon" />
+            <h4>Nossos Produtos</h4>
+        </div>
         <div class="containerTextoProdutos">
             <div class="sobreProdutos1">
                 <p>
@@ -25,7 +28,10 @@
         </div>
     </div>
     <div class="containerSobreNos">
-        <div class="containerSobreNosTitulo"><h4>Sobre Nós</h4></div>
+        <div class="containerSobreNosTitulo">
+            <img class="titleIcon" src="../images/book.svg" alt="Book icon" />
+            <h4>Sobre Nós</h4>
+        </div>
         <div class="containerSobreNosTexto">
             <p>
             O DACOMP (Diretório Acadêmico de Computação) é a entidade representativa dos estudantes de cursos ligados à computação no Instituto de Informática (INF) da UFRGS, como Ciência da Computação e Engenharia de Computação. Ele atua como ponte entre o corpo discente e a universidade, defendendo os interesses dos alunos em questões acadêmicas, administrativas e políticas, além de ser um espaço de apoio, acolhimento e integração da comunidade estudantil.
@@ -40,14 +46,11 @@
 
 @push('styles')
 <style>
-    *{
-        color:#292929 !important;
-    }
     .containerTitulo{
         display:flex;
         flex-direction:column;
         background-color:#f0f0f0;
-        margin-top:100px;
+        margin-top:60px;
         min-width: 100vw;
         height:400px;
         align-items:center;
@@ -55,9 +58,18 @@
         overflow: hidden;
         position: relative;
     }
-    .containerTitulo > h1{
+    .containerTitulo > div{
+        position:relative;
+        width:340px;
+    }
+    .containerTitulo > div > h1{
         font-family: "Cal Sans", sans-serif;
         font-size: 5rem;
+    }
+    .containerTitulo > div > h1 > span{
+        position:absolute;
+        bottom: -5px;
+        left: 110px;
     }
     .containerTitulo > h3{
         font-family: "Playwrite RO", cursive;
@@ -86,9 +98,17 @@
         width: 100%;
         max-width: 1200px;
         padding: 30px 20px 10px 20px;
+        display:flex;
+        align-items:center;
     }
     .containerProdutosTitulo > h4{
         font-family: "Cal Sans", sans-serif;
+        margin:0;
+    }
+    .titleIcon{
+        width:1.3rem;
+        margin-right:10px;
+
     }
     .containerTextoProdutos{
         display:flex;
@@ -135,9 +155,12 @@
         width: 100%;
         max-width: 1200px;
         padding: 30px 20px 10px 20px;
+        display:flex;
+        align-items:center;
     }
     .containerSobreNosTitulo > h4{
         font-family: "Cal Sans", sans-serif;
+        margin:0;
     }
     .containerSobreNosTexto{
         display:flex;
@@ -165,6 +188,13 @@
         .patternTitulo{
             opacity:0.3;
         }
+    }
+
+    @media (max-width: 1000px) {
+        .containerSobreNosTexto {
+            flex-direction:column;
+        }
+
     }
 </style>
 @endpush
