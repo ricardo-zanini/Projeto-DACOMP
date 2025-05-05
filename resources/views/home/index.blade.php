@@ -51,7 +51,6 @@
         flex-direction:column;
         background-color:#f0f0f0;
         margin-top:60px;
-        min-width: 100vw;
         height:400px;
         align-items:center;
         justify-content:center;
@@ -89,7 +88,6 @@
     }
 
     .containerProdutos{
-        width:100vw;
         display:flex;
         flex-direction:column;
         align-items:center;
@@ -127,11 +125,11 @@
         font-style: normal;
         font-weight: 400;
         margin-bottom:0;
+        line-height:2rem;
     }
     .sobreProdutos2{
         display:flex;
         flex-direction:column;
-        justify-content:space-between;
     }
     .button{
         font-family: "Cal Sans", sans-serif;
@@ -144,7 +142,6 @@
     }
 
     .containerSobreNos{
-        width:100vw;
         display:flex;
         flex-direction:column;
         align-items:center;
@@ -176,6 +173,7 @@
         font-style: normal;
         font-weight: 400;
         margin-bottom:0;
+        line-height:2rem;
     }
 
     @media (max-width: 600px) {

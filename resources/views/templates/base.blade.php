@@ -12,6 +12,7 @@
     <!-- Fonte Leitura -->
     <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
+    <link rel="shortcut icon" type="imagex/png" href="../font/DACOMP-logo.svg">
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <style>
@@ -22,7 +23,6 @@
         background-color: #292929;
         display:flex;
         flex-direction:column;
-        min-width: 100vw;
         height:200px;
         align-items:center;
         justify-content:space-between;
