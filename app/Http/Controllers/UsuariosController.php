@@ -39,11 +39,12 @@ class UsuariosController extends Controller
         
         // Preenche estrutura de dados com dados do formulario 
         $usuario = new Usuario();
-        $usuario->cartao_UFRGS;
+        $usuario->cartao_UFRGS = $form->cartao_UFRGS;
         $usuario->nome = $form->nome;
         $usuario->email = $form->email;
         $usuario->senha = Hash::make($form->senha);
         $usuario->telefone = $form->telefone;
+        $usuario->gestor = false;
         $usuario->tipo_usuario_id = $form->tipo_usuario_id;
 
         // Salva no banco
@@ -106,14 +107,14 @@ class UsuariosController extends Controller
     {
         $form->validate([
             'username' => ['required', 'min:3', 'max:20'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('usuarios')->ignore(Auth::user()->id)]
+            'email' => ['required', 'email', 'max:100', Rule::unique('usuarios')->ignore(Auth::user()->usuario_id)]
         ]);
 
         // Validação de dados do formulario
         $form->validate([
-            'cartao_UFRGS' => ['required', 'min:6', 'max:6', Rule::unique('usuarios')->ignore(Auth::user()->id)],
+            'cartao_UFRGS' => ['required', 'min:6', 'max:6', Rule::unique('usuarios')->ignore(Auth::user()->usuario_id)],
             'nome' => ['required', 'max:100'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('usuarios')->ignore(Auth::user()->id)],
+            'email' => ['required', 'email', 'max:100', Rule::unique('usuarios')->ignore(Auth::user()->usuario_id)],
             'telefone' => ['required', 'min:8'],
             'tipo_usuario_id' => ['required']
         ]);

@@ -73,18 +73,39 @@
         color:#545454;
         font-family: "Cal Sans", sans-serif;
         font-size:0.8rem;
-        
       }
 
 
-      .navbar{
+      .containerNavbar{
         height:60px;
         width:100%;
         z-index:100;
         top:0;
         background-color: #e0e0e0;
         position:fixed;
+        display:flex;
+        align-items:center;
+        padding:0px 20px 0px 10px;
       }
+      .navbarLogoDacomp{
+        width:70px;
+      }
+      .containerOpcoesNavbar{
+        display:flex;
+        width:100%;
+        justify-content:flex-end;
+        gap:10px;
+      }
+      .linkNav{
+        text-decoration: none;
+        color: #292929;
+        transition:0.2s;
+      }
+      .linkNav:hover{
+        color: #2e96d5;
+        transition:0.2s;
+      }
+
 
       @media (max-width: 800px) {
         .patternFooter{
@@ -100,8 +121,24 @@
     @stack('styles')
 </head>
   <body>
-    <div class="navbar">
-         
+    <div class="containerNavbar">
+      <a href="{{ route('home') }}">
+        <img class="navbarLogoDacomp" src="../images/DACOMP-logo-dark.svg" alt="DACOMP" />
+      </a>
+      <div class="containerOpcoesNavbar">
+        @if(Auth::user() && Auth::user()->gestor)
+          <!-- ADICIONAR MENUS AQUI -->
+           LOGADO-GESTOR
+        @endif
+        @if (Auth::user())
+          <!-- ADICIONAR MENUS AQUI -->
+           LOGADO
+        @endif
+        @if (!Auth::user())
+          <a href="{{ route('login') }}" role="button" class="linkNav buttonLogin">Login</a>
+          <a href="{{ route('usuarios.inserir') }}" role="button" class="linkNav buttonCadastro">Cadastro</a>
+        @endif
+      </div>  
     </div>  
 
     <div class="conteudo">
@@ -110,7 +147,7 @@
 
     <div class="footer">
       <div class="containerConteudoFooter">
-        <img class="footerLogoDacomp" src="../images/DACOMP-logo.svg" alt="Pattern" />
+        <img class="footerLogoDacomp" src="../images/DACOMP-logo.svg" alt="DACOMP " />
         <div class="footerRedesSociais">
           <div class="footerRedesSociaisText">Nos siga nas redes</div>
           <div class="footerRedesSociaisContainerIcons">
