@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Produto;
+use App\Models\TipoProduto;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +14,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
-class ProdutosController extends Controller
+class TiposProdutosController extends Controller
 {
-
+    
 }

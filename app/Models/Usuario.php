@@ -16,7 +16,7 @@ class Usuario extends Authenticatable
     public $timestamps = false;
 
     protected $hidden = [
-        'senha',
+        'password',
     ];
 
     public function getAuthIdentifierName()
@@ -31,7 +31,7 @@ class Usuario extends Authenticatable
 
     public function getAuthPassword()
     {
-        return $this->senha;
+        return $this->password;
     }
 
     public function getRememberToken()

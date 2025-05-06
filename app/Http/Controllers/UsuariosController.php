@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Usuario;
+use App\Models\TiposUsuario;
+
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +22,8 @@ class UsuariosController extends Controller
     // Envia para a criação de Usuários
     public function create()
     {
-        return view('usuarios.create');
+        $tipos = TiposUsuario::all(); // Busca todos os tipos
+        return view('usuarios.create', ['tipos' => $tipos]);
     }
 
     // Insert do Usuário no banco, de acordo com colunas na tabela usuario
@@ -31,8 +34,8 @@ class UsuariosController extends Controller
             'cartao_UFRGS' => ['required', 'min:6', 'max:6', 'unique:usuarios'],
             'nome' => ['required', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:usuarios'],
-            'senha' => ['required','confirmed', 'min:8', 'max:100'],
-            'senha_confirmation' => ['required'],
+            'password' => ['required','confirmed', 'min:8', 'max:100'],
+            'password_confirmation' => ['required'],
             'telefone' => ['required', 'min:8'],
             'tipo_usuario_id' => ['required']
         ]);
@@ -42,7 +45,7 @@ class UsuariosController extends Controller
         $usuario->cartao_UFRGS = $form->cartao_UFRGS;
         $usuario->nome = $form->nome;
         $usuario->email = $form->email;
-        $usuario->senha = Hash::make($form->senha);
+        $usuario->password = Hash::make($form->password);
         $usuario->telefone = $form->telefone;
         $usuario->gestor = false;
         $usuario->tipo_usuario_id = $form->tipo_usuario_id;
@@ -51,6 +54,7 @@ class UsuariosController extends Controller
         $usuario->save();
         // Evento de registro de usuário
         event(new Registered($usuario));
+        $usuario = Usuario::where('email', $usuario->email)->first();
         // Cria sessão para o usuário
         Auth::login($usuario);
 
@@ -65,18 +69,11 @@ class UsuariosController extends Controller
         {
             $credenciais = $form->validate([
                 'email' => ['required'],
-                'senha' => ['required', 'min:8', 'max:100'],
+                'password' => ['required', 'min:8', 'max:100'],
             ]);
-
-            $lembrado = false;
-            
-            if ($form->lembrar == "on")
-            {
-                $lembrado = true;
-            }
                
             // Tenta o login
-            if (Auth::attempt($credenciais, $lembrado)) {
+            if (Auth::attempt($credenciais)) {
                 session()->regenerate();
                 return redirect('/');
             }
@@ -139,25 +136,25 @@ class UsuariosController extends Controller
     {
         
         try {
-            if (!Hash::check($form->senha_velha, Auth::user()->senha)) {
+            if (!Hash::check($form->old_password, Auth::user()->password)) {
                 throw new Exception();
             }
         }
         catch (Exception $exception) {
             return response()->json([
                 'status' => 422,
-                'errors' => ['senha_velha' => ['Senha atual incorreta.']]
+                'errors' => ['old_password' => ['Senha atual incorreta.']]
             ], 422);
         }
         
         $form->validate([
-            'senha' => ['required', 'confirmed', 'min:8', 'max:100'],
-            'senha_confirmation' => ['required']
+            'password' => ['required', 'confirmed', 'min:8', 'max:100'],
+            'password_confirmation' => ['required']
         ]);
 
         $usuario = Auth::user();
 
-        $usuario->senha = Hash::make($form->senha);
+        $usuario->password = Hash::make($form->password);
         $usuario->save();
 
         return true;

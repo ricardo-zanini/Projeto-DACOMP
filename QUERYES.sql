@@ -3,56 +3,56 @@
 --===============================================================================================================
 
 DROP TABLE Usuarios;
-DROP TABLE TiposUsuarios;
+DROP TABLE Tipos_Usuarios;
 DROP TABLE Produtos;
-DROP TABLE TiposProdutos;
-DROP TABLE UsuariosInteresses;
+DROP TABLE Tipos_Produtos;
+DROP TABLE Usuarios_Interesses;
 DROP TABLE Compras;
-DROP TABLE ProdutosCompras;
+DROP TABLE Produtos_Compras;
 
 --===============================================================================================================
 --============================================= CREATE ==========================================================
 --===============================================================================================================
 
 -- Tipos de usuário. Ex: Professor, aluno, funcionário,...
-CREATE TABLE TiposUsuarios (
+CREATE TABLE Tipos_Usuarios (
     tipo_usuario_id INT PRIMARY KEY,
 	tipo VARCHAR(100) NOT NULL
 );
 
 -- Usuarios do sistema, pode ou não ser gestor
 CREATE TABLE Usuarios (
-    usuario_id SERIAL PRIMARY KEY,
+    usuario_id INT AUTO_INCREMENT PRIMARY KEY,
 	cartao_UFRGS VARCHAR(20) UNIQUE NOT NULL,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(200) NOT NULL,
-    senha VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     telefone VARCHAR(20) NOT NULL,
     gestor BOOLEAN NOT NULL,
     tipo_usuario_id INT NOT NULL,
-	FOREIGN KEY (tipo_usuario_id) REFERENCES TiposUsuarios(tipo_usuario_id)
+	FOREIGN KEY (tipo_usuario_id) REFERENCES Tipos_Usuarios(tipo_usuario_id)
 );
 
 -- Tipos de produtos. Ex: Roupas, chaveiros,...
-CREATE TABLE TiposProdutos (
+CREATE TABLE Tipos_Produtos (
     tipo_produto_id INT PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL
 );
 
 -- Produtos Cadastrados
 CREATE TABLE Produtos (
-    produto_id SERIAL PRIMARY KEY,
+    produto_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     tipo_produto_id INT NOT NULL,
     preco NUMERIC(3, 2) NOT NULL,
     disponivel BOOLEAN NOT NULL,
     prontaEntrega BOOLEAN NOT NULL,
-	FOREIGN KEY (tipo_produto_id) REFERENCES TiposProdutos(tipo_produto_id)
+	FOREIGN KEY (tipo_produto_id) REFERENCES Tipos_Produtos(tipo_produto_id)
 );
 
 -- Interresses do cliente
-CREATE TABLE UsuariosInteresses (
-    usuario_interesse_id SERIAL PRIMARY KEY,
+CREATE TABLE Usuarios_Interesses (
+    usuario_interesse_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     produto_id INT NOT NULL,
     UNIQUE (usuario_id, produto_id),
@@ -62,15 +62,15 @@ CREATE TABLE UsuariosInteresses (
 
 -- Registro de compra
 CREATE TABLE Compras (
-    compra_id SERIAL PRIMARY KEY,
+    compra_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     horario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );
 
 -- Produtos dentro de uma compra
-CREATE TABLE ProdutosCompras (
-    produto_compra_id SERIAL PRIMARY KEY,
+CREATE TABLE Produtos_Compras (
+    produto_compra_id INT AUTO_INCREMENT PRIMARY KEY,
     compra_id INT NOT NULL,
     produto_id INT NOT NULL,
     quantidade INT NOT NULL,
@@ -83,16 +83,16 @@ CREATE TABLE ProdutosCompras (
 --============================================= INSERTS =========================================================
 --===============================================================================================================
 
-INSERT INTO TiposUsuarios (tipo_usuario_id, tipo) VALUES (0, 'Aluno');
-INSERT INTO TiposUsuarios (tipo_usuario_id, tipo) VALUES (1, 'Professor');
+INSERT INTO Tipos_Usuarios (tipo_usuario_id, tipo) VALUES (0, 'Aluno');
+INSERT INTO Tipos_Usuarios (tipo_usuario_id, tipo) VALUES (1, 'Professor');
 
 INSERT INTO Usuarios (cartaoUFRGS, nome, tipo, email, telefone, senha, gestor) VALUES ('345678', 'João da Silva Santos', 0, 'joaosilva@hotmail.com', '54984579876', 'minhasenhasegura#amorpeloINF', False)
 INSERT INTO Usuarios (cartaoUFRGS, nome, tipo, email, telefone, senha, gestor) VALUES ('986745', 'Carlinhos', 0, 'carlinhosdoadordecomidas@gmail.com', '54981149678', 'euDouComidaProsCaras', False)
 INSERT INTO Usuarios (cartaoUFRGS, nome, tipo, email, telefone, senha, gestor) VALUES ('874567', 'JohnDacomp', 0, 'john_mister_master_dacomp@gmail.com', '54999887766', '12345678', True)
 
-INSERT INTO TiposProdutos (tipo_produto_id, tipo) VALUES (0, 'Camiseta');
-INSERT INTO TiposProdutos (tipo_produto_id, tipo) VALUES (1, 'Chaveiro');
-INSERT INTO TiposProdutos (tipo_produto_id, tipo) VALUES (2, 'Bottom');
+INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (0, 'Camiseta');
+INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (1, 'Chaveiro');
+INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (2, 'Bottom');
 
 INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Camiseta INF Branca', 0, 50.99, True, False);
 INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Camiseta INF Preta', 0, 50.99, True, False);

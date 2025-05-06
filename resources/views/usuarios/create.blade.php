@@ -2,7 +2,7 @@
 @section('title', 'Cadastrar-se')
 
 @section('content')
-
+    <h1>CADASTRO</h1>
     <div class="conteudoCadastro">
     <form method="post" action="{{ route('usuarios.gravar') }}">
 
@@ -28,19 +28,22 @@
             <label for="telefone">Telefone</label>
         </div>
 
+        <select name="tipo_usuario_id" class="form-control">
+            <option value="">Selecione o tipo de Usuário</option>
+            @foreach ($tipos as $tipo)
+                <option value="{{ $tipo->tipo_usuario_id }}">{{ $tipo->tipo }}</option>
+            @endforeach
+        </select>
+
+
         <div class="form-floating">
-            <input type="text" class="form-control first_input" id="tipo_usuario_id" placeholder="tipo_usuario_id" name="tipo_usuario_id" minlength="1" maxlength="1" required>
-            <label for="tipo_usuario_id">tipo_usuario_id</label>
+            <input type="password" class="form-control middle_input" id="password" placeholder="password" name="password" minlength="8" maxlength="100" required>
+            <label for="password">Senha</label>
         </div>
 
         <div class="form-floating">
-            <input type="password" class="form-control middle_input" id="senha" placeholder="Senha" name="senha" minlength="8" maxlength="20" required>
-            <label for="senha">Senha</label>
-        </div>
-
-        <div class="form-floating">
-            <input type="password" class="form-control last-input" id="senha_confirmation" placeholder="Confirmar senha" name="senha_confirmation" minlength="8" maxlength="20" required>
-            <label for="senha_confirmation">Confirmar senha</label>
+            <input type="password" class="form-control last-input" id="password_confirmation" placeholder="Confirmar password" name="password_confirmation" minlength="8" maxlength="100" required>
+            <label for="password_confirmation">Confirmar senha</label>
         </div>
 
         @if ($errors->any())
@@ -64,10 +67,10 @@
     }
     .conteudoCadastro{
         display:flex;
-        margin-top:70px;
+        padding-bottom:50px;
         justify-content:center;
     }
-    .form-floating{
+    .form-floating, select{
         margin-bottom:20px;
     }
     .buttonSubmitForm{
@@ -83,6 +86,12 @@
         color: #2e96d5;
         text-decoration:none;
         font-family: "Cal Sans", sans-serif;
+    }
+    h1{
+        font-family: "Cal Sans", sans-serif;
+        text-align:center;
+        padding-top:30px;
+        margin:30px 0px;
     }
 </style>
 @endpush
