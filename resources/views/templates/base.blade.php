@@ -196,12 +196,11 @@
       <div class="containerOpcoesNavbar">
         <!-- Gestor -->
         @if(Auth::user() && Auth::user()->gestor)
-           
+           <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO GESTOR -->
         @endif
         <!-- Não Gestor -->
         @if(Auth::user() && !Auth::user()->gestor)
-          
-          
+          <!-- COLOCAR AQUI OS MENUS PARA USUÁRI NÃO GESTOR -->
         @endif
         <!-- Comum a todos usuários -->
         @if (Auth::user())
