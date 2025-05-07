@@ -37,7 +37,7 @@
 @push('styles')
 <style>
     form{
-        max-width:1200px;
+        max-width:1000px;
         width:100%;
     }
     .conteudoCadastro{
@@ -65,8 +65,7 @@
     h1{
         font-family: "Cal Sans", sans-serif;
         text-align:center;
-        padding-top:30px;
-        margin:30px 0px;
+        padding:50px 0px;
     }
 </style>
 @endpush
