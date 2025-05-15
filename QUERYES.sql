@@ -86,10 +86,6 @@ CREATE TABLE Produtos_Compras (
 INSERT INTO Tipos_Usuarios (tipo_usuario_id, tipo) VALUES (0, 'Aluno');
 INSERT INTO Tipos_Usuarios (tipo_usuario_id, tipo) VALUES (1, 'Professor');
 
-INSERT INTO Usuarios (cartaoUFRGS, nome, tipo, email, telefone, senha, gestor) VALUES ('345678', 'João da Silva Santos', 0, 'joaosilva@hotmail.com', '54984579876', 'minhasenhasegura#amorpeloINF', False)
-INSERT INTO Usuarios (cartaoUFRGS, nome, tipo, email, telefone, senha, gestor) VALUES ('986745', 'Carlinhos', 0, 'carlinhosdoadordecomidas@gmail.com', '54981149678', 'euDouComidaProsCaras', False)
-INSERT INTO Usuarios (cartaoUFRGS, nome, tipo, email, telefone, senha, gestor) VALUES ('874567', 'JohnDacomp', 0, 'john_mister_master_dacomp@gmail.com', '54999887766', '12345678', True)
-
 INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (0, 'Camiseta');
 INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (1, 'Chaveiro');
 INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (2, 'Bottom');
