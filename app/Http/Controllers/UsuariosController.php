@@ -31,7 +31,7 @@ class UsuariosController extends Controller
     {
         // Validação de dados do formulario
         $form->validate([
-            'cartao_UFRGS' => ['required', 'min:6', 'max:6', 'unique:usuarios'],
+            'cartao_UFRGS' => ['nullable', 'size:6', 'unique:usuarios'],
             'nome' => ['required', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:usuarios'],
             'password' => ['required','confirmed', 'min:8', 'max:100'],
@@ -98,26 +98,22 @@ class UsuariosController extends Controller
 
     public function edit()
     {
-        return view('usuarios.edit', ['usuario' => Auth::user()]);
+        $tipos = TiposUsuario::all(); // Busca todos os tipos
+        return view('usuarios.edit', ['usuario' => Auth::user(), 'tipos' => $tipos]);
     }
     public function update(Request $form)
     {
-        $form->validate([
-            'username' => ['required', 'min:3', 'max:20'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('usuarios')->ignore(Auth::user()->usuario_id)]
-        ]);
-
         // Validação de dados do formulario
         $form->validate([
-            'cartao_UFRGS' => ['required', 'min:6', 'max:6', Rule::unique('usuarios')->ignore(Auth::user()->usuario_id)],
+            'cartao_UFRGS' => ['nullable', 'size:6', Rule::unique('usuarios', 'cartao_UFRGS')->ignore($form->cartao_UFRGS, 'cartao_UFRGS')],
             'nome' => ['required', 'max:100'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('usuarios')->ignore(Auth::user()->usuario_id)],
+            'email' => ['required', 'email', Rule::unique('usuarios', 'email')->ignore($form->email, 'email')],
             'telefone' => ['required', 'min:8'],
             'tipo_usuario_id' => ['required']
         ]);
 
         $usuario = Auth::user();
-        $usuario->cartao_UFRGS;
+        $usuario->cartao_UFRGS = $form->cartao_UFRGS;
         $usuario->nome = $form->nome;
         $usuario->email = $form->email;
         $usuario->telefone = $form->telefone;

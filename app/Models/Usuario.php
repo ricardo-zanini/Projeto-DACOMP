@@ -15,6 +15,10 @@ class Usuario extends Authenticatable
 
     public $timestamps = false;
 
+    protected $primaryKey = 'usuario_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $hidden = [
         'password',
     ];

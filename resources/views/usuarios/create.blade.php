@@ -14,7 +14,7 @@
         </div>
 
         <div class="form-floating">
-            <input type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="6" required>
+            <input type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="6">
             <label for="cartao_UFRGS">Cartão UFRGS</label>
         </div>
 
@@ -28,7 +28,7 @@
             <label for="telefone">Telefone</label>
         </div>
 
-        <select name="tipo_usuario_id" class="form-control">
+        <select name="tipo_usuario_id" class="form-control" required>
             <option value="">Selecione o tipo de Usuário</option>
             @foreach ($tipos as $tipo)
                 <option value="{{ $tipo->tipo_usuario_id }}">{{ $tipo->tipo }}</option>
@@ -59,6 +59,10 @@
     </div>
 @endsection
 
+@push('scripts')
+
+@endpush
+
 @push('styles')
 <style>
     form{
@@ -67,6 +71,7 @@
     }
     .conteudoCadastro{
         display:flex;
+        padding: 0px 20px;
         padding-bottom:50px;
         justify-content:center;
     }

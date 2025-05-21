@@ -43,6 +43,7 @@
     .conteudoCadastro{
         display:flex;
         justify-content:center;
+        padding: 0px 20px;
         padding-bottom:50px;
     }
     .form-floating{

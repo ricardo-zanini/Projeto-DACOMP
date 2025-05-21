@@ -23,7 +23,7 @@ CREATE TABLE Tipos_Usuarios (
 -- Usuarios do sistema, pode ou não ser gestor
 CREATE TABLE Usuarios (
     usuario_id INT AUTO_INCREMENT PRIMARY KEY,
-	cartao_UFRGS VARCHAR(20) UNIQUE NOT NULL,
+	cartao_UFRGS VARCHAR(20) UNIQUE,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(200) NOT NULL,
     password VARCHAR(100) NOT NULL,

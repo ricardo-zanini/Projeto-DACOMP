@@ -66,6 +66,7 @@
         font-size: 5rem;
     }
     .containerTitulo > div > h1 > span{
+        font-family: "Cal Sans", sans-serif;
         position:absolute;
         bottom: -5px;
         left: 110px;

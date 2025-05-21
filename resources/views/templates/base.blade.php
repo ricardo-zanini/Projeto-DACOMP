@@ -11,13 +11,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet">
     <!-- Fonte Leitura -->
     <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- Fonte Default -->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
 
     <link rel="shortcut icon" type="imagex/png" href="../font/DACOMP-logo.svg">
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
       *{
         color:#292929;
+        font-family: "Josefin Sans", sans-serif;
       }
       body{
         position:relative;
@@ -119,7 +124,8 @@
         transition:0.2s;
       }
       .navbarLogoutIcon{
-        width:30px;
+        width:17px;
+        margin-left:5px;
       }
       .buttonLogout{
         height:fit-content;
@@ -137,6 +143,8 @@
       }
       .userLogo > span{
         color: #f0f0f0;
+        top: 20px;
+        position: absolute;
       }
 
       #menuOptionsUser{
@@ -153,7 +161,7 @@
       }
       #menuOptionsUser.show{
         transition:0.2s;
-        height: calc(100% + 20px);
+        height: calc(100% + 50px);
       }
       #menuOptionsUser.hidden{
         transition:0.2s;
@@ -164,6 +172,8 @@
       #menuOptionsUser > a > div{
         cursor:pointer;
         transition:0.2s;
+        display: flex;
+        align-items: center;
       }
       #menuOptionsUser > a{
         text-decoration:none;
@@ -173,7 +183,34 @@
         transition:0.2s;
       }
 
+      .alerta_sucesso{
+        width:100;
+        padding:10px;
+        border-radius:5px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background-color:rgba(62, 157, 98, 0.76);
+        margin-top:20px;
+        font-family: "Cal Sans", sans-serif;
+        color:white;
+      }
 
+      .alerta_erro{
+        width:100;
+        padding:10px;
+        border-radius:5px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background-color:rgba(157, 62, 62, 0.76);
+        margin-top:20px;
+        font-family: "Cal Sans", sans-serif;
+        color:white;
+      }
+      .hidden{
+        display: none;
+      }
 
 
       @media (max-width: 800px) {
@@ -206,10 +243,10 @@
         <!-- Comum a todos usuários -->
         @if (Auth::user())
           <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
-          <a href="{{ route('logout') }}" role="button" class="buttonLogout"><img class="navbarLogoutIcon" src="../images/logout.svg" alt="DACOMP" /></a>
           <div id="menuOptionsUser" class="hidden">
             <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
             <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
+            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="../images/logout.svg" alt="DACOMP" /></div></a>
           </div>
         <!-- Ainda não logado -->
         @else
@@ -250,6 +287,17 @@
           userMenu.classList.toggle('show');
           userMenu.classList.toggle('hidden');
         });
+      });
+
+      const hover_logout = document.querySelector('.buttonLogout');
+      const imagem_logout = document.querySelector('.navbarLogoutIcon');
+
+      hover_logout.addEventListener('mouseenter', () => {
+        imagem_logout.src = '../images/logout_selected.svg'; // imagem ao passar o mouse
+      });
+
+      hover_logout.addEventListener('mouseleave', () => {
+        imagem_logout.src = '../images/logout.svg'; // imagem original
       });
     </script>
   </body>
