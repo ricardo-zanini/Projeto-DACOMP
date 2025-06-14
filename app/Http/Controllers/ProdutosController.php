@@ -16,5 +16,18 @@ use Illuminate\Validation\Rule;
 
 class ProdutosController extends Controller
 {
+    public function list()
+    {
+        $produtos = Produto::all(); // Busca todos os produtos
+        return view('produtos.list', ['produtos' => $produtos]);
+    }
+    public function create()
+    {
+        if(Auth::user()->gestor == true){
+            return view('produtos.create');
 
+        }else{
+            return view('usuarios.login');
+        }
+    }
 }

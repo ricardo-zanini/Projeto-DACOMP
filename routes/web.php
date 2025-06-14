@@ -29,3 +29,8 @@ Route::put('/perfil/edit', [UsuariosController::class, 'update'])->middleware('a
 Route::get('/perfil/trocarSenha', [UsuariosController::class, 'alterar_senha'])->middleware('auth')->name('senha.edit');
 Route::put ('/perfil/trocarSenha', [UsuariosController::class, 'update_senha'])->middleware('auth')->name('senha.update');
 
+//============================================================================================
+// Rotas de Produtos
+Route::get('/produtos/catalogo', [ProdutosController::class, 'list'])->name('produtos.list');
+Route::get('/produtos/cadastro', [ProdutosController::class, 'create'])->middleware('auth')->name('produtos.create');
+Route::put('/produtos/cadastro', [ProdutosController::class, 'insert'])->middleware('auth')->name('produtos.gravar');

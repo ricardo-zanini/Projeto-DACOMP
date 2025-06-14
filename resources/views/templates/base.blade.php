@@ -91,8 +91,6 @@
         font-family: "Cal Sans", sans-serif;
         font-size:0.8rem;
       }
-
-
       .containerNavbar{
         height:60px;
         width:100%;
@@ -108,16 +106,34 @@
         width:70px;
       }
       .containerOpcoesNavbar{
+        padding-left:20px;
         display:flex;
         width:100%;
-        justify-content:flex-end;
+        justify-content:space-between;
         align-items:center;
         gap:10px;
+      }
+      .containerMenusNavbar{
+        display:flex;
+      }
+      .containerMenusNavbar > a{
+        text-decoration:none;
+      }
+      .containerMenusNavbar > a:not(:last-of-type) > div{
+        border-right:solid 1px #292929;
+      }
+      .containerMenusNavbar > a > div{
+        transition:0.3s;
+        cursor:pointer;
+        padding:0px 10px;
+      }
+      .containerMenusNavbar > a:hover > div{
+        color: #2e96d5;
       }
       .linkNav{
         text-decoration: none;
         color: #292929;
-        transition:0.2s;
+        transition:0.3s;
       }
       .linkNav:hover{
         color: #2e96d5;
@@ -232,6 +248,9 @@
         <img class="navbarLogoDacomp" src="../images/DACOMP-logo-dark.svg" alt="DACOMP" />
       </a>
       <div class="containerOpcoesNavbar">
+        <div class="containerMenusNavbar"> 
+            <a href="{{ route('produtos.list') }}"><div>Produtos</div></a>
+        </div>
         <!-- Gestor -->
         @if(Auth::user() && Auth::user()->gestor)
            <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO GESTOR -->
@@ -250,8 +269,10 @@
           </div>
         <!-- Ainda não logado -->
         @else
+        <div>
           <a href="{{ route('login') }}" role="button" class="linkNav buttonLogin">Login</a>
           <a href="{{ route('usuarios.inserir') }}" role="button" class="linkNav buttonCadastro">Cadastro</a>
+        </div>  
         @endif
       </div>  
     </div>  
