@@ -1,22 +1,25 @@
---===============================================================================================================
---============================================= DROPS ===========================================================
---===============================================================================================================
+-- ===============================================================================================================
+-- ============================================= DROPS ===========================================================
+-- ===============================================================================================================
 
-DROP TABLE Usuarios;
-DROP TABLE Tipos_Usuarios;
-DROP TABLE Produtos;
-DROP TABLE Tipos_Produtos;
-DROP TABLE Usuarios_Interesses;
-DROP TABLE Compras;
-DROP TABLE Produtos_Compras;
+DROP TABLE IF EXISTS Produtos_Compras;
+DROP TABLE IF EXISTS Compras;
+DROP TABLE IF EXISTS Usuarios_Interesses;
+DROP TABLE IF EXISTS Produtos_Estoque;
+DROP TABLE IF EXISTS Tamanhos;
+DROP TABLE IF EXISTS Cores;
+DROP TABLE IF EXISTS Produtos;
+DROP TABLE IF EXISTS Tipos_Produtos;
+DROP TABLE IF EXISTS Usuarios;
+DROP TABLE IF EXISTS Tipos_Usuarios;
 
---===============================================================================================================
---============================================= CREATE ==========================================================
---===============================================================================================================
+-- ===============================================================================================================
+-- ============================================= CREATE ==========================================================
+-- ===============================================================================================================
 
 -- Tipos de usuário. Ex: Professor, aluno, funcionário,...
 CREATE TABLE Tipos_Usuarios (
-    tipo_usuario_id INT PRIMARY KEY,
+    tipo_usuario_id INT AUTO_INCREMENT PRIMARY KEY,
 	tipo VARCHAR(100) NOT NULL
 );
 
@@ -35,8 +38,20 @@ CREATE TABLE Usuarios (
 
 -- Tipos de produtos. Ex: Roupas, chaveiros,...
 CREATE TABLE Tipos_Produtos (
-    tipo_produto_id INT PRIMARY KEY,
+    tipo_produto_id INT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL
+);
+
+-- Tamanhos. Ex: P, M,...
+CREATE TABLE Tamanhos (
+    tamanho_id INT AUTO_INCREMENT PRIMARY KEY,
+    tamanho VARCHAR(100) NOT NULL
+);
+
+-- Cores. Ex: Branco, Azul,...
+CREATE TABLE Cores (
+    cor_id INT AUTO_INCREMENT PRIMARY KEY,
+    cor VARCHAR(100) NOT NULL
 );
 
 -- Produtos Cadastrados
@@ -44,10 +59,24 @@ CREATE TABLE Produtos (
     produto_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     tipo_produto_id INT NOT NULL,
-    preco NUMERIC(3, 2) NOT NULL,
+    valor_unidade NUMERIC(5, 2) NOT NULL,
+    imagem VARCHAR(100),
+	FOREIGN KEY (tipo_produto_id) REFERENCES Tipos_Produtos(tipo_produto_id)
+);
+
+-- Estoque dos produtos
+CREATE TABLE Produtos_Estoque (
+    produto_estoque_id INT AUTO_INCREMENT PRIMARY KEY,
+    produto_id INT NOT NULL,
+    tamanho_id INT NOT NULL,
+    cor_id INT NOT NULL,
     disponivel BOOLEAN NOT NULL,
     prontaEntrega BOOLEAN NOT NULL,
-	FOREIGN KEY (tipo_produto_id) REFERENCES Tipos_Produtos(tipo_produto_id)
+    unidades INT NOT NULL,
+    UNIQUE (produto_id, tamanho_id, cor_id),
+    FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id),
+    FOREIGN KEY (tamanho_id) REFERENCES Tamanhos(tamanho_id),
+    FOREIGN KEY (cor_id) REFERENCES Cores(cor_id)
 );
 
 -- Interresses do cliente
@@ -72,28 +101,55 @@ CREATE TABLE Compras (
 CREATE TABLE Produtos_Compras (
     produto_compra_id INT AUTO_INCREMENT PRIMARY KEY,
     compra_id INT NOT NULL,
-    produto_id INT NOT NULL,
+    produto_estoque_id INT NOT NULL,
     quantidade INT NOT NULL,
-    valor_unidade NUMERIC(3, 2) NOT NULL,
+    valor_unidade NUMERIC(5, 2) NOT NULL,
     FOREIGN KEY (compra_id) REFERENCES Compras(compra_id),
-    FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id)
+    FOREIGN KEY (produto_estoque_id) REFERENCES Produtos_Estoque(produto_estoque_id)
 );
 
---===============================================================================================================
---============================================= INSERTS =========================================================
---===============================================================================================================
+-- ===============================================================================================================
+-- ============================================= INSERTS =========================================================
+-- ===============================================================================================================
 
-INSERT INTO Tipos_Usuarios (tipo_usuario_id, tipo) VALUES (0, 'Aluno');
-INSERT INTO Tipos_Usuarios (tipo_usuario_id, tipo) VALUES (1, 'Professor');
+INSERT INTO Tipos_Usuarios (tipo) VALUES ('Aluno');
+INSERT INTO Tipos_Usuarios (tipo) VALUES ('Professor');
+INSERT INTO Tipos_Usuarios (tipo) VALUES ('Outro');
 
-INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (0, 'Camiseta');
-INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (1, 'Chaveiro');
-INSERT INTO Tipos_Produtos (tipo_produto_id, tipo) VALUES (2, 'Bottom');
+INSERT INTO Tipos_Produtos (tipo) VALUES ('Vestuário');
+INSERT INTO Tipos_Produtos (tipo) VALUES ('Acessórios');
+INSERT INTO Tipos_Produtos (tipo) VALUES ('Papelaria');
 
-INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Camiseta INF Branca', 0, 50.99, True, False);
-INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Camiseta INF Preta', 0, 50.99, True, False);
-INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Camiseta INF Azul', 0, 50.99, True, True);
-INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Moletom INF Preto', 0, 75.99, True, True);
-INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Chaveiro INF customizado', 1, 5.0, True, False);
-INSERT INTO Produtos (nome, tipo_produto_id, preco, disponivel, prontaEntrega) VALUES ('Chapéu DACOMP', 1, 100.0, False, False);
+INSERT INTO Tamanhos (tamanho) VALUES ('Tamanho Único');
+INSERT INTO Tamanhos (tamanho) VALUES ('PP');
+INSERT INTO Tamanhos (tamanho) VALUES ('P');
+INSERT INTO Tamanhos (tamanho) VALUES ('M');
+INSERT INTO Tamanhos (tamanho) VALUES ('G');
+INSERT INTO Tamanhos (tamanho) VALUES ('GG');
 
+INSERT INTO Cores (cor) VALUES ('Cor Única');
+INSERT INTO Cores (cor) VALUES ('Branco');
+INSERT INTO Cores (cor) VALUES ('Preto');
+INSERT INTO Cores (cor) VALUES ('Azul');
+INSERT INTO Cores (cor) VALUES ('Vermelho');
+INSERT INTO Cores (cor) VALUES ('Cinza');
+
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Camiseta CIC', 1, 50.99, "camisetacic.jpg");
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Camiseta EC', 1, 50.99, "camisetaec.jpg");
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Moletom INF', 1, 120.00, "moletominf.jpg");
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Moletom CIC', 1, 120.00, "moletomcic.jpg");
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Chaveiro UFGRS', 2, 5.00, "chaveiroufrgs.jpg");
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Boné UFGRS', 1, 70.99, "boneufrgs.jpg");
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Caderno UFRGS', 3, 30.00, "cadernoufrgs.jpg");
+
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (1, 3, 2, True, True, 10);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (1, 4, 2, True, True, 5);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (2, 5, 3, True, False, 0);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (2, 5, 6, True, False, 0);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (3, 2, 2, True, True, 20);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (3, 3, 2, True, True, 15);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (4, 4, 4, True, True, 20);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (4, 5, 5, True, True, 20);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (5, 1, 1, True, False, 0);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (6, 1, 3, False, False, 0);
+INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (7, 1, 1, False, False, 0);
