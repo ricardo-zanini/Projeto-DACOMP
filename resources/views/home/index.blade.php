@@ -23,7 +23,7 @@
                 <p>
                 Além de apoiar financeiramente o diretório, adquirir os produtos é uma forma de demonstrar pertencimento e fortalecer o vínculo com o curso. Clique aqui para conhecer a loja virtual do DACOMP, e contribua para o desenvolvimento da nossa comunidade estudantil!
                 </p>
-                <button type="button" class="button">Conheça nossos produtos</button>
+                <button onclick="window.location='{{ route('produtos.list') }}'" type="button" class="button">Conheça nossos produtos</button>
             </div>
         </div>
     </div>
