@@ -97,16 +97,27 @@ class ProdutosController extends Controller
     {
         $form->validate([
             'input' => ['nullable'],
-            'tipo_produto_id' => ['nullable']
+            'tipo_produto_id' => ['nullable'],
+            'tamanho_id' => ['nullable'],
+            'cor_id' => ['nullable']
         ]);
 
         $produtos = Produtos::query()
-        ->when($form->filled('tipo_produto_id'), function ($q) use ($form) {
-            $q->where('tipo_produto_id', $form->tipo_produto_id);
-        })
-        ->when($form->filled('input'), function ($q) use ($form) {
-            $q->where('nome', 'like', '%' . $form->input . '%');
-        })->get();
+            ->when($form->filled('tipo_produto_id') && !$form->filled('tamanho_id') && !$form->filled('cor_id'), fn ($q) =>
+                $q->where('tipo_produto_id', $form->tipo_produto_id)
+            )
+            ->when($form->filled('tamanho_id') && !$form->filled('tipo_produto_id') && !$form->filled('cor_id'), function ($q) use ($form) {
+                $q->whereHas('estoque', fn ($estoque) =>
+                    $estoque->where('tamanho_id', $form->tamanho_id));
+            })
+            ->when($form->filled('cor_id') && !$form->filled('tipo_produto_id') && !$form->filled('tamanho_id'), function ($q) use ($form) {
+                $q->whereHas('estoque', fn ($estoque) =>
+                    $estoque->where('cor_id', $form->cor_id));
+            })
+            ->when($form->filled('input'), fn ($q) =>
+            $q->where('nome', 'like', '%' . $form->input . '%'))
+            ->distinct()
+            ->get();
 
         $tipos_produtos = TiposProdutos::all();
         $tamanhos = Tamanhos::all();
@@ -117,5 +128,24 @@ class ProdutosController extends Controller
         }
 
         return view('produtos.products', compact('produtos', 'tipos_produtos', 'tamanhos', 'cores'));
+    }
+
+    public function show($id)
+    {
+        $produto = Produtos::with('estoque.cor', 'estoque.tamanho')->findOrFail($id);
+        $tipo_produto = TiposProdutos::findOrFail($produto->tipo_produto_id);
+
+        $estoques = $produto->estoque->map(fn ($e) => [
+            'tamanho_id'    => $e->tamanho_id,
+            'cor_id'        => $e->cor_id,
+            'prontaEntrega' => $e->prontaEntrega,
+            'unidades'      => $e->unidades,
+        ]);
+
+        return view('produtos.product', compact(
+            'produto',
+            'estoques',
+            'tipo_produto'
+        ));
     }
 }

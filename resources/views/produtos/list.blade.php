@@ -1,20 +1,26 @@
-<div class="grid">
+<div id="products-list" class="products-container">
     @if ($produtos->isEmpty())
         <p>Nenhum produto encontrado.</p>
     @else
-        @foreach ($produtos as $produto)
-            <div class="card">
-                <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
-                <h2>{{ $produto->nome }}</h2>
-                <p class="label">R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
-                <button onclik="" type="button" class="button">Comprar</button>
-            </div>
-        @endforeach
+        <div class="grid">
+            @foreach ($produtos as $produto)
+                <div class="card">
+                    <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
+                    <h2>{{ $produto->nome }}</h2>
+                    <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
+                    <button onclick="window.location='{{ route('produtos.show', ['produto' => $produto->produto_id]) }}'" type="button" class="button">Comprar</button>
+                </div>
+            @endforeach
+        </div>
     @endif
 </div>
 
 @push('styles')
     <style>
+        .products-container{
+            display: flex; 
+            justify-content: center;
+        }
         .grid{
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -60,7 +66,8 @@
             font-family: "Cal Sans", sans-serif;
             border: none;
             padding: 10px;
-            background-color: #f0f0f0;
+            background-color: #292929;
+            color: #f0f0f0;
             border-radius: 500px;
             width: 100%;
         }

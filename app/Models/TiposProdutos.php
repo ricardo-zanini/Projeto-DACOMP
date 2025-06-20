@@ -10,4 +10,6 @@ class TiposProdutos extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $primaryKey = 'tipo_produto_id';
 }

@@ -35,3 +35,4 @@ Route::get('/produtos/catalogo', [ProdutosController::class, 'list'])->name('pro
 Route::get('/produtos/cadastro', [ProdutosController::class, 'create'])->middleware('auth')->name('produtos.create');
 Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middleware('auth')->name('produtos.gravar');
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
+Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
