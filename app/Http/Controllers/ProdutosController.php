@@ -126,4 +126,23 @@ class ProdutosController extends Controller
 
         return view('produtos.products', compact('produtos', 'tipos_produtos', 'tamanhos', 'cores'));
     }
+
+    public function show($id)
+    {
+        $produto = Produtos::with('estoque.cor', 'estoque.tamanho')->findOrFail($id);
+        $tipo_produto = TiposProdutos::findOrFail($produto->tipo_produto_id);
+
+        $estoques = $produto->estoque->map(fn ($e) => [
+            'tamanho_id'    => $e->tamanho_id,
+            'cor_id'        => $e->cor_id,
+            'prontaEntrega' => $e->prontaEntrega,
+            'unidades'      => $e->unidades,
+        ]);
+
+        return view('produtos.product', compact(
+            'produto',
+            'estoques',
+            'tipo_produto'
+        ));
+    }
 }
