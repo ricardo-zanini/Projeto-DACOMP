@@ -5,7 +5,7 @@
 DROP TABLE IF EXISTS Produtos_Compras;
 DROP TABLE IF EXISTS Compras;
 DROP TABLE IF EXISTS Usuarios_Interesses;
-DROP TABLE IF EXISTS Produtos_Estoque;
+DROP TABLE IF EXISTS Produtos_Estoques;
 DROP TABLE IF EXISTS Tamanhos;
 DROP TABLE IF EXISTS Cores;
 DROP TABLE IF EXISTS Produtos;
@@ -65,7 +65,7 @@ CREATE TABLE Produtos (
 );
 
 -- Estoque dos produtos
-CREATE TABLE Produtos_Estoque (
+CREATE TABLE Produtos_Estoques (
     produto_estoque_id INT AUTO_INCREMENT PRIMARY KEY,
     produto_id INT NOT NULL,
     tamanho_id INT NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE Produtos_Compras (
     quantidade INT NOT NULL,
     valor_unidade NUMERIC(5, 2) NOT NULL,
     FOREIGN KEY (compra_id) REFERENCES Compras(compra_id),
-    FOREIGN KEY (produto_estoque_id) REFERENCES Produtos_Estoque(produto_estoque_id)
+    FOREIGN KEY (produto_estoque_id) REFERENCES Produtos_Estoques(produto_estoque_id)
 );
 
 -- ===============================================================================================================
@@ -142,14 +142,14 @@ INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Cha
 INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Boné UFGRS', 1, 70.99, "boneufrgs.jpg");
 INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem) VALUES ('Caderno UFRGS', 3, 30.00, "cadernoufrgs.jpg");
 
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (1, 3, 2, True, True, 10);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (1, 4, 2, True, True, 5);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (2, 5, 3, True, False, 0);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (2, 5, 6, True, False, 0);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (3, 2, 2, True, True, 20);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (3, 3, 2, True, True, 15);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (4, 4, 4, True, True, 20);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (4, 5, 5, True, True, 20);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (5, 1, 1, True, False, 0);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (6, 1, 3, False, False, 0);
-INSERT INTO Produtos_Estoque (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (7, 1, 1, False, False, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (1, 3, 2, True, True, 10);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (1, 4, 2, True, True, 5);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (2, 5, 3, True, False, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (2, 5, 6, True, False, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (3, 2, 2, True, True, 20);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (3, 3, 2, True, True, 15);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (4, 4, 4, True, True, 20);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (4, 5, 5, True, True, 20);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (5, 1, 1, True, False, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (6, 1, 3, False, False, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (7, 1, 1, False, False, 0);

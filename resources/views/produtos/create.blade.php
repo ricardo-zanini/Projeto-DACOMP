@@ -27,7 +27,7 @@
         </div>
 
         <div class="mb-3">
-            <input type="file" class="form-control" id="arquivo" name="arquivo" required>
+            <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
         </div>
 
         <h5>VARIAÇÕES</h5>
@@ -36,6 +36,8 @@
             <div id="info_estoque_variacoes">
 
             </div>
+            <input style="display:none" value="0" type="text" name="numero_variacoes" class="numero_variacoes">
+
             <div id="container_estoque_acao">
                 <div class="adicionar" onclick="adiciona_variacao()">
                     <img src="../images/plusIcon.svg" alt="" />
@@ -76,14 +78,14 @@
         container.innerHTML = container.innerHTML + `
             <div class="container_interno_variacao variacao_${numero_atual}">  
                 <h5 class="variacao_titulo">Variação ${numero_atual}</h5>
-                <select name="tamanho_${numero_atual}" class="form-control class_tamanho" required>
+                <select name="tamanho_id_${numero_atual}" class="form-control class_tamanho" required>
                     <option value="">Selecionar tamanho</option>
                     @foreach ($tamanhos as $tamanho)
                         <option value="{{ $tamanho->tamanho_id }}">{{ $tamanho->tamanho }}</option>
                     @endforeach
                 </select>
 
-                <select name="cor_${numero_atual}" class="form-control class_cor" required>
+                <select name="cor_id_${numero_atual}" class="form-control class_cor" required>
                     <option value="">Selecionar cor</option>
                     @foreach ($cores as $cor)
                         <option value="{{ $cor->cor_id }}">{{ $cor->cor }}</option>
@@ -96,16 +98,21 @@
                 </div>
             </div>
         `
+
+        input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
+        input_variacoes.value = parseInt(input_variacoes.value) + 1
     }
     function remove_variacao(){
         const elementos = document.querySelectorAll('.container_interno_variacao');
         if (elementos.length > 1) {
             elementos[elementos.length - 1].remove();
+            input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
+            input_variacoes.value = parseInt(input_variacoes.value) - 1
         }
     }
     adiciona_variacao();
 
-    const campo = document.getElementById('valor');
+    const campo = document.getElementById('valor_unidade');
 
     campo.addEventListener('input', function () {
       // Remove tudo que não for dígito ou ponto
