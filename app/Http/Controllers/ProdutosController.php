@@ -94,16 +94,27 @@ class ProdutosController extends Controller
     {
         $form->validate([
             'input' => ['nullable'],
-            'tipo_produto_id' => ['nullable']
+            'tipo_produto_id' => ['nullable'],
+            'tamanho_id' => ['nullable'],
+            'cor_id' => ['nullable']
         ]);
 
         $produtos = Produtos::query()
-        ->when($form->filled('tipo_produto_id'), function ($q) use ($form) {
-            $q->where('tipo_produto_id', $form->tipo_produto_id);
-        })
-        ->when($form->filled('input'), function ($q) use ($form) {
-            $q->where('nome', 'like', '%' . $form->input . '%');
-        })->get();
+            ->when($form->filled('tipo_produto_id') && !$form->filled('tamanho_id') && !$form->filled('cor_id'), fn ($q) =>
+                $q->where('tipo_produto_id', $form->tipo_produto_id)
+            )
+            ->when($form->filled('tamanho_id') && !$form->filled('tipo_produto_id') && !$form->filled('cor_id'), function ($q) use ($form) {
+                $q->whereHas('estoque', fn ($estoque) =>
+                    $estoque->where('tamanho_id', $form->tamanho_id));
+            })
+            ->when($form->filled('cor_id') && !$form->filled('tipo_produto_id') && !$form->filled('tamanho_id'), function ($q) use ($form) {
+                $q->whereHas('estoque', fn ($estoque) =>
+                    $estoque->where('cor_id', $form->cor_id));
+            })
+            ->when($form->filled('input'), fn ($q) =>
+            $q->where('nome', 'like', '%' . $form->input . '%'))
+            ->distinct()
+            ->get();
 
         $tipos_produtos = TiposProdutos::all();
         $tamanhos = Tamanhos::all();

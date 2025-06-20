@@ -1,20 +1,26 @@
-<div class="grid">
+<div id="products-list" class="products-container">
     @if ($produtos->isEmpty())
         <p>Nenhum produto encontrado.</p>
     @else
-        @foreach ($produtos as $produto)
-            <div class="card">
-                <img class="img" src="{{'../images/produtos/' . $produto->imagem}}" alt="Book icon" />
-                <h2>{{ $produto->nome }}</h2>
-                <p class="label">R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
-                <button onclik="" type="button" class="button">Comprar</button>
-            </div>
-        @endforeach
+        <div class="grid">
+            @foreach ($produtos as $produto)
+                <div class="card">
+                    <img class="img" src="{{'../images/produtos/' . $produto->imagem}}" alt="{{$produto -> produto_id}}" />
+                    <h2>{{ $produto->nome }}</h2>
+                    <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
+                    <button onclick="window.location='{{ route('produtos.show', ['produto' => $produto->produto_id]) }}'" type="button" class="button">Comprar</button>
+                </div>
+            @endforeach
+        </div>
     @endif
 </div>
 
 @push('styles')
     <style>
+        .products-container{
+            display: flex; 
+            justify-content: center;
+        }
         .grid{
             display: grid;
             grid-template-columns: repeat(4, 1fr);

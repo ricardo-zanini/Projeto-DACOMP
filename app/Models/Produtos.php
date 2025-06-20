@@ -10,4 +10,11 @@ class Produtos extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $primaryKey = 'produto_id';
+
+    public function estoque()
+    {
+        return $this->hasMany(ProdutosEstoque::class, 'produto_id', 'produto_id');
+    }
 }
