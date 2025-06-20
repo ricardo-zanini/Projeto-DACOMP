@@ -66,7 +66,8 @@
             font-family: "Cal Sans", sans-serif;
             border: none;
             padding: 10px;
-            background-color: #f0f0f0;
+            background-color: #292929;
+            color: #f0f0f0;
             border-radius: 500px;
             width: 100%;
         }

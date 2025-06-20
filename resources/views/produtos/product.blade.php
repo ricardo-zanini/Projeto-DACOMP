@@ -2,7 +2,8 @@
 @section('title', 'Produto')
 
 @section('content')
-    <div style="display: flex; flex-direction: column;">
+    <h1>COMPRAR</h1>
+    <div class="container">
         <div class="product-container">
             <img class="img" src="{{ '../images/produtos/' . $produto->imagem }}" alt="{{ $produto->produto_id }}" />
             <div class="product-info">
@@ -15,21 +16,21 @@
                 <label>Disponível para pronta entrega</label>
                 <p id="entrega-label" style="font-weight: bold;"></p>
 
-                <label>Selecione a opção de Tamanho</label>
+                <label for="tamanho-select">Selecione a opção de Tamanho</label>
                 <select id="tamanho-select" name="tamanho_produto_id" class="form-control select">
                     @foreach ($produto->estoque->pluck('tamanho')->unique('tamanho_id') as $tamanho)
                         <option value="{{ $tamanho->tamanho_id }}">{{ $tamanho->tamanho }}</option>
                     @endforeach
                 </select>
 
-                <label>Selecione a opção de Cor</label>
+                <label for="cor-select">Selecione a opção de Cor</label>
                 <select id="cor-select" name="cor_produto_id" class="form-control select">
                     @foreach ($produto->estoque->pluck('cor')->unique('cor_id') as $cor)
                         <option value="{{ $cor->cor_id }}">{{ $cor->cor }}</option>
                     @endforeach
                 </select>
 
-                <label>Em estoque</label>
+                <label for="unidades-select">Em estoque</label>
                 <select id="unidades-select" name="unidades_produto" class="form-control select">
                     <option value="0">Quantidade: 0</option>
                 </select>
@@ -104,9 +105,15 @@
         text-align:center;
         padding: 50px 0px;
     }
-    h2{
-        font-size: 18px;
-        margin-bottom: 8px;
+    .container{
+        display: flex; 
+        flex-direction: column;
+        border: solid 1px #dee2e6;
+        border-radius: 0.375rem;
+        background-color: white;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        width: fit-content;
     }
     .link-container{
         display: flex; 
@@ -118,24 +125,15 @@
     }
     .product-container{
         display: grid;
-        grid-template-columns: 40% 60%;
-        gap: 1.5rem;
-        align-items: start;
-        margin: auto;
+        grid-template-columns: 0.5fr 1fr;
+        gap: 2rem;
         padding: 1rem;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
+        width: fit-content;
     }
     @media only screen and (max-width: 80rem){
         .product-container {
             grid-template-columns: 1fr;
-        }
-        .select, .button {
-            width: 100%;
-        }
-        .img {
-            width: 30rem;
-            margin: 0 auto;
+            justify-items: center; 
         }
     }
     .icon-container {
@@ -151,17 +149,18 @@
         display: block;
     }
     .img{
-        max-width: 90%;
+        max-width: 23rem;
         height: auto;
         border-radius: 8px;
         object-fit: contain;
-        box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+        border: solid 1px #dee2e6;
     }
     .product-info{
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
+        width: fit-content;
     }
     .product-name{
         font-size: 2rem;
