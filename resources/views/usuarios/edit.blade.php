@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-floating">
-                <input value="{{$usuario->cartao_UFRGS}}" type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="6">
+                <input value="{{$usuario->cartao_UFRGS}}" type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="8">
                 <div class="form-text text-end me-1 text-danger cartao_UFRGS_error"></div>
                 <label for="cartao_UFRGS">Cartão UFRGS</label>
             </div>

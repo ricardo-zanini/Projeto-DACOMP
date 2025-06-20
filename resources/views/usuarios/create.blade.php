@@ -14,7 +14,7 @@
         </div>
 
         <div class="form-floating">
-            <input type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="6">
+            <input type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="8">
             <label for="cartao_UFRGS">Cartão UFRGS</label>
         </div>
 
