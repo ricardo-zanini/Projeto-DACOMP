@@ -32,11 +32,33 @@ class ProdutosController extends Controller
     public function create()
     {
         if(Auth::user()->gestor == true){
-            return view('produtos.create');
-
+            $tipos = TiposProdutos::all();
+            $tamanhos = Tamanhos::all(); // Busca todos os tamanhos
+            $cores = Cores::all(); // Busca todos os cores
+            return view('produtos.create', ['tipos' => $tipos, 'tamanhos' => $tamanhos, "cores" => $cores]);
         }else{
             return view('usuarios.login');
         }
+    }
+
+    public function insert(Request $form)
+    {
+        // Validação de dados do formulario
+        $form->validate([
+            'nome' => ['required', 'max:100'],
+            'tipo_produto_id' => ['required'],
+            'valor_unidade' => ['required', 'numeric']
+        ]);
+        
+        // Preenche estrutura de dados com dados do formulario 
+        $produto = new Produtos();
+        $produto->nome = $form->nome;
+        $produto->tipo_produto_id = $form->tipo_produto_id;
+        $produto->valor_unidade = $form->valor_unidade;
+
+        $produto->save();
+
+        return redirect()->route('produtos.create');
     }
 
     public function search(Request $form)

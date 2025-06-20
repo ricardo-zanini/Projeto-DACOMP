@@ -10,28 +10,30 @@
                 <input id="search" class="search-bar" type="search" name="input" placeholder="Pesquisar" />
                 <i class="fa fa-search search-icon"></i>
             </div>
-            <select id="tipo_produto_select" class="form-control" name="tipo_produto_id">
-                <option value="">Categoria</option>
-                @foreach ($tipos_produtos as $tipo)
-                    <option value="{{ $tipo->tipo_produto_id }}">{{ $tipo->tipo }}</option>
-                @endforeach
-            </select>
-            <select id="tamanho_select" class="form-control" name="tamanho_id">
-                <option value="">Tamanho</option>
-                @foreach ($tamanhos as $tamanho)
-                    <option value="{{ $tamanho->tamanho_id }}">{{ $tamanho->tamanho }}</option>
-                @endforeach
-            </select>
-            <select id="cor_select" class="form-control" name="cor_id">
-                <option value="">Cor</option>
-                @foreach ($cores as $cor)
-                    <option value="{{ $cor->cor_id }}">{{ $cor->cor }}</option>
-                @endforeach
-            </select>
-            <!-- Se usuário do tipo gestor, permitir adição de Produtos -->
-            @if(Auth::user() && Auth::user()->gestor)
-                <a href="{{ route('produtos.create') }}" class="novoProduto">Novo Produto</a>
-            @endif
+            <div class="menu_options">
+                <select id="tipo_produto_select" class="form-control" name="tipo_produto_id">
+                    <option value="">Categoria</option>
+                    @foreach ($tipos_produtos as $tipo)
+                        <option value="{{ $tipo->tipo_produto_id }}">{{ $tipo->tipo }}</option>
+                    @endforeach
+                </select>
+                <select id="tamanho_select" class="form-control" name="tamanho_id">
+                    <option value="">Tamanho</option>
+                    @foreach ($tamanhos as $tamanho)
+                        <option value="{{ $tamanho->tamanho_id }}">{{ $tamanho->tamanho }}</option>
+                    @endforeach
+                </select>
+                <select id="cor_select" class="form-control" name="cor_id">
+                    <option value="">Cor</option>
+                    @foreach ($cores as $cor)
+                        <option value="{{ $cor->cor_id }}">{{ $cor->cor }}</option>
+                    @endforeach
+                </select>
+                <!-- Se usuário do tipo gestor, permitir adição de Produtos -->
+                @if(Auth::user() && Auth::user()->gestor)
+                    <a href="{{ route('produtos.create') }}" class="botao_novo_prod">Novo Produto</a>
+                @endif
+            </div>
         </form>
         <div id="products-list" class="products-container">
             @include('produtos.list', ['produtos' => $produtos])
@@ -77,21 +79,29 @@
             font-size: 18px; 
             margin-bottom: 8px;
         }
+        #search-form{
+            flex-direction:column;
+        }
         .search-container {
-            position: relative;
             width: 100%;
-            max-width: 64rem;
-            margin: 0 auto;
+            position:relative;
+        }
+        .menu_options{
+            display:flex;
+            flex-direction:row;
+            gap: 1rem;
+            justify-content:center;
         }
         .search-bar {
             width: 100%;
             padding: 0.6rem 1.2rem 0.6rem 2.5rem;
             border-radius: 999px;
             border: none;
-            background-color: #f0f0f0;
-            font-size: 1rem;
-            font-family: "Cal Sans", sans-serif;
+            background-color: #f9f9f9;
+
             box-sizing: border-box;
+            border: solid 1px #dee2e6;
+            height:48px;
         }
         .search-icon {
             position: absolute;
@@ -117,11 +127,23 @@
             gap: 1rem;
         }
         .form-control{
-            width: 15rem;
+            width: 10rem;
         }
         .products-container{
             display: flex; 
             justify-content: center;
+        }
+        .botao_novo_prod{
+            height:48px;
+            width:150px;
+            text-decoration:none;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background-color: #292929;
+            color:white;
+            border-radius:0.375rem;
+            cursor:pointer;
         }
 </style>
 @endpush

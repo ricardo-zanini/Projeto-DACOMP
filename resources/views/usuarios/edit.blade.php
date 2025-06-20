@@ -44,6 +44,7 @@
             @endif
 
             <button class="buttonSubmitForm" type="submit">Salvar Alterações</button>
+            
             <div class="alerta_sucesso hidden"> Dados salvos com sucesso! </div>
             <div class="alerta_erro hidden"> Ocorreu um erro </div>
         </form>
