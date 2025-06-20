@@ -4,7 +4,7 @@
 @section('content')
     <h1>CADASTRO DE PRODUTO</h1>
     <div class="conteudoCadastro">
-    <form method="post" action="{{ route('produtos.gravar') }}">
+    <form method="post" enctype="multipart/form-data" action="{{ route('produtos.gravar') }}">
 
         @csrf
         
@@ -40,11 +40,11 @@
 
             <div id="container_estoque_acao">
                 <div class="adicionar" onclick="adiciona_variacao()">
-                    <img src="../images/plusIcon.svg" alt="" />
+                    <img src="../icons/plusIcon.svg" alt="" />
                     <span>Adicionar<span>
                 </div>
                 <div class="remover" onclick="remove_variacao()">
-                    <img src="../images/minusIcon.svg" alt="" />
+                    <img src="../icons/minusIcon.svg" alt="" />
                     <span>Remover</span>
                 </div>
             </div>
@@ -74,8 +74,7 @@
         const elementosX = document.querySelectorAll('.container_interno_variacao');
         const numero_atual = elementosX.length;
 
-        const container = document.querySelectorAll('#info_estoque_variacoes')[0];
-        container.innerHTML = container.innerHTML + `
+        $('#info_estoque_variacoes').append(`
             <div class="container_interno_variacao variacao_${numero_atual}">  
                 <h5 class="variacao_titulo">Variação ${numero_atual}</h5>
                 <select name="tamanho_id_${numero_atual}" class="form-control class_tamanho" required>
@@ -97,7 +96,7 @@
                     <label for="unidades">Unidades do Produto</label>
                 </div>
             </div>
-        `
+        `);
 
         input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
         input_variacoes.value = parseInt(input_variacoes.value) + 1
@@ -112,7 +111,7 @@
     }
     adiciona_variacao();
 
-    const campo = document.getElementById('valor_unidade');
+    const campo = document.getElementById('aaaaa');
 
     campo.addEventListener('input', function () {
       // Remove tudo que não for dígito ou ponto

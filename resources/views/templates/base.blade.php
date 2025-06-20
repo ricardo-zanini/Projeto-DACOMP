@@ -245,7 +245,7 @@
   <body>
     <div class="containerNavbar">
       <a href="{{ route('home') }}">
-        <img class="navbarLogoDacomp" src="../images/DACOMP-logo-dark.svg" alt="DACOMP" />
+        <img class="navbarLogoDacomp" src="../icons/DACOMP-logo-dark.svg" alt="DACOMP" />
       </a>
       <div class="containerOpcoesNavbar">
         <div class="containerMenusNavbar"> 
@@ -265,7 +265,7 @@
           <div id="menuOptionsUser" class="hidden">
             <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
             <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
-            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="../images/logout.svg" alt="DACOMP" /></div></a>
+            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="../icons/logout.svg" alt="DACOMP" /></div></a>
           </div>
         <!-- Ainda não logado -->
         @else
@@ -283,18 +283,18 @@
 
     <div class="footer">
       <div class="containerConteudoFooter">
-        <img class="footerLogoDacomp" src="../images/DACOMP-logo.svg" alt="DACOMP " />
+        <img class="footerLogoDacomp" src="../icons/DACOMP-logo.svg" alt="DACOMP " />
         <div class="footerRedesSociais">
           <div class="footerRedesSociaisText">Nos siga nas redes</div>
           <div class="footerRedesSociaisContainerIcons">
-            <a target="blank" href="https://www.facebook.com/p/DACOMP-UFRGS-100063671467028/"><img class="footerRedesSociaisIcon" src="../images/facebook.svg" alt="facebook"/></a>
-            <a target="blank" href="https://www.instagram.com/dacomp.ufrgs/"><img class="footerRedesSociaisIcon" src="../images/instagram.svg" alt="Instagram"/></a>
-            <a target="blank" href="https://x.com/ufrgsdacomp"><img class="footerRedesSociaisIcon" src="../images/X.svg" alt="X"/></a>
+            <a target="blank" href="https://www.facebook.com/p/DACOMP-UFRGS-100063671467028/"><img class="footerRedesSociaisIcon" src="../icons/facebook.svg" alt="facebook"/></a>
+            <a target="blank" href="https://www.instagram.com/dacomp.ufrgs/"><img class="footerRedesSociaisIcon" src="../icons/instagram.svg" alt="Instagram"/></a>
+            <a target="blank" href="https://x.com/ufrgsdacomp"><img class="footerRedesSociaisIcon" src="../icons/X.svg" alt="X"/></a>
           </div>
         </div>
       </div>
       <div class="footerRights">DACOMP - Diretório Acadêmico de Computação da UFRGS. Todos os direitos reservados.</div>
-      <img class="patternFooter" src="../images/curvePattern2.svg" alt="Pattern" />
+      <img class="patternFooter" src="../icons/curvePattern2.svg" alt="Pattern" />
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
@@ -314,11 +314,11 @@
       const imagem_logout = document.querySelector('.navbarLogoutIcon');
 
       hover_logout.addEventListener('mouseenter', () => {
-        imagem_logout.src = '../images/logout_selected.svg'; // imagem ao passar o mouse
+        imagem_logout.src = '../icons/logout_selected.svg'; // imagem ao passar o mouse
       });
 
       hover_logout.addEventListener('mouseleave', () => {
-        imagem_logout.src = '../images/logout.svg'; // imagem original
+        imagem_logout.src = '../icons/logout.svg'; // imagem original
       });
     </script>
   </body>

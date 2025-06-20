@@ -4,7 +4,7 @@
     @else
         @foreach ($produtos as $produto)
             <div class="card">
-                <img class="img" src="{{'../images/produtos/' . $produto->imagem}}" alt="Book icon" />
+                <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
                 <h2>{{ $produto->nome }}</h2>
                 <p class="label">R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
                 <button onclik="" type="button" class="button">Comprar</button>

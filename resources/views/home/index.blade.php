@@ -3,14 +3,14 @@
 
 @section('content')
     <div class="containerTitulo">
-        <img class="patternTitulo" src="../images/curvePattern.svg" alt="Pattern" />
-        <img class="patternTitulo" src="../images/curvePattern.svg" alt="Pattern" />
+        <img class="patternTitulo" src="../icons/curvePattern.svg" alt="Pattern" />
+        <img class="patternTitulo" src="../icons/curvePattern.svg" alt="Pattern" />
         <div><h1>DA<span>COMP</span></h1></div>
         <h3>Personalizados</h3>
     </div>
     <div class="containerProdutos">
         <div class="containerProdutosTitulo">
-            <img class="titleIcon" src="../images/shoppingCart.svg" alt="Shopping cart icon" />
+            <img class="titleIcon" src="../icons/shoppingCart.svg" alt="Shopping cart icon" />
             <h4>Nossos Produtos</h4>
         </div>
         <div class="containerTextoProdutos">
@@ -29,7 +29,7 @@
     </div>
     <div class="containerSobreNos">
         <div class="containerSobreNosTitulo">
-            <img class="titleIcon" src="../images/book.svg" alt="Book icon" />
+            <img class="titleIcon" src="../icons/book.svg" alt="Book icon" />
             <h4>Sobre Nós</h4>
         </div>
         <div class="containerSobreNosTexto">

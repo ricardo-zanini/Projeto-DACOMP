@@ -44,6 +44,9 @@ class ProdutosController extends Controller
 
     public function insert(Request $form)
     {
+
+        $form->valor_unidade = str_replace(',', '.', $form->valor_unidade);
+        $form->valor_unidade = (float) $form->valor_unidade;
         // Validação de dados de produto
         $form->validate([
             'nome' => ['required', 'max:100'],
