@@ -58,7 +58,11 @@ class UsuariosController extends Controller
         // Cria sessão para o usuário
         Auth::login($usuario);
 
-        return redirect()->route('home');
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cadastro efetuado com sucesso!',
+            'redirect_url' => route('home')
+        ]);
     }
 
     // Ações de login

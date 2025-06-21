@@ -10,27 +10,23 @@
 
             <div class="form-floating">
                 <input type="password" class="form-control middle_input" id="old_password" placeholder="old_password" name="old_password" minlength="8" maxlength="100" required>
-                <div class="form-text text-end me-1 input_error old_password_error"></div>
+                <div class="form-text text-end me-1 text-danger old_password_error"></div>
                 <label for="old_password">Senha atual</label>
             </div>
 
             <div class="form-floating">
                 <input type="password" class="form-control middle_input" id="password" placeholder="password" name="password" minlength="8" maxlength="100" required>
-                <div class="form-text text-end me-1 input_error password_error"></div>
+                <div class="form-text text-end me-1 text-danger password_error"></div>
                 <label for="password">Nova senha</label>
             </div>
 
             <div class="form-floating">
                 <input type="password" class="form-control last-input" id="password_confirmation" placeholder="Confirmar password" name="password_confirmation" minlength="8" maxlength="100" required>
-                <div class="form-text text-end me-1 input_error password_confirmation_error"></div>
+                <div class="form-text text-end me-1 text-danger password_confirmation_error"></div>
                 <label for="password_confirmation">Confirmar nova senha</label>
             </div>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">{{ $errors->first() }}</div>
-            @endif
-
-            <button class="buttonSubmitForm" type="submit">Salvar Nova Senha</button>
+            <button class="buttonSubmitForm" type="submit">Salvar nova senha</button>
             
             <div class="alerta_sucesso hidden"> Nova senha salva com sucesso! </div>
             <div class="alerta_erro hidden"> Ocorreu um erro </div>
@@ -53,9 +49,7 @@
                     contentType: false,
                     beforeSend: function() {
                         $(document).find('.text-danger').text('');
-                        $(document).find('.border-danger').removeClass('is-invalid');
-                        $(".is-invalid").removeClass('is-invalid')
-                        $(".input_error").text("")
+                        $(document).find('.is-invalid').removeClass('is-invalid');
                         
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").addClass("hidden")
