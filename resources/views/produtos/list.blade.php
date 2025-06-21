@@ -15,15 +15,7 @@
                             </a>
                         </div>
                     @endif
-
-                    <img class="img"
-                         src="@if ($produto->imagem == null)
-                                  {{ asset('images/no_image.svg') }}
-                              @else
-                                  {{ asset('images/' . $produto->imagem) }}
-                              @endif"
-                         alt="Imagem de {{ $produto->nome }}" />
-
+                    <img class="img" src="@if ($produto->imagem == null) {{asset('icons/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
                     <h2>{{ $produto->nome }}</h2>
                     <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
 
