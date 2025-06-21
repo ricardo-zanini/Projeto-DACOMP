@@ -9,25 +9,25 @@
             @method('PUT')
             <div class="form-floating">
                 <input value="{{$usuario->nome}}" type="text" class="form-control first_input" id="nome" placeholder="Nome de usuário" name="nome" maxlength="100" required>
-                <div class="form-text text-end me-1 text-danger nome_error"></div>
+                <div class="form-text text-end me-1 text-danger input_error nome_error"></div>
                 <label for="nome">Nome</label>
             </div>
 
             <div class="form-floating">
                 <input value="{{$usuario->cartao_UFRGS}}" type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="8">
-                <div class="form-text text-end me-1 text-danger cartao_UFRGS_error"></div>
+                <div class="form-text text-end me-1 text-danger input_error cartao_UFRGS_error"></div>
                 <label for="cartao_UFRGS">Cartão UFRGS</label>
             </div>
 
             <div class="form-floating">
                 <input value="{{$usuario->email}}" type="email" class="form-control middle_input" id="email" placeholder="Endereço de email" name="email" maxlength="100" required>
-                <div class="form-text text-end me-1 text-danger email_error"></div>
+                <div class="form-text text-end me-1 text-danger input_error email_error"></div>
                 <label for="email">Endereço de email</label>
             </div>
 
             <div class="form-floating">
                 <input value="{{$usuario->telefone}}" type="text" class="form-control first_input" id="telefone" placeholder="Telefone" name="telefone" minlength="8" required>
-                <div class="form-text text-end me-1 telefone_error"></div>
+                <div class="form-text text-end me-1 input_error telefone_error"></div>
                 <label for="telefone">Telefone</label>
             </div>
 
@@ -37,7 +37,7 @@
                     <option @if($usuario->tipo_usuario_id == $tipo->tipo_usuario_id) selected @endif value="{{ $tipo->tipo_usuario_id }}">{{ $tipo->tipo }}</option>
                 @endforeach
             </select>
-            <div class="form-text text-end me-1 tipo_usuario_id_error"></div>
+            <div class="form-text text-end me-1 input_error tipo_usuario_id_error"></div>
 
             @if ($errors->any())
                 <div class="alert alert-danger">{{ $errors->first() }}</div>
@@ -67,6 +67,8 @@
                     beforeSend: function() {
                         $(document).find('.text-danger').text('');
                         $(document).find('.border-danger').removeClass('is-invalid');
+                        $(".is-invalid").removeClass('is-invalid')
+                        $(".input_error").text("")
                         
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").addClass("hidden")
