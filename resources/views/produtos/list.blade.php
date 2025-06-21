@@ -18,7 +18,9 @@
                     <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
                     <h2>{{ $produto->nome }}</h2>
                     <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
-                    <button onclick="window.location='{{ route('produtos.show', ['produto' => $produto->produto_id]) }}'" type="button" class="button">Comprar</button>
+                    @if((!Auth::user()) || (!Auth::user()->gestor))
+                        <button onclick="window.location='{{ route('produtos.show', ['produto' => $produto->produto_id]) }}'" type="button" class="button botaoTransicao">Comprar</button>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -73,6 +75,7 @@
             margin-top: 1rem;
             margin-bottom: 1rem;
             border-radius: 8px;
+            user-select: none;
         }
         .button{
             font-family: "Cal Sans", sans-serif;
@@ -85,11 +88,28 @@
         }
         .container_actions_card > a > img{
             width: 20px;
+            transition:0.3s;
+            user-select: none;
+        }
+        .container_actions_card > a > img:hover{
+            scale: 1.1
         }
         .container_actions_card{
             display:flex;
             flex-direction:row;
             justify-content:space-between;
+            height:10px;
+        }
+
+        .editar_icone{
+            position:absolute;
+            top:10px;
+            left:10px;
+        }
+        .remover_icone{
+            position:absolute;
+            top:10px;
+            right:10px;
         }
     </style>
 @endpush

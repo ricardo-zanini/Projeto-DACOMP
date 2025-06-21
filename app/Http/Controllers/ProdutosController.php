@@ -161,7 +161,13 @@ class ProdutosController extends Controller
             $tamanhos = Tamanhos::all();
             $cores = Cores::all();
 
-            return view('produtos.edit', ['produto' => $produto_id, 'produtos_estoques' => $produtos_estoques, 'tipos' => $tipos, 'tamanhos' => $tamanhos, "cores" => $cores]);
+            return view('produtos.edit', compact(
+                'produto',
+                'produtos_estoques',
+                'tipos',
+                'tamanhos',
+                'cores'
+            ));
         }else{
             return redirect()->route('home');
         }

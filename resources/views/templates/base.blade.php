@@ -14,7 +14,7 @@
     <!-- Fonte Default -->
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 
-    <link rel="icon" href="../icons/DACOMP-logo.svg" type="image/svg+xml">
+    <link rel="icon" href="{{asset('icons/DACOMP.svg')}}o.svg" type="image/svg+xml">
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -227,6 +227,13 @@
         display: none;
       }
 
+      .botaoTransicao{
+        transition:0.3s;
+      }
+      .botaoTransicao:hover{
+        background-color: #2e96d5;
+      }
+
 
       @media (max-width: 800px) {
         .patternFooter{
@@ -244,7 +251,7 @@
   <body>
     <div class="containerNavbar">
       <a href="{{ route('home') }}">
-        <img class="navbarLogoDacomp" src="../icons/DACOMP-logo-dark.svg" alt="DACOMP" />
+        <img class="navbarLogoDacomp" src="{{asset('icons/DACOMP-logo-dark.svg')}}" alt="DACOMP" />
       </a>
       <div class="containerOpcoesNavbar">
         <div class="containerMenusNavbar"> 
@@ -264,7 +271,7 @@
           <div id="menuOptionsUser" class="hidden">
             <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
             <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
-            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="../icons/logout.svg" alt="DACOMP" /></div></a>
+            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
           </div>
         <!-- Ainda não logado -->
         @else
@@ -282,18 +289,18 @@
 
     <div class="footer">
       <div class="containerConteudoFooter">
-        <img class="footerLogoDacomp" src="../icons/DACOMP-logo.svg" alt="DACOMP " />
+        <img class="footerLogoDacomp" src="{{asset('icons/DACOMP-logo.svg')}}" alt="DACOMP " />
         <div class="footerRedesSociais">
           <div class="footerRedesSociaisText">Nos siga nas redes</div>
           <div class="footerRedesSociaisContainerIcons">
-            <a target="blank" href="https://www.facebook.com/p/DACOMP-UFRGS-100063671467028/"><img class="footerRedesSociaisIcon" src="../icons/facebook.svg" alt="facebook"/></a>
-            <a target="blank" href="https://www.instagram.com/dacomp.ufrgs/"><img class="footerRedesSociaisIcon" src="../icons/instagram.svg" alt="Instagram"/></a>
-            <a target="blank" href="https://x.com/ufrgsdacomp"><img class="footerRedesSociaisIcon" src="../icons/X.svg" alt="X"/></a>
+            <a target="blank" href="https://www.facebook.com/p/DACOMP-UFRGS-100063671467028/"><img class="footerRedesSociaisIcon" src="{{asset('icons/facebook.svg')}}" alt="facebook"/></a>
+            <a target="blank" href="https://www.instagram.com/dacomp.ufrgs/"><img class="footerRedesSociaisIcon" src="{{asset('icons/instagram.svg')}}" alt="Instagram"/></a>
+            <a target="blank" href="https://x.com/ufrgsdacomp"><img class="footerRedesSociaisIcon" src="{{asset('icons/X.svg')}}" alt="X"/></a>
           </div>
         </div>
       </div>
       <div class="footerRights">DACOMP - Diretório Acadêmico de Computação da UFRGS. Todos os direitos reservados.</div>
-      <img class="patternFooter" src="../icons/curvePattern2.svg" alt="Pattern" />
+      <img class="patternFooter" src="{{asset('icons/curvePattern2.svg')}}" alt="Pattern" />
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
@@ -313,11 +320,11 @@
       const imagem_logout = document.querySelector('.navbarLogoutIcon');
 
       hover_logout.addEventListener('mouseenter', () => {
-        imagem_logout.src = '../icons/logout_selected.svg'; // imagem ao passar o mouse
+        imagem_logout.src = '{{asset('icons/logout_selected.svg')}}'; // imagem ao passar o mouse
       });
 
       hover_logout.addEventListener('mouseleave', () => {
-        imagem_logout.src = '../icons/logout.svg'; // imagem original
+        imagem_logout.src = '{{asset('icons/logout.svg')}}'; // imagem original
       });
     </script>
   </body>

@@ -11,12 +11,12 @@
                     <i class="fa fa-search search-icon"></i>
                     <input id="search" class="search-bar" type="search" name="input" placeholder="Pesquisar" />
                 </div>
-                <div class="filter-container">
+                <div class="filter-container botaoTransicao">
                     <img id="open-filter" class="filter-icon" src="../icons/filters.svg" alt="Filtros" />
                 </div>
                 <!-- Se usuário do tipo gestor, permitir adição de Produtos -->
                 @if(Auth::user() && Auth::user()->gestor)
-                    <a href="{{ route('produtos.create') }}" class="botao_novo_prod">Novo Produto</a>
+                    <a href="{{ route('produtos.create') }}" class="botao_novo_prod botaoTransicao">Novo Produto</a>
                 @endif
             </div>
             @include('produtos.filter')
@@ -141,12 +141,10 @@
             padding: 0.4rem 0.4rem 0.4rem 0.4rem;
             cursor: pointer;
         }
-        .filter-container:hover{
-            background-color: #2e96d5;
-        }
         .filter-icon{
             width: 2rem;
             padding: 0.2rem;
+            user-select: none;
         }
         .botao_novo_prod{
             height:48px;
