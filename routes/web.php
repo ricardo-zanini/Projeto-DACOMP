@@ -38,7 +38,7 @@ Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middle
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');
-
+Route::post('/produtos-estoque/{estoque}/interesse',[ProdutosController::class, 'demonstrarInteresse'])->middleware('auth')->name('estoque.interesse');
 //============================================================================================
 // Rotas de Compras
 Route::get('/pedidos', [ComprasController::class, 'list'])->name('compras.list');

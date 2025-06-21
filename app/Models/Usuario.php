@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\ProdutosEstoques;
 class Usuario extends Authenticatable
 {
     use HasFactory;
@@ -51,5 +51,14 @@ class Usuario extends Authenticatable
     public function getRememberTokenName()
     {
         return 'remember_token';
+    }
+    public function interessesEstoque()
+    {
+        return $this->belongsToMany(
+            ProdutosEstoques::class,
+            'Usuarios_Interesses',
+            'usuario_id',
+            'produto_estoque_id'
+        )->withPivot('usuario_interesse_id');
     }
 }

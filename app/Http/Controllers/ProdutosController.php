@@ -173,4 +173,14 @@ class ProdutosController extends Controller
             return redirect()->route('home');
         }
     }
+     public function demonstrarInteresse(Request $request, ProdutosEstoques $estoque)
+    {
+        if ($estoque->disponivel != 0) {
+            return back()->withErrors('Este item ainda está disponível em estoque.');
+        }
+        $estoque->interessados()
+                ->syncWithoutDetaching([$request->user()->usuario_id]);
+
+        return back()->with('success', 'Seu interesse foi registrado!');
+    }
 }
