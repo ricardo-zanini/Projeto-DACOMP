@@ -10,8 +10,8 @@
                             <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
                                 <img class="editar_icone" src="../icons/edit.svg" alt="Editar" />
                             </a>
-                            <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
-                                <img class="remover_icone" src="../icons/close.svg" alt="Remover" />
+                            <a href="#" class="editar_produto">
+                                <img produto_id="{{$produto->produto_id}}" class="remover_icone open-delete" src="../icons/close.svg" alt="Remover" />
                             </a>
                         </div>
                     @endif

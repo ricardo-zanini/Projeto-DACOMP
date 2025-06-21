@@ -23,7 +23,7 @@ class ProdutosController extends Controller
 {
     public function list()
     {
-        $produtos = Produtos::all(); // Busca todos os produtos
+        $produtos = Produtos::all()->where('excluido', false) ; // Busca todos os produtos
         $tipos_produtos = TiposProdutos::all();
         $tamanhos = Tamanhos::all();
         $cores = Cores::all();
@@ -107,6 +107,7 @@ class ProdutosController extends Controller
         ]);
 
         $produtos = Produtos::query()
+            ->where('excluido', false) 
             ->when($form->filled('tipo_produto_id') && !$form->filled('tamanho_id') && !$form->filled('cor_id'), fn ($q) =>
                 $q->where('tipo_produto_id', $form->tipo_produto_id)
             )
@@ -171,6 +172,24 @@ class ProdutosController extends Controller
             ));
         }else{
             return redirect()->route('home');
+        }
+    }
+
+    public function delete(Request $form){
+        if(Auth::user()->gestor == true){
+            $form->validate([
+                'produto_id' => ['required', 'integer']
+            ]);
+
+            Produtos::where('produto_id', $form->produto_id)->update([
+                'excluido' => True
+            ]);
+
+            ProdutosEstoques::where('produto_id', $form->produto_id)->update([
+                'excluido' => True
+            ]);
+
+            return true;
         }
     }
 }

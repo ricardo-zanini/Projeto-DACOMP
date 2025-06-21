@@ -36,6 +36,7 @@ Route::put ('/perfil/trocarSenha', [UsuariosController::class, 'update_senha'])-
 Route::get('/produtos/catalogo', [ProdutosController::class, 'list'])->name('produtos.list');
 Route::get('/produtos/cadastro', [ProdutosController::class, 'create'])->middleware('auth')->name('produtos.create');
 Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middleware('auth')->name('produtos.gravar');
+Route::post('/produtos/delete', [ProdutosController::class, 'delete'])->middleware('auth')->name('produtos.delete');
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');

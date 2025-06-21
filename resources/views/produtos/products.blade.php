@@ -20,6 +20,7 @@
                 @endif
             </div>
             @include('produtos.filter')
+            @include('produtos.delete')
         </form>
         @include('produtos.list', ['produtos' => $produtos])
     </div>
@@ -29,16 +30,24 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(function() {
-        $('#open-filter').on('click', () => openFilter());
-        $('#close-filter').on('click', () => closeFilter());
+        // ================= Modal de Filtragem =================
+        $('#open-filter').on('click', () => openModal('#filter-modal'));
+        $('#close-filter').on('click', () => closeModal('#filter-modal'));
         $('#modal-tipo').on('change', () => filterAndSearch('tipo'));
         $('#modal-tamanho').on('change', () => filterAndSearch('tamanho'));
         $('#modal-cor').on('change', () => filterAndSearch('cor'));
-        $('#search-form').on('submit', function (e) {
-            e.preventDefault();
-            search();
-        });
+        $('#search-form').on('submit', function (e) {e.preventDefault(); search();});
 
+        // ================= Modal de Deleção =================
+        $('.open-delete').on('click', function(){
+            const produtoId = $(this).attr('produto_id');
+            $('#input_delete').val(produtoId);
+            console.log($('#input_delete').val())
+            openModal('#delete-modal')
+        });
+        $('#close-delete').on('click', () => closeModal('#delete-modal'));
+        $('#cancelar_delecao').on('click', () => closeModal('#delete-modal'));
+        
         function search() {
             $.ajax({
                 url: "{{ route('produtos.search') }}",
@@ -54,23 +63,23 @@
             });
         }
 
-        function reset(except) {
+        function resetFilter(except) {
             if (except !== 'tipo')    $('#modal-tipo').val('');
             if (except !== 'tamanho') $('#modal-tamanho').val('');
             if (except !== 'cor')     $('#modal-cor').val('');
         }
 
-        function openFilter() {
-            $('#filter-modal').fadeIn();
+        function openModal(element) {
+            $(element).fadeIn();
         }
 
-        function closeFilter() {
-            $('#filter-modal').fadeOut();
+        function closeModal(element) {
+            $(element).fadeOut();
         }
 
         function filterAndSearch(except) {
-            reset(except); 
-            closeFilter();
+            resetFilter(except); 
+            closeModal('#filter-modal');
             search();
         }
     });
