@@ -147,18 +147,20 @@
         }
         .filter-icon{
             width: 2rem;
+            padding: 0.2rem;
         }
         .botao_novo_prod{
             height:48px;
-            width:150px;
+            width:180px;
             text-decoration:none;
             display:flex;
             align-items:center;
             justify-content:center;
             background-color: #292929;
             color:white;
-            border-radius:0.375rem;
+            border-radius:500px;
             cursor:pointer;
+            font-weight:bold;
         }
 </style>
 @endpush

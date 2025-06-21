@@ -5,7 +5,7 @@
     <h1>COMPRAR</h1>
     <div class="container">
         <div class="product-container">
-            <img class="img" src="{{ '../images/produtos/' . $produto->imagem }}" alt="{{ $produto->produto_id }}" />
+            <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="{{ $produto->produto_id }}" />
             <div class="product-info">
                 <div class="link-container">
                     <a href="{{ route('produtos.list') }}" class="link">Produtos</a>

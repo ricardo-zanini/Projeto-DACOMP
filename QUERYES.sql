@@ -59,7 +59,7 @@ CREATE TABLE Produtos (
     produto_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     tipo_produto_id INT NOT NULL,
-    valor_unidade NUMERIC(5, 2) NOT NULL,
+    valor_unidade NUMERIC(7, 2) NOT NULL,
     imagem VARCHAR(100),
 	FOREIGN KEY (tipo_produto_id) REFERENCES Tipos_Produtos(tipo_produto_id)
 );

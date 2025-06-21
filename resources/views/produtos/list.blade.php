@@ -5,6 +5,16 @@
         <div class="grid">
             @foreach ($produtos as $produto)
                 <div class="card">
+                    @if(Auth::user() && Auth::user()->gestor)
+                        <div class="container_actions_card">
+                            <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
+                                <img class="editar_icone" src="../icons/edit.svg" alt="Editar" />
+                            </a>
+                            <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
+                                <img class="remover_icone" src="../icons/close.svg" alt="Remover" />
+                            </a>
+                        </div>
+                    @endif
                     <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
                     <h2>{{ $produto->nome }}</h2>
                     <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
@@ -46,6 +56,8 @@
         }
         .card{
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             border-radius: 8px;
             padding: 16px;
             width: 16rem;
@@ -70,6 +82,14 @@
             color: #f0f0f0;
             border-radius: 500px;
             width: 100%;
+        }
+        .container_actions_card > a > img{
+            width: 20px;
+        }
+        .container_actions_card{
+            display:flex;
+            flex-direction:row;
+            justify-content:space-between;
         }
     </style>
 @endpush

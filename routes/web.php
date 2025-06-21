@@ -36,3 +36,4 @@ Route::get('/produtos/cadastro', [ProdutosController::class, 'create'])->middlew
 Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middleware('auth')->name('produtos.gravar');
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
+Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');

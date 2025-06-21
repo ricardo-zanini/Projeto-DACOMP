@@ -67,7 +67,6 @@
 <script>
 
     function adiciona_variacao(){
-
         const elementosX = document.querySelectorAll('.container_interno_variacao');
         const numero_atual = elementosX.length;
 
@@ -278,19 +277,19 @@
         padding-left:72px;
     }
     #simboloReal{
-    position: absolute;
-    top: 1px;
-    width: 60px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-top-left-radius: 0.375rem;
-    border-bottom-left-radius: 0.375rem;
-    background-color: #f8f9fa;
-    left: 1px;
-    border-right: solid 1px #dee2e6;
+        position: absolute;
+        top: 1px;
+        width: 60px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-top-left-radius: 0.375rem;
+        border-bottom-left-radius: 0.375rem;
+        background-color: #f8f9fa;
+        left: 1px;
+        border-right: solid 1px #dee2e6;
     }
     #simboloReal > span{
         color: #292929;
