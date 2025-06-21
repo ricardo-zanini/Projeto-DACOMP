@@ -269,13 +269,16 @@
         <!-- Gestor -->
         @if(Auth::user() && Auth::user()->gestor)
            <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO GESTOR -->
+            <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
+            <div id="menuOptionsUser" class="hidden">
+              <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
+              <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
+              <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
+          </div>
         @endif
         <!-- Não Gestor -->
         @if(Auth::user() && !Auth::user()->gestor)
-          <!-- COLOCAR AQUI OS MENUS PARA USUÁRI NÃO GESTOR -->
-        @endif
-        <!-- Comum a todos usuários -->
-        @if (Auth::user())
+          <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO NÃO GESTOR -->
           <div class="menuUser">
             <a href="{{ route('compras.show') }}" role="button" class=""><div><img class="carrinhoIcon" src="{{asset('icons/shoppingCart.svg')}}" alt="Carrinho" /></div></a>
             <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
@@ -286,6 +289,9 @@
             <a href="{{ route('compras.list') }}"><div>Meus Pedidos</div></a>
             <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
           </div>
+        @endif
+        <!-- Comum a todos usuários -->
+        @if (Auth::user())
         <!-- Ainda não logado -->
         @else
         <div>
