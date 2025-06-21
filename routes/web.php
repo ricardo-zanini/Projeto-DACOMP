@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProdutosController;
+use App\Http\Controllers\InteressesController;
+use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\Home;
 
 use Illuminate\Support\Facades\Route;
@@ -37,3 +39,17 @@ Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middle
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');
+
+//============================================================================================
+// Rotas de Interesse
+Route::post('/interesses', [InteressesController::class, 'insert'])->middleware('auth')->name('interesses.gravar');
+
+//============================================================================================
+// Rotas de Compras
+Route::get('/pedidos', [ComprasController::class, 'list'])->name('compras.list');
+Route::get('/carrinho', [ComprasController::class, 'buy'])->name('compras.buy');
+Route::post('/pedidos/cadastro', [ComprasController::class, 'createOrder'])->middleware('auth')->name('compras.create');
+Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middleware('auth')->name('compras.gravar');
+Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'])->middleware('auth')->name('compras.add');
+Route::post('/carrinho/{compra}/remove/{item}', [ComprasController::class, 'remove'])->middleware('auth')->name('compras.remove');
+Route::post('/carrinho/{compra}/delete/{item}', [ComprasController::class, 'delete'])->middleware('auth')->name('compras.delete');

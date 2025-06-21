@@ -4,6 +4,7 @@
 
 DROP TABLE IF EXISTS Produtos_Compras;
 DROP TABLE IF EXISTS Compras;
+DROP TABLE IF EXISTS Compras_Status;
 DROP TABLE IF EXISTS Usuarios_Interesses;
 DROP TABLE IF EXISTS Produtos_Estoques;
 DROP TABLE IF EXISTS Tamanhos;
@@ -83,10 +84,16 @@ CREATE TABLE Produtos_Estoques (
 CREATE TABLE Usuarios_Interesses (
     usuario_interesse_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    produto_id INT NOT NULL,
-    UNIQUE (usuario_id, produto_id),
+    produto_estoque_id INT NOT NULL,
+    UNIQUE (usuario_id, produto_estoque_id),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
-    FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id)
+    FOREIGN KEY (produto_estoque_id) REFERENCES Produtos_Estoques(produto_estoque_id)
+);
+
+-- Status da compra
+CREATE TABLE Compras_Status (
+    status_id INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(100) NOT NULL
 );
 
 -- Registro de compra
@@ -94,7 +101,10 @@ CREATE TABLE Compras (
     compra_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     horario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
+    status_id INT NOT NULL,
+    total NUMERIC(10,2),
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
+    FOREIGN KEY (status_id) REFERENCES Compras_Status(status_id)
 );
 
 -- Produtos dentro de uma compra
@@ -153,3 +163,7 @@ INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, pront
 INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (5, 1, 1, True, False, 0);
 INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (6, 1, 3, False, False, 0);
 INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades) VALUES (7, 1, 1, False, False, 0);
+
+INSERT INTO Compras_Status (status) VALUES ('Em andamento');
+INSERT INTO Compras_Status (status) VALUES ('Pagamento finalizado');
+INSERT INTO Compras_Status (status) VALUES ('Entregue');

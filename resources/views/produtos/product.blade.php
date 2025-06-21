@@ -3,6 +3,16 @@
 
 @section('content')
     <h1>COMPRAR</h1>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="container">
         <div class="product-container">
             <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="{{ $produto->produto_id }}" />
@@ -12,7 +22,7 @@
                     <p>&nbsp;&gt;&nbsp;{{ $tipo_produto->tipo }}</p>
                 </div>
                 <p class="product-name">{{ $produto->nome }}</p>
-                <p class="product-value">R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
+                <p id="product-value" class="product-value" data-valor="{{ $produto->valor_unidade }}">R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
                 <label>Disponível para pronta entrega</label>
                 <p id="entrega-label" style="font-weight: bold;"></p>
 
@@ -35,6 +45,13 @@
                     <option value="0">Quantidade: 0</option>
                 </select>
 
+                <form id="produto-form" method="POST" style="display:none;">
+                    @csrf
+                    <input type="hidden" name="produto_estoque_id" id="form-produto_estoque_id">
+                    <input type="hidden" name="quantidade" id="form-quantidade">
+                    <input type="hidden" name="valor_unidade" id="form-valor_unidade">
+                </form>
+
                 <button id="comprar-button" type="button" class="button"></button>
             </div>
         </div>
@@ -51,42 +68,47 @@
         const unidadesSelect = document.getElementById('unidades-select');
         const comprarButton = document.getElementById('comprar-button');
         const entregaLabel = document.getElementById('entrega-label');
+        const valorUnidade = parseFloat(document.getElementById('product-value').dataset.valor);
+
+        const form = document.getElementById('produto-form');
+        const formProdutoEstoqueId = document.getElementById('form-produto_estoque_id');
+        const formQuantidade = document.getElementById('form-quantidade');
+        const formValor = document.getElementById('form-valor_unidade');
 
         function update() {
             const tamanho = parseInt(tamanhoSelect.value);
             const cor = parseInt(corSelect.value);
 
             const match = estoques.find(e => e.tamanho_id === tamanho && e.cor_id === cor);
-            const unidades = match ? match.unidades : 0;
-            const prontaEntrega = match ? match.prontaEntrega : 'Não';
+            const unidades = match?.unidades ?? 0;
+            const prontaEntrega = match?.prontaEntrega ?? 'Não';
+            const produto_estoque_id = match?.produto_estoque_id ?? 0;
+
+            entregaLabel.textContent = prontaEntrega ? 'Sim' : 'Não';
 
             unidadesSelect.innerHTML = '';
             if (unidades > 0) {
                 for (let i = 1; i <= unidades; i++) {
-                    const opt = document.createElement('option');
-                    opt.value = i;
-                    opt.textContent = `Quantidade: ${i}`;
+                    const opt = new Option(`Quantidade: ${i}`, i);
                     unidadesSelect.appendChild(opt);
                 }
+
                 comprarButton.textContent = 'Adicionar ao carrinho';
                 comprarButton.onclick = () => {
-                    // Implementar
+                    formProdutoEstoqueId.value = produto_estoque_id;
+                    formQuantidade.value = unidadesSelect.value;
+                    formValor.value = valorUnidade;
+                    form.action = '{{ route('compras.gravar') }}';
+                    form.submit();
                 };
             } else {
-                const opt = document.createElement('option');
-                opt.value = 0;
-                opt.textContent = 'Indisponível';
-                unidadesSelect.appendChild(opt);
+                unidadesSelect.innerHTML = '';
+                unidadesSelect.appendChild(new Option('Indisponível', 0));
+
                 comprarButton.textContent = 'Me avise quando estiver disponível';
                 comprarButton.onclick = () => {
                     // Implementar
                 };
-            }
-
-            if (prontaEntrega) {
-                entregaLabel.textContent = 'Sim';
-            } else {
-                entregaLabel.textContent = 'Não';
             }
         }
 
@@ -120,7 +142,7 @@
         flex-direction: row;
     }
     .link{
-        color: #292929; 
+        color: #2e96d5; 
         text-decoration:none;
     }
     .product-container{
@@ -181,6 +203,23 @@
         border-radius: 500px;
         width: 30rem;
         color: #ffffff;
+    }
+    .alert {
+        padding: 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        margin: 1rem 1rem 1rem 1rem;
+    }
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        margin: 1rem 1rem 1rem 1rem;
     }
 </style>
 @endpush

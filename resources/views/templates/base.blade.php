@@ -176,7 +176,7 @@
       }
       #menuOptionsUser.show{
         transition:0.2s;
-        height: calc(100% + 50px);
+        height: fit-content;
       }
       #menuOptionsUser.hidden{
         transition:0.2s;
@@ -267,10 +267,14 @@
         @endif
         <!-- Comum a todos usuários -->
         @if (Auth::user())
-          <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
+          <div style="display: flex; flex-direction: row; gap: 1rem;">
+            <a href="{{ route('compras.buy') }}" role="button" class=""><div><img style="height: 40px; width: auto;" src="../icons/shoppingCart.svg" alt="Carrinho" /></div></a>
+            <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
+          </div>
           <div id="menuOptionsUser" class="hidden">
             <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
             <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
+            <a href="{{ route('compras.list') }}"><div>Meus Pedidos</div></a>
             <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
           </div>
         <!-- Ainda não logado -->
