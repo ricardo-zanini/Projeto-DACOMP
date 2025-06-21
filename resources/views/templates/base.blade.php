@@ -161,6 +161,15 @@
         top: 20px;
         position: absolute;
       }
+      .menuUser{
+        display: flex; 
+        flex-direction: row; 
+        gap: 1rem;
+      }
+      .carrinhoIcon{
+        height: 40px; 
+        width: auto;
+      }
 
       #menuOptionsUser{
         position: absolute;
@@ -267,8 +276,8 @@
         @endif
         <!-- Comum a todos usuários -->
         @if (Auth::user())
-          <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <a href="{{ route('compras.buy') }}" role="button" class=""><div><img style="height: 40px; width: auto;" src="../icons/shoppingCart.svg" alt="Carrinho" /></div></a>
+          <div class="menuUser">
+            <a href="{{ route('compras.show') }}" role="button" class=""><div><img class="carrinhoIcon" src="{{asset('icons/shoppingCart.svg')}}" alt="Carrinho" /></div></a>
             <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
           </div>
           <div id="menuOptionsUser" class="hidden">

@@ -10,13 +10,15 @@
             <div class="list-container">
                 @foreach ($compras as $compra)
                     <div class="list-item">
-                        <p>#{{ $compra->compra_id }} - {{ $compra->status->status }}</p>
-                        <p>Criado em: {{ $compra->horario->format('d-m-y') }}</p>
+                        <div class="info">
+                            <p>#{{ $compra->compra_id }} - {{ $compra->status->status }}</p>
+                            <p>{{ $compra->horario->format('d-m-y') }}</p>
+                        </div>
                         <div class="itens-container">
                             @foreach ($compra->produtosCompras as $item)
                                 <div class="item-wrapper">
-                                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                                        <p>{{ $item->produtoEstoque->produto->nome ?? 'Produto não encontrado' }}</p>
+                                    <div class="info">
+                                        <p class="item-name">{{ $item->produtoEstoque->produto->nome ?? 'Produto não encontrado' }}</p>
                                         <p>R$ {{ number_format($item->valor_unidade, 2, ',', '.') }}</p>
                                     </div>
                                     <div class="counter">
@@ -24,14 +26,14 @@
                                             <form action="{{ route('compras.delete', [$compra, $item]) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="icon-button">
-                                                    <img class="icon" src="../icons/trash.svg" alt="Remover">
+                                                    <img class="icon" src="{{asset('/icons/trash.svg')}}" alt="Remover">
                                                 </button>
                                             </form>
                                         @else
                                             <form action="{{ route('compras.remove', [$compra, $item]) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="icon-button">
-                                                    <img class="icon" src="../icons/minus-wo-border.svg" alt="Remover">
+                                                    <img class="icon" src="{{asset('/icons/minus-wo-border.svg')}}" alt="Remover">
                                                 </button>
                                             </form>
                                         @endif
@@ -39,15 +41,15 @@
                                         <form action="{{ route('compras.add', [$compra, $item]) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="icon-button">
-                                                <img class="icon" src="../icons/plus-wo-border.svg" alt="Adicionar" />
+                                                <img class="icon" src="{{asset('/icons/plus-wo-border.svg')}}" alt="Adicionar" />
                                             </button>
                                         </form>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
-                        <div style="display:flex; flex-direction: row; justify-content: space-between;">
-                            <p>Total ({{ $compra->quantidade_total }})</p>
+                        <div class="info total">
+                            <p >Total ({{ $compra->quantidade_total }})</p>
                             <p>R$ {{ $compra->total }}</p>
                         </div>
                         <button class="button">Pagar</button>
@@ -94,7 +96,6 @@
     .itens-container > .item-wrapper:not(:last-child) {
         border-bottom: 1px solid #dee2e6;
         margin-bottom: 0.5rem;
-        padding-bottom: 0.5rem;
     }
     .counter{
         display: flex;
@@ -128,6 +129,18 @@
     .icon-button{
         background-color: white;
         border: none;
+    }
+    .info{
+        display: flex; 
+        flex-direction: row; 
+        justify-content: space-between;
+    }
+    .item-name{
+        font-weight: bold;
+    }
+    .total{
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem;
     }
 </style>
 @endpush

@@ -47,7 +47,7 @@ Route::post('/interesses', [InteressesController::class, 'insert'])->middleware(
 //============================================================================================
 // Rotas de Compras
 Route::get('/pedidos', [ComprasController::class, 'list'])->name('compras.list');
-Route::get('/carrinho', [ComprasController::class, 'buy'])->name('compras.buy');
+Route::get('/carrinho', [ComprasController::class, 'show'])->name('compras.show');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'createOrder'])->middleware('auth')->name('compras.create');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middleware('auth')->name('compras.gravar');
 Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'])->middleware('auth')->name('compras.add');
