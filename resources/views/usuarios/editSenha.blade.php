@@ -28,7 +28,7 @@
 
             <button class="buttonSubmitForm" type="submit">Salvar nova senha</button>
             
-            <div class="alerta_sucesso hidden"> Nova senha salva com sucesso! </div>
+            <div class="alerta_sucesso hidden"> Senha alterada com sucesso! </div>
             <div class="alerta_erro hidden"> Ocorreu um erro </div>
         </form>
     </div>
