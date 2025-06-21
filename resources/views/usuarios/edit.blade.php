@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-floating">
-                <input value="{{$usuario->cartao_UFRGS}}" type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="6">
+                <input value="{{$usuario->cartao_UFRGS}}" type="text" class="form-control first_input" id="cartao_UFRGS" placeholder="Cartão UFRGS" name="cartao_UFRGS" minlength="6" maxlength="8">
                 <div class="form-text text-end me-1 text-danger cartao_UFRGS_error"></div>
                 <label for="cartao_UFRGS">Cartão UFRGS</label>
             </div>
@@ -27,7 +27,7 @@
 
             <div class="form-floating">
                 <input value="{{$usuario->telefone}}" type="text" class="form-control first_input" id="telefone" placeholder="Telefone" name="telefone" minlength="8" required>
-                <div class="form-text text-end me-1 telefone_error"></div>
+                <div class="form-text text-end me-1 text-danger telefone_error"></div>
                 <label for="telefone">Telefone</label>
             </div>
 
@@ -37,11 +37,7 @@
                     <option @if($usuario->tipo_usuario_id == $tipo->tipo_usuario_id) selected @endif value="{{ $tipo->tipo_usuario_id }}">{{ $tipo->tipo }}</option>
                 @endforeach
             </select>
-            <div class="form-text text-end me-1 tipo_usuario_id_error"></div>
-
-            @if ($errors->any())
-                <div class="alert alert-danger">{{ $errors->first() }}</div>
-            @endif
+            <div class="form-text text-end me-1 text-danger tipo_usuario_id_error"></div>
 
             <button class="buttonSubmitForm" type="submit">Salvar Alterações</button>
             
@@ -66,12 +62,12 @@
                     contentType: false,
                     beforeSend: function() {
                         $(document).find('.text-danger').text('');
-                        $(document).find('.border-danger').removeClass('is-invalid');
+                        $(document).find('.is-invalid').removeClass('is-invalid');
                         
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").addClass("hidden")
                     },
-                    success: function() {
+                    success: function(r) {
                         $(".alerta_sucesso").removeClass("hidden")
                         $(".alerta_erro").addClass("hidden")
                     },

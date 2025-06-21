@@ -100,7 +100,6 @@
             width: 100%;
             padding: 0.6rem 0.6rem 0.6rem 3rem;
             border-radius: 999px;
-            border: none;
             background-color: #f9f9f9;
             box-sizing: border-box;
             border: solid 1px #dee2e6;

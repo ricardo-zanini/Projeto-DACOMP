@@ -31,7 +31,7 @@ class UsuariosController extends Controller
     {
         // Validação de dados do formulario
         $form->validate([
-            'cartao_UFRGS' => ['nullable', 'size:6', 'unique:usuarios'],
+            'cartao_UFRGS' => ['nullable', 'min:6', 'max:8', 'unique:usuarios'],
             'nome' => ['required', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:usuarios'],
             'password' => ['required','confirmed', 'min:8', 'max:100'],
@@ -58,7 +58,11 @@ class UsuariosController extends Controller
         // Cria sessão para o usuário
         Auth::login($usuario);
 
-        return redirect()->route('home');
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cadastro efetuado com sucesso!',
+            'redirect_url' => route('home')
+        ]);
     }
 
     // Ações de login
@@ -105,7 +109,7 @@ class UsuariosController extends Controller
     {
         // Validação de dados do formulario
         $form->validate([
-            'cartao_UFRGS' => ['nullable', 'size:6', Rule::unique('usuarios', 'cartao_UFRGS')->ignore($form->cartao_UFRGS, 'cartao_UFRGS')],
+            'cartao_UFRGS' => ['nullable', 'min:6', 'max:8', Rule::unique('usuarios', 'cartao_UFRGS')->ignore($form->cartao_UFRGS, 'cartao_UFRGS')],
             'nome' => ['required', 'max:100'],
             'email' => ['required', 'email', Rule::unique('usuarios', 'email')->ignore($form->email, 'email')],
             'telefone' => ['required', 'min:8'],
