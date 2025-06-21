@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProdutosController;
-use App\Http\Controllers\InteressesController;
 use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\Home;
 
@@ -39,10 +38,6 @@ Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middle
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');
-
-//============================================================================================
-// Rotas de Interesse
-Route::post('/interesses', [InteressesController::class, 'insert'])->middleware('auth')->name('interesses.gravar');
 
 //============================================================================================
 // Rotas de Compras
