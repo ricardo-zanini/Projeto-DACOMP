@@ -15,18 +15,58 @@
                             </a>
                         </div>
                     @endif
-                    <img class="img" src="@if ($produto->imagem == null) {{asset('images/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
+                    <img class="img" src="@if ($produto->imagem == null) {{asset('icons/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
                     <h2>{{ $produto->nome }}</h2>
                     <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
-                    @if((!Auth::user()) || (!Auth::user()->gestor))
-                        <button onclick="window.location='{{ route('produtos.show', ['produto' => $produto->produto_id]) }}'" type="button" class="button botaoTransicao">Comprar</button>
+
+                    {{-- Botão Comprar para usuários não‐gestores --}}
+                     @php
+                        $temEmEstoque = $produto
+                            ->estoque()
+                            ->where('disponivel', 1)
+                            ->exists();
+
+                        // pega um estoque indisponível para demonstrar interesse,
+                        // se não houver nenhum disponível
+                        $estoqueIndisp = $produto
+                            ->estoque()
+                            ->where('disponivel', 0)
+                            ->first();
+                    @endphp
+                    @if(!Auth::user() || !Auth::user()->gestor)
+                        @if($temEmEstoque)
+                        <button onclick="window.location='{{ route('produtos.show', $produto->produto_id) }}'"
+                                type="button"
+                                class="button botaoTransicao">
+                            Comprar
+                        </button>
+                        @endif
                     @endif
+
+                    @if($temEmEstoque==0)
+                        <p class="text-danger">
+                            Produto indisponível
+                        </p>
+
+                       
+                            @if($estoqueIndisp)
+                                <form action="{{ route('estoque.interesse', $estoqueIndisp->produto_estoque_id) }}"
+                                      method="POST">
+                                    @csrf
+                                    <button type="submit" class="button botaoTransicao btn-interesse">
+                                        Demonstrar Interesse
+                                    </button>
+                                </form>
+                            @endif
+                    @endif
+                        
+            
+
                 </div>
             @endforeach
         </div>
     @endif
 </div>
-
 @push('styles')
     <style>
         .products-container{
@@ -110,6 +150,9 @@
             position:absolute;
             top:10px;
             right:10px;
+        }
+        .btn-interesse:hover{
+            background-color: #dc3545;
         }
     </style>
 @endpush

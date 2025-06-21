@@ -174,7 +174,6 @@ class ProdutosController extends Controller
             return redirect()->route('home');
         }
     }
-
     public function delete(Request $form){
         if(Auth::user()->gestor == true){
             $form->validate([
@@ -191,5 +190,14 @@ class ProdutosController extends Controller
 
             return true;
         }
+    }
+    public function demonstrarInteresse(Request $request, ProdutosEstoques $estoque){
+        if ($estoque->disponivel != 0) {
+            return back()->withErrors('Este item ainda está disponível em estoque.');
+        }
+        $estoque->interessados()
+                ->syncWithoutDetaching([$request->user()->usuario_id]);
+
+        return back()->with('success', 'Seu interesse foi registrado!');
     }
 }

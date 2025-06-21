@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProdutosController;
-use App\Http\Controllers\InteressesController;
 use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\Home;
 
@@ -40,15 +39,11 @@ Route::post('/produtos/delete', [ProdutosController::class, 'delete'])->middlewa
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');
-
-//============================================================================================
-// Rotas de Interesse
-Route::post('/interesses', [InteressesController::class, 'insert'])->middleware('auth')->name('interesses.gravar');
-
+Route::post('/produtos-estoque/{estoque}/interesse',[ProdutosController::class, 'demonstrarInteresse'])->middleware('auth')->name('estoque.interesse');
 //============================================================================================
 // Rotas de Compras
 Route::get('/pedidos', [ComprasController::class, 'list'])->name('compras.list');
-Route::get('/carrinho', [ComprasController::class, 'buy'])->name('compras.buy');
+Route::get('/carrinho', [ComprasController::class, 'show'])->name('compras.show');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'createOrder'])->middleware('auth')->name('compras.create');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middleware('auth')->name('compras.gravar');
 Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'])->middleware('auth')->name('compras.add');

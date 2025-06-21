@@ -24,7 +24,7 @@ class ComprasController extends Controller
         return view('compras.orders');
     }
 
-    public function buy()
+    public function show()
     {
         if (!Auth::check()) {
             return redirect()->route('usuarios.login');

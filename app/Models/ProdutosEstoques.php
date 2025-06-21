@@ -4,14 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Produtos;
+use App\Models\Usuario;
 
 class ProdutosEstoques extends Model
 {
     use HasFactory;
 
+    protected $table = 'Produtos_Estoques';
+    protected $primaryKey = 'produto_estoque_id';
     public $timestamps = false;
 
-    protected $primaryKey = 'produto_estoque_id';
+    protected $fillable = [
+        'produto_id',
+        'tamanho_id',
+        'cor_id',
+        'disponivel',
+        'prontaEntrega',
+        'unidades',
+        'excluido',
+    ];
 
     public function produto()
     {
@@ -26,5 +38,25 @@ class ProdutosEstoques extends Model
     public function tamanho()
     {
         return $this->belongsTo(Tamanhos::class, 'tamanho_id', 'tamanho_id');
+    }
+
+    public function interessados()
+    {
+        return $this->belongsToMany(
+            Usuario::class,
+            'Usuarios_Interesses',
+            'produto_estoque_id',
+            'usuario_id'
+        )->withPivot('usuario_interesse_id');
+    }
+
+    public function isDisponivel(): bool
+    {
+        return (bool) $this->disponivel;
+    }
+
+    public function isIndisponivel(): bool
+    {
+        return ! $this->isDisponivel();
     }
 }

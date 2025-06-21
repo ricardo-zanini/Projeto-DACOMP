@@ -14,7 +14,7 @@
     <!-- Fonte Default -->
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 
-    <link rel="icon" href="{{asset('icons/DACOMP.svg')}}o.svg" type="image/svg+xml">
+    <link rel="icon" href="{{asset('icons/DACOMP-logo.svg')}}" type="image/svg+xml">
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -161,6 +161,15 @@
         top: 20px;
         position: absolute;
       }
+      .menuUser{
+        display: flex; 
+        flex-direction: row; 
+        gap: 1rem;
+      }
+      .carrinhoIcon{
+        height: 40px; 
+        width: auto;
+      }
 
       #menuOptionsUser{
         position: absolute;
@@ -260,15 +269,18 @@
         <!-- Gestor -->
         @if(Auth::user() && Auth::user()->gestor)
            <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO GESTOR -->
+            <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
+            <div id="menuOptionsUser" class="hidden">
+              <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
+              <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
+              <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
+          </div>
         @endif
         <!-- Não Gestor -->
         @if(Auth::user() && !Auth::user()->gestor)
-          <!-- COLOCAR AQUI OS MENUS PARA USUÁRI NÃO GESTOR -->
-        @endif
-        <!-- Comum a todos usuários -->
-        @if (Auth::user())
-          <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <a href="{{ route('compras.buy') }}" role="button" class=""><div><img style="height: 40px; width: auto;" src="../icons/shoppingCart.svg" alt="Carrinho" /></div></a>
+          <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO NÃO GESTOR -->
+          <div class="menuUser">
+            <a href="{{ route('compras.show') }}" role="button" class=""><div><img class="carrinhoIcon" src="{{asset('icons/shoppingCart.svg')}}" alt="Carrinho" /></div></a>
             <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
           </div>
           <div id="menuOptionsUser" class="hidden">
@@ -277,6 +289,9 @@
             <a href="{{ route('compras.list') }}"><div>Meus Pedidos</div></a>
             <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
           </div>
+        @endif
+        <!-- Comum a todos usuários -->
+        @if (Auth::user())
         <!-- Ainda não logado -->
         @else
         <div>
