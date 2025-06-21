@@ -62,6 +62,7 @@ CREATE TABLE Produtos (
     tipo_produto_id INT NOT NULL,
     valor_unidade NUMERIC(7, 2) NOT NULL,
     imagem VARCHAR(100),
+    excluido BOOLEAN,
 	FOREIGN KEY (tipo_produto_id) REFERENCES Tipos_Produtos(tipo_produto_id)
 );
 
@@ -74,6 +75,7 @@ CREATE TABLE Produtos_Estoques (
     disponivel BOOLEAN NOT NULL,
     prontaEntrega BOOLEAN NOT NULL,
     unidades INT NOT NULL,
+    excluido BOOLEAN,
     UNIQUE (produto_id, tamanho_id, cor_id),
     FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id),
     FOREIGN KEY (tamanho_id) REFERENCES Tamanhos(tamanho_id),
