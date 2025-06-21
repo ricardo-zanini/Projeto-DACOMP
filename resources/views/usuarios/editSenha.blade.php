@@ -57,6 +57,8 @@
                     success: function() {
                         $(".alerta_sucesso").removeClass("hidden")
                         $(".alerta_erro").addClass("hidden")
+                        $(".form-floating").addClass("hidden")
+                        $(".buttonSubmitForm").addClass("hidden")
                     },
                     error: function(err) {
                         if (err.status == 422) {
