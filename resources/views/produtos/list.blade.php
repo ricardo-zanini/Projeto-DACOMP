@@ -53,7 +53,7 @@
                                 <form action="{{ route('estoque.interesse', $estoqueIndisp->produto_estoque_id) }}"
                                       method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-primary">
+                                    <button type="submit" class="button botaoTransicao btn-interesse">
                                         Demonstrar Interesse
                                     </button>
                                 </form>
@@ -150,6 +150,9 @@
             position:absolute;
             top:10px;
             right:10px;
+        }
+        .btn-interesse:hover{
+            background-color: #dc3545;
         }
     </style>
 @endpush

@@ -30,6 +30,16 @@ class ProdutosEstoques extends Model
         return $this->belongsTo(Produtos::class, 'produto_id', 'produto_id');
     }
 
+    public function cor()
+    {
+        return $this->belongsTo(Cores::class, 'cor_id', 'cor_id');
+    }
+
+    public function tamanho()
+    {
+        return $this->belongsTo(Tamanhos::class, 'tamanho_id', 'tamanho_id');
+    }
+
     public function interessados()
     {
         return $this->belongsToMany(
