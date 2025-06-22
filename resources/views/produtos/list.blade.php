@@ -8,10 +8,10 @@
                     @if(Auth::user() && Auth::user()->gestor)
                         <div class="container_actions_card">
                             <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
-                                <img class="editar_icone" src="../icons/edit.svg" alt="Editar" />
+                                <img class="editar_icone" src="{{asset('/icons/edit.svg')}}" alt="Editar" />
                             </a>
-                            <a href="#" class="editar_produto">
-                                <img produto_id="{{$produto->produto_id}}" class="remover_icone open-delete" src="../icons/close.svg" alt="Remover" />
+                            <a class="editar_produto">
+                                <img produto_id="{{$produto->produto_id}}" class="remover_icone open-delete" src="{{asset('/icons/trash.svg')}}" alt="Remover" />
                             </a>
                         </div>
                     @endif
@@ -49,7 +49,7 @@
                         </p>
 
                        
-                            @if($estoqueIndisp)
+                            @if($estoqueIndisp && (!Auth::user() || !Auth::user()->gestor))
                                 <form action="{{ route('estoque.interesse', $estoqueIndisp->produto_estoque_id) }}"
                                       method="POST">
                                     @csrf
@@ -99,7 +99,6 @@
         .card{
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             border-radius: 8px;
             padding: 16px;
             width: 16rem;
@@ -109,6 +108,7 @@
             margin-left: auto;
         }
         .img{
+            max-height: 12rem;
             max-width: 12rem; 
             height: auto;
             align-self: center;
@@ -125,6 +125,7 @@
             color: #f0f0f0;
             border-radius: 500px;
             width: 100%;
+            margin-top: auto;
         }
         .container_actions_card > a > img{
             width: 20px;
@@ -141,6 +142,10 @@
             height:10px;
         }
 
+        .editar_produto{
+            cursor:pointer;
+        }
+
         .editar_icone{
             position:absolute;
             top:10px;
@@ -153,6 +158,10 @@
         }
         .btn-interesse:hover{
             background-color: #dc3545;
+        }
+        p.text-danger{
+            justify-content: center;
+            display: flex;
         }
     </style>
 @endpush

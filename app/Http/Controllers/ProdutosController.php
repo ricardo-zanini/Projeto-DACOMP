@@ -93,7 +93,11 @@ class ProdutosController extends Controller
                 $produtoEstoque->save();
             }
 
-            return true;
+            return response()->json([
+                'status' => 200,
+                'message' => 'Produto criado com sucesso!',
+                'redirect_url' => route('produtos.list')
+            ]);
         }else{
             return false;
         }

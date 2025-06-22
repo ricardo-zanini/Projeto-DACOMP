@@ -56,8 +56,10 @@
 
         <button class="buttonSubmitForm" type="submit">Cadastrar</button>
 
-        <div class="alerta_sucesso hidden"> Dados salvos com sucesso! </div>
+        <div class="alerta_sucesso hidden"> Produto cadastrado com sucesso! </div>
         <div class="alerta_erro hidden"> Ocorreu um erro </div>
+
+        <a class="buttonBack" type="button" href="{{ route('produtos.list') }}">Voltar</a>
 
     </form>
     </div>
@@ -73,7 +75,7 @@
 
         $('#info_estoque_variacoes').append(`
             <div class="container_interno_variacao variacao_${numero_atual}">  
-                <h5 class="variacao_titulo">Variação ${numero_atual}</h5>
+                <h5 class="variacao_titulo">Variação ${numero_atual+1}</h5>
                 <select name="tamanho_id_${numero_atual}" class="form-control class_tamanho" required>
                     <option value="">Selecionar tamanho</option>
                     @foreach ($tamanhos as $tamanho)
@@ -168,9 +170,16 @@
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").addClass("hidden")
                     },
-                    success: function() {
+                    success: function(r) {
                         $(".alerta_sucesso").removeClass("hidden")
                         $(".alerta_erro").addClass("hidden")
+                        $(".buttonSubmitForm").addClass("hidden")
+                        if (r.status = 200)
+                        {
+                            setTimeout(function() {
+                                window.location.href = r.redirect_url;
+                            }, 1000);
+                        }
                     },
                     error: function(err) {
                         if (err.status == 422) {
@@ -179,8 +188,8 @@
                                 $(document).find('[name="'+i+'"]').addClass('is-invalid');
                             });
                         }
-                        console.log("Erro:")
-                        console.log(err)
+                        {{-- console.log("Erro:")
+                        console.log(err) --}}
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").removeClass("hidden")
                     }
@@ -265,6 +274,19 @@
         color: #f0f0f0;
         border-radius:5px;
         width:100%;
+    }
+    .buttonBack{
+        margin-top:10px;
+        font-family: "Cal Sans", sans-serif;
+        border:none;
+        padding:10px;
+        background-color: #2e96d5;
+        color: #f0f0f0;
+        border-radius:5px;
+        width:100%;
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
     }
     h1{
         font-family: "Cal Sans", sans-serif;

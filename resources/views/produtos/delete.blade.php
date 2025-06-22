@@ -8,59 +8,17 @@
         <p class="subtexto">
             (Excluir o produto não apagará registros de compras)
         <p>
-        <form class="container_botoes_delecao"method="post" action="{{ route('produtos.delete') }}">
+        <form class="container_botoes_delecao" method="post" action="{{ route('produtos.delete') }}">
             @csrf
             <input style="display:none" id="input_delete" type="text" name="produto_id" value=""/>
             <button type="submit" id="deletar_delecao">Deletar</button>
-            <button id="cancelar_delecao">Cancelar</button>
+            <button type="button" id="cancelar_delecao">Cancelar</button>
         </form>
 
-        <div class="alerta_sucesso hidden"> Produto Excluído </div>
+        <div class="alerta_sucesso hidden"> Produto Excluído com Sucesso!</div>
         <div class="alerta_erro hidden"> Ocorreu um erro </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-    $(document).ready(function(){
-        $('.container_botoes_delecao').on("submit", function(e){
-            e.preventDefault();
-            var action = $(this).attr('action');
-            $.ajax({
-                url: action,
-                method: $(this).attr('method'),
-                data: new FormData(this),
-                processData: false,
-                dataType: 'json',
-                contentType: false,
-                beforeSend: function() {
-                    $(document).find('.text-danger').text('');
-                    $(document).find('.border-danger').removeClass('is-invalid');
-                    
-                    $(".alerta_sucesso").addClass("hidden")
-                    $(".alerta_erro").addClass("hidden")
-                },
-                success: function() {
-                    $(".alerta_sucesso").removeClass("hidden")
-                    $(".alerta_erro").addClass("hidden")
-                },
-                error: function(err) {
-                    if (err.status == 422) {
-                        $.each(err.responseJSON.errors, function (i, error) {
-                            $('.'+i+'_error').text(error[0]);
-                            $(document).find('[name="'+i+'"]').addClass('is-invalid');
-                        });
-                    }
-                    console.log("Erro:")
-                    console.log(err)
-                    $(".alerta_sucesso").addClass("hidden")
-                    $(".alerta_erro").removeClass("hidden")
-                }
-            });
-        })
-    })
-</script>
-@endpush
 
 @push('styles')
     <style>

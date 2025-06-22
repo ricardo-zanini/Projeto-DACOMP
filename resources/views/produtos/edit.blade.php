@@ -2,7 +2,7 @@
 @section('title', 'Cadastrar Produto')
 
 @section('content')
-    <h1>CADASTRO DE PRODUTO</h1>
+    <h1>EDITAR PRODUTO</h1>
     <div class="conteudoCadastro">
     <form method="post" enctype="multipart/form-data" action="{{ route('produtos.update', $produto->produto_id) }}">
 
@@ -55,9 +55,10 @@
             <div class="alert alert-danger">{{ $errors->first() }}</div>
         @endif
 
-        <button class="buttonSubmitForm" type="submit">Cadastrar</button>
+        <button class="buttonSubmitForm" type="submit">Salvar Alterações</button>
+        <a class="buttonBack" type="button" href="{{ route('produtos.list') }}">Voltar</a>
 
-        <div class="alerta_sucesso hidden"> Dados salvos com sucesso! </div>
+        <div class="alerta_sucesso hidden"> Alterações salvas com sucesso! </div>
         <div class="alerta_erro hidden"> Ocorreu um erro </div>
 
     </form>
@@ -76,7 +77,7 @@
 
         $('#info_estoque_variacoes').append(`
             <div class="container_interno_variacao variacao_${numero_atual}">  
-                <h5 class="variacao_titulo">Variação ${numero_atual}</h5>
+                <h5 class="variacao_titulo">Variação ${numero_atual+1}</h5>
                 <select name="tamanho_id_${numero_atual}" class="form-control class_tamanho" required>
                     <option value="">Selecionar tamanho</option>
                     @foreach ($tamanhos as $tamanho)
@@ -92,7 +93,7 @@
                 </select>
 
                 <div class="form-floating class_unidades">
-                    <input value="${unidades}" type="text" class="form-control first_input" id="unidades" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
+                    <input value="${unidades !== null ? unidades : 0}" type="text" class="form-control first_input" id="unidades" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
                     <label for="unidades">Unidades do Produto</label>
                 </div>
                 
@@ -200,8 +201,8 @@
                             $(document).find('[name="'+i+'"]').addClass('is-invalid');
                         });
                     }
-                    console.log("Erro:")
-                    console.log(err)
+                    {{-- console.log("Erro:")
+                    console.log(err) --}}
                     $(".alerta_sucesso").addClass("hidden")
                     $(".alerta_erro").removeClass("hidden")
                 }
@@ -286,6 +287,19 @@
         color: #f0f0f0;
         border-radius:5px;
         width:100%;
+    }
+    .buttonBack{
+        margin-top:10px;
+        font-family: "Cal Sans", sans-serif;
+        border:none;
+        padding:10px;
+        background-color: #2e96d5;
+        color: #f0f0f0;
+        border-radius:5px;
+        width:100%;
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
     }
     h1{
         font-family: "Cal Sans", sans-serif;

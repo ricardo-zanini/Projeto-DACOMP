@@ -233,7 +233,7 @@
         color:white;
       }
       .hidden{
-        display: none;
+        display: none!important;
       }
 
       .botaoTransicao{
