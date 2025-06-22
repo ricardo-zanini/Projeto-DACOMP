@@ -152,6 +152,7 @@ class ProdutosController extends Controller
             'prontaEntrega' => $e->prontaEntrega,
             'unidades'      => $e->unidades,
             'produto_estoque_id' => $e->produto_estoque_id,
+            'disponivel' => $e->disponivel,
         ]);
 
         return view('produtos.product', compact(
