@@ -1,8 +1,8 @@
 @extends('templates.base')
-@section('title', 'Relatórios')
+@section('title', 'Relatório de Pedidos')
 
 @section('content')
-    <h1>RELATÓRIOS</h1>
+    <h1>RELATÓRIO DE PEDIDOS</h1>
     <div class="container">
     <!-- ==================== MENU FILTROS ==================== -->
         <form id="search-form" method="GET">

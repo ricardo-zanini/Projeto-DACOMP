@@ -17,4 +17,9 @@ class UsuariosInteresses extends Model
     {
         return $this->belongsTo(ProdutosEstoques::class, 'produto_estoque_id', 'produto_estoque_id');
     }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'usuario_id');
+    }
 }

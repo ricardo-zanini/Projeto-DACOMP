@@ -11,10 +11,26 @@
                 @foreach ($interesses as $interesse)
                     <div class="interesse-card">
                         <label><strong>{{ $interesse->produtoEstoque->produto->nome ?? 'Produto não encontrado' }}</strong> - {{ $interesse->produtoEstoque->tamanho->tamanho }} - {{ $interesse->produtoEstoque->cor->cor }}</label>
-                        <form action="{{ route('interesses.cancel', $interesse) }}" method="POST">
-                            @csrf
-                            <button class="button cancel">Cancelar</button>
-                        </form>
+                        @push('script')
+                            console.log("Disponíve: ", $interesse->produtoEstoque->disponivel, $interesse->produtoEstoque->unidades)
+                        @endpush
+                        @if ($interesse->produtoEstoque->disponivel === 0 || $interesse->produtoEstoque->unidades === 0)
+                            <form action="{{ route('interesses.cancel', $interesse) }}" method="POST">
+                                @csrf
+                                <button class="button cancel">Cancelar</button>
+                            </form>
+                        @else
+                            <div class="acoes">
+                                <button onclick="window.location='{{ route('produtos.show', $interesse->produtoEstoque->produto->produto_id) }}'" 
+                                    class="button buy">
+                                    Comprar
+                                </button>
+                                <form action="{{ route('interesses.cancel', $interesse) }}" method="POST">
+                                    @csrf
+                                    <button class="button cancel">Cancelar</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -52,6 +68,11 @@
         border-radius: 8px;
         background-color: white;
     }
+    .acoes{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
     .button{
         display: inline-block;
         padding: .5rem 1rem;
@@ -64,6 +85,9 @@
     }
     .cancel{
         background: #dc3545;
+    }
+    .buy{
+        background-color: #2e96d5;
     }
 </style>
 @endpush

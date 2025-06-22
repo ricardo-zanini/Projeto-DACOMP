@@ -271,7 +271,7 @@
               <a href="{{ route('interesses.list') }}"><div>Meus Interesses</div></a>
             @endif
             @if(Auth::user() && Auth::user()->gestor)
-              <a href="{{ route('pedidos.relatorios') }}"><div>Relatórios</div></a>
+              <a href="{{ route('relatorios.list') }}"><div>Relatórios</div></a>
             @endif
         </div>
         <!-- Gestor -->

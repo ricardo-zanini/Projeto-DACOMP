@@ -107,7 +107,9 @@
 
                 comprarButton.textContent = 'Demonstrar Interesse';
                 comprarButton.onclick = () => {
-                    // Implementar
+                    formProdutoEstoqueId.value = produto_estoque_id;
+                    form.action = '{{ route('interesses.gravar') }}';
+                    form.submit();
                 };
             }
         }

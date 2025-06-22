@@ -19,6 +19,7 @@ class Produtos extends Model
     {
         return $this->hasMany(ProdutosEstoques::class, 'produto_id', 'produto_id');
     }
+
     public function estoqueIndisponivel()
     {
         return $this->estoque()->where('unidades', 0);
@@ -31,4 +32,8 @@ class Produtos extends Model
                     ->sum(fn($e) => $e->interessados()->count());
     }
 
+    public function tipoProduto()
+    {
+        return $this->belongsTo(TiposProdutos::class, 'tipo_produto_id', 'tipo_produto_id');
+    }
 }

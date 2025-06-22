@@ -4,6 +4,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProdutosController;
 use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\InteressesController;
+use App\Http\Controllers\RelatoriosController;
 use App\Http\Controllers\Home;
 
 use Illuminate\Support\Facades\Route;
@@ -50,7 +51,7 @@ Route::get('/carrinho', [ComprasController::class, 'show'])->name('compras.show'
 Route::post('/pedidos/cadastro', [ComprasController::class, 'createOrder'])->middleware('auth')->name('compras.create');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middleware('auth')->name('compras.gravar');
 
-Route::get('/pedidos/relatorios', [ComprasController::class, 'relatorios'])->middleware('auth')->name('pedidos.relatorios');
+Route::get('/relatorios/pedidos', [ComprasController::class, 'relatorios'])->middleware('auth')->name('pedidos.relatorios');
 
 Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'])->middleware('auth')->name('compras.add');
 Route::post('/carrinho/{compra}/remove/{item}', [ComprasController::class, 'remove'])->middleware('auth')->name('compras.remove');
@@ -62,3 +63,9 @@ Route::post('/pedidos/{compra}/remove', [ComprasController::class, 'cancel'])->m
 // Rotas de Interesse
 Route::get('/interesses', [InteressesController::class, 'list'])->name('interesses.list');
 Route::post('/interesses/{interesse}/remove', [InteressesController::class, 'cancel'])->middleware('auth')->name('interesses.cancel');
+Route::post('/interesses/cadastro', [InteressesController::class, 'insert'])->middleware('auth')->name('interesses.gravar');
+Route::get('/relatorios/interesses', [InteressesController::class, 'relatorios'])->middleware('auth')->name('interesses.relatorios');
+
+//============================================================================================
+// Rotas de Relatório
+Route::get('/relatorios', [RelatoriosController::class, 'list'])->middleware('auth')->name('relatorios.list');
