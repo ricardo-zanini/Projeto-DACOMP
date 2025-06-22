@@ -2,7 +2,7 @@
 @section('title', 'Cadastrar Produto')
 
 @section('content')
-    <h1>CADASTRO DE PRODUTO</h1>
+    <h1>EDITAR PRODUTO</h1>
     <div class="conteudoCadastro">
     <form method="post" enctype="multipart/form-data" action="{{ route('produtos.update', $produto->produto_id) }}">
 
@@ -55,9 +55,10 @@
             <div class="alert alert-danger">{{ $errors->first() }}</div>
         @endif
 
-        <button class="buttonSubmitForm" type="submit">Cadastrar</button>
+        <button class="buttonSubmitForm" type="submit">Salvar Alterações</button>
+        <a class="buttonBack" type="button" href="{{ route('produtos.list') }}">Voltar</a>
 
-        <div class="alerta_sucesso hidden"> Dados salvos com sucesso! </div>
+        <div class="alerta_sucesso hidden"> Alterações salvas com sucesso! </div>
         <div class="alerta_erro hidden"> Ocorreu um erro </div>
 
     </form>
@@ -76,7 +77,7 @@
 
         $('#info_estoque_variacoes').append(`
             <div class="container_interno_variacao variacao_${numero_atual}">  
-                <h5 class="variacao_titulo">Variação ${numero_atual}</h5>
+                <h5 class="variacao_titulo">Variação ${numero_atual+1}</h5>
                 <select name="tamanho_id_${numero_atual}" class="form-control class_tamanho" required>
                     <option value="">Selecionar tamanho</option>
                     @foreach ($tamanhos as $tamanho)
@@ -92,14 +93,14 @@
                 </select>
 
                 <div class="form-floating class_unidades">
-                    <input value="${unidades}" type="text" class="form-control first_input" id="unidades" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
-                    <label for="unidades">Unidades do Produto</label>
+                    <input value="${unidades !== null ? unidades : 0}" type="number" min="0" class="form-control first_input" id="unidades_${numero_atual}" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
+                    <label for="unidades_${numero_atual}">Unidades do Produto</label>
                 </div>
                 
                 <div class="container_checks">
                     <div class="form-check">
-                        <input ${disponivel == 1 ? "checked" : ""} class="form-check-input" name="disponivel_${numero_atual}" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
+                        <input ${disponivel == 1 ? "checked" : ""} class="form-check-input" name="disponivel_${numero_atual}" type="checkbox" value="" id="disponivelCheck_${numero_atual}">
+                        <label class="form-check-label" for="disponivelCheck_${numero_atual}">
                             Disponível
                         </label>
                     </div>
@@ -115,6 +116,16 @@
         `);
         input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
         input_variacoes.value = parseInt(input_variacoes.value) + 1;
+
+        const newUnidadesInput = document.getElementById(`unidades_${numero_atual}`);
+        const newDisponivelCheckbox = document.getElementById(`disponivelCheck_${numero_atual}`);
+
+        if (newUnidadesInput) {
+            checkDisponibilidade(newUnidadesInput, newDisponivelCheckbox);
+            newUnidadesInput.addEventListener('input', function() {
+                checkDisponibilidade(this, newDisponivelCheckbox);
+            });
+        }
     }
 
     //================ Remoção de Variações =======================
@@ -124,6 +135,19 @@
             elementos[elementos.length - 1].remove();
             input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
             input_variacoes.value = parseInt(input_variacoes.value) - 1
+        }
+    }
+
+    //================ Muda disponibilidade conforme número de unidades =======================
+    function checkDisponibilidade(unidadesInput, disponivelCheckbox) {
+        const unidades = parseInt(unidadesInput.value) || 0;
+        if (unidades <= 0) {
+            disponivelCheckbox.checked = false;
+            disponivelCheckbox.setAttribute("disabled", "true")
+        }
+        else{
+            disponivelCheckbox.removeAttribute("disabled")
+            disponivelCheckbox.checked = true;
         }
     }
 
@@ -173,6 +197,19 @@
     //================ Resposta para envio dos dados =======================
     $(document).ready(function(){
         $('form').on("submit", function(e){
+            const numeroVariacoes = parseInt($('.numero_variacoes').val());
+            for (let i = 0; i < numeroVariacoes; i++) {
+                const unidadesInput = $(`#unidades_${i}`);
+                const disponivelCheckbox = $(`#disponivelCheck_${i}`);
+
+                const unidades = parseInt(unidadesInput.val()) || 0;
+                
+                // Se unidades = 0, forçar disponivel = 0
+                if (unidades === 0) {
+                    disponivelCheckbox.prop('checked', false);
+                }
+            }
+
             e.preventDefault();
             var action = $(this).attr('action');
             $.ajax({
@@ -200,8 +237,8 @@
                             $(document).find('[name="'+i+'"]').addClass('is-invalid');
                         });
                     }
-                    console.log("Erro:")
-                    console.log(err)
+                    {{-- console.log("Erro:")
+                    console.log(err) --}}
                     $(".alerta_sucesso").addClass("hidden")
                     $(".alerta_erro").removeClass("hidden")
                 }
@@ -286,6 +323,19 @@
         color: #f0f0f0;
         border-radius:5px;
         width:100%;
+    }
+    .buttonBack{
+        margin-top:10px;
+        font-family: "Cal Sans", sans-serif;
+        border:none;
+        padding:10px;
+        background-color: #2e96d5;
+        color: #f0f0f0;
+        border-radius:5px;
+        width:100%;
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
     }
     h1{
         font-family: "Cal Sans", sans-serif;

@@ -11,8 +11,7 @@
                 @foreach ($compras as $compra)
                     <div class="list-item">
                         <div class="info">
-                            <p>#{{ $compra->compra_id }} - {{ $compra->status->status }}</p>
-                            <p>{{ $compra->horario->format('d-m-y') }}</p>
+                            <p>#{{ $compra->compra_id }}</p>
                         </div>
                         <div class="itens-container">
                             @foreach ($compra->produtosCompras as $item)
@@ -50,7 +49,7 @@
                         </div>
                         <div class="info total">
                             <p >Total ({{ $compra->quantidade_total }})</p>
-                            <p>R$ {{ $compra->total }}</p>
+                            <p>R$ {{ number_format($compra->total, 2, ',', '.') }}</p>
                         </div>
                         <a class="button" href="{{ route('compras.pagamento', $compra) }}">Pagar</a>
                     </div>

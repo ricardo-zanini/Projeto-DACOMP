@@ -54,11 +54,17 @@
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").addClass("hidden")
                     },
-                    success: function() {
+                    success: function(r) {
                         $(".alerta_sucesso").removeClass("hidden")
                         $(".alerta_erro").addClass("hidden")
                         $(".form-floating").addClass("hidden")
                         $(".buttonSubmitForm").addClass("hidden")
+                        if (r.status = 200)
+                        {
+                            setTimeout(function() {
+                                window.location.href = r.redirect_url;
+                            }, 1000);
+                        }
                     },
                     error: function(err) {
                         if (err.status == 422) {

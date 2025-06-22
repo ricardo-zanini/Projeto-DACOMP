@@ -56,8 +56,10 @@
 
         <button class="buttonSubmitForm" type="submit">Cadastrar</button>
 
-        <div class="alerta_sucesso hidden"> Dados salvos com sucesso! </div>
+        <div class="alerta_sucesso hidden"> Produto cadastrado com sucesso! </div>
         <div class="alerta_erro hidden"> Ocorreu um erro </div>
+
+        <a class="buttonBack" type="button" href="{{ route('produtos.list') }}">Voltar</a>
 
     </form>
     </div>
@@ -73,7 +75,7 @@
 
         $('#info_estoque_variacoes').append(`
             <div class="container_interno_variacao variacao_${numero_atual}">  
-                <h5 class="variacao_titulo">Variação ${numero_atual}</h5>
+                <h5 class="variacao_titulo">Variação ${numero_atual+1}</h5>
                 <select name="tamanho_id_${numero_atual}" class="form-control class_tamanho" required>
                     <option value="">Selecionar tamanho</option>
                     @foreach ($tamanhos as $tamanho)
@@ -89,14 +91,14 @@
                 </select>
 
                 <div class="form-floating class_unidades">
-                    <input type="text" class="form-control first_input" id="unidades" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
-                    <label for="unidades">Unidades do Produto</label>
+                    <input type="number" min="0" value="0" class="form-control first_input" id="unidades_${numero_atual}" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
+                    <label for="unidades_${numero_atual}">Unidades do Produto</label>
                 </div>
                 
                 <div class="container_checks">
                     <div class="form-check">
-                        <input class="form-check-input" name="disponivel_${numero_atual}" type="checkbox" value="" id="defaultCheck1" checked>
-                        <label class="form-check-label" for="defaultCheck1">
+                        <input class="form-check-input disponivel_checkbox" name="disponivel_${numero_atual}" type="checkbox" value="" id="disponivelCheck_${numero_atual}" checked>
+                        <label class="form-check-label" for="disponivelCheck_${numero_atual}">
                             Disponível
                         </label>
                     </div>
@@ -113,6 +115,16 @@
 
         input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
         input_variacoes.value = parseInt(input_variacoes.value) + 1;
+
+        const newUnidadesInput = document.getElementById(`unidades_${numero_atual}`);
+        const newDisponivelCheckbox = document.getElementById(`disponivelCheck_${numero_atual}`);
+
+        if (newUnidadesInput) {
+            checkDisponibilidade(newUnidadesInput, newDisponivelCheckbox);
+            newUnidadesInput.addEventListener('input', function() {
+                checkDisponibilidade(this, newDisponivelCheckbox);
+            });
+        }
     }
     function remove_variacao(){
         const elementos = document.querySelectorAll('.container_interno_variacao');
@@ -122,6 +134,19 @@
             input_variacoes.value = parseInt(input_variacoes.value) - 1
         }
     }
+
+    function checkDisponibilidade(unidadesInput, disponivelCheckbox) {
+        const unidades = parseInt(unidadesInput.value) || 0;
+        if (unidades <= 0) {
+            disponivelCheckbox.checked = false;
+            disponivelCheckbox.setAttribute("disabled", "true")
+        }
+        else{
+            disponivelCheckbox.removeAttribute("disabled")
+            disponivelCheckbox.checked = true;
+        }
+    }
+
     adiciona_variacao();
 
     const campo = document.getElementById('valor_unidade');
@@ -152,6 +177,19 @@
 
     $(document).ready(function(){
             $('form').on("submit", function(e){
+                const numeroVariacoes = parseInt($('.numero_variacoes').val());
+                for (let i = 0; i < numeroVariacoes; i++) {
+                    const unidadesInput = $(`#unidades_${i}`);
+                    const disponivelCheckbox = $(`#disponivelCheck_${i}`);
+
+                    const unidades = parseInt(unidadesInput.val()) || 0;
+                    
+                    // Se unidades = 0, forçar disponivel = 0
+                    if (unidades === 0) {
+                        disponivelCheckbox.prop('checked', false);
+                    }
+                }
+
                 e.preventDefault();
                 var action = $(this).attr('action');
                 $.ajax({
@@ -168,9 +206,16 @@
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").addClass("hidden")
                     },
-                    success: function() {
+                    success: function(r) {
                         $(".alerta_sucesso").removeClass("hidden")
                         $(".alerta_erro").addClass("hidden")
+                        $(".buttonSubmitForm").addClass("hidden")
+                        if (r.status = 200)
+                        {
+                            setTimeout(function() {
+                                window.location.href = r.redirect_url;
+                            }, 1000);
+                        }
                     },
                     error: function(err) {
                         if (err.status == 422) {
@@ -179,8 +224,8 @@
                                 $(document).find('[name="'+i+'"]').addClass('is-invalid');
                             });
                         }
-                        console.log("Erro:")
-                        console.log(err)
+                        {{-- console.log("Erro:")
+                        console.log(err) --}}
                         $(".alerta_sucesso").addClass("hidden")
                         $(".alerta_erro").removeClass("hidden")
                     }
@@ -265,6 +310,19 @@
         color: #f0f0f0;
         border-radius:5px;
         width:100%;
+    }
+    .buttonBack{
+        margin-top:10px;
+        font-family: "Cal Sans", sans-serif;
+        border:none;
+        padding:10px;
+        background-color: #2e96d5;
+        color: #f0f0f0;
+        border-radius:5px;
+        width:100%;
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
     }
     h1{
         font-family: "Cal Sans", sans-serif;

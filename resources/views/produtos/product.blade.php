@@ -83,17 +83,18 @@
             const unidades = match?.unidades ?? 0;
             const prontaEntrega = match?.prontaEntrega ?? 'Não';
             const produto_estoque_id = match?.produto_estoque_id ?? 0;
+            const disponivel = match?.disponivel ?? 0;
 
             entregaLabel.textContent = prontaEntrega ? 'Sim' : 'Não';
 
             unidadesSelect.innerHTML = '';
-            if (unidades > 0) {
+            if (unidades > 0 && disponivel === 1 ) {
                 for (let i = 1; i <= unidades; i++) {
                     const opt = new Option(`Quantidade: ${i}`, i);
                     unidadesSelect.appendChild(opt);
                 }
 
-                comprarButton.textContent = 'Adicionar ao carrinho';
+                comprarButton.textContent = 'Adicionar ao Carrinho';
                 comprarButton.onclick = () => {
                     formProdutoEstoqueId.value = produto_estoque_id;
                     formQuantidade.value = unidadesSelect.value;
@@ -105,7 +106,7 @@
                 unidadesSelect.innerHTML = '';
                 unidadesSelect.appendChild(new Option('Indisponível', 0));
 
-                comprarButton.textContent = 'Me avise quando estiver disponível';
+                comprarButton.textContent = 'Demonstrar Interesse';
                 comprarButton.onclick = () => {
                     // Implementar
                 };

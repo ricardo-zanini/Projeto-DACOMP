@@ -93,7 +93,11 @@ class ProdutosController extends Controller
                 $produtoEstoque->save();
             }
 
-            return true;
+            return response()->json([
+                'status' => 200,
+                'message' => 'Produto criado com sucesso!',
+                'redirect_url' => route('produtos.list')
+            ]);
         }else{
             return false;
         }
@@ -148,6 +152,7 @@ class ProdutosController extends Controller
             'prontaEntrega' => $e->prontaEntrega,
             'unidades'      => $e->unidades,
             'produto_estoque_id' => $e->produto_estoque_id,
+            'disponivel' => $e->disponivel,
         ]);
 
         return view('produtos.product', compact(

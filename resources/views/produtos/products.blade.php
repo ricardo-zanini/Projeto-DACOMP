@@ -39,14 +39,58 @@
         $('#search-form').on('submit', function (e) {e.preventDefault(); search();});
 
         // ================= Modal de Deleção =================
-        $('.open-delete').on('click', function(){
+        $(document).on('click', '.open-delete', function(){
             const produtoId = $(this).attr('produto_id');
             $('#input_delete').val(produtoId);
-            console.log($('#input_delete').val())
             openModal('#delete-modal')
         });
         $('#close-delete').on('click', () => closeModal('#delete-modal'));
         $('#cancelar_delecao').on('click', () => closeModal('#delete-modal'));
+
+        $('.container_botoes_delecao').on("submit", function(e){
+            e.preventDefault();
+            var action = $(this).attr('action');
+            $.ajax({
+                url: action,
+                method: $(this).attr('method'),
+                data: new FormData(this),
+                processData: false,
+                dataType: 'json',
+                contentType: false,
+                beforeSend: function() {
+                    $(document).find('.text-danger').text('');
+                    $(document).find('.border-danger').removeClass('is-invalid');
+                    
+                    $(".alerta_sucesso").addClass("hidden")
+                    $(".alerta_erro").addClass("hidden")
+                },
+                success: function() {
+                    $(".alerta_sucesso").removeClass("hidden")
+                    $(".alerta_erro").addClass("hidden")
+                    $(".container_botoes_delecao").addClass("hidden")
+                    search()
+                    setTimeout(function() {
+                        closeModal('#delete-modal');
+                        setTimeout(function() {
+                                $(".alerta_sucesso").addClass("hidden");
+                                $(".container_botoes_delecao").removeClass("hidden")
+                        }, 400);
+                    }, 2000);
+                },
+                error: function(err) {
+                    if (err.status == 422) {
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            $('.'+i+'_error').text(error[0]);
+                            $(document).find('[name="'+i+'"]').addClass('is-invalid');
+                        });
+                    }
+                    {{-- console.log("Erro:")
+                    console.log(err) --}}
+                    $(".alerta_sucesso").addClass("hidden")
+                    $(".alerta_erro").removeClass("hidden")
+                }
+            });
+        })
         
         function search() {
             $.ajax({
@@ -70,7 +114,7 @@
         }
 
         function openModal(element) {
-            $(element).fadeIn();
+            $(element).hide().fadeIn()
         }
 
         function closeModal(element) {

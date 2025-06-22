@@ -168,3 +168,4 @@ INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, pront
 INSERT INTO Compras_Status (status) VALUES ('Em andamento');
 INSERT INTO Compras_Status (status) VALUES ('Pagamento finalizado');
 INSERT INTO Compras_Status (status) VALUES ('Entregue');
+INSERT INTO Compras_Status (status) VALUES ('Cancelado');
