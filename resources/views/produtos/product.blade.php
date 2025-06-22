@@ -83,12 +83,11 @@
             const unidades = match?.unidades ?? 0;
             const prontaEntrega = match?.prontaEntrega ?? 'Não';
             const produto_estoque_id = match?.produto_estoque_id ?? 0;
-            const disponivel = match?.disponivel ?? 0;
 
             entregaLabel.textContent = prontaEntrega ? 'Sim' : 'Não';
 
             unidadesSelect.innerHTML = '';
-            if (unidades > 0 && disponivel === 1 ) {
+            if (unidades > 0) {
                 for (let i = 1; i <= unidades; i++) {
                     const opt = new Option(`Quantidade: ${i}`, i);
                     unidadesSelect.appendChild(opt);

@@ -63,6 +63,7 @@ CREATE TABLE Produtos (
     valor_unidade NUMERIC(7, 2) NOT NULL,
     imagem VARCHAR(100),
     excluido BOOLEAN,
+    privado BOOLEAN,
 	FOREIGN KEY (tipo_produto_id) REFERENCES Tipos_Produtos(tipo_produto_id)
 );
 
@@ -72,7 +73,6 @@ CREATE TABLE Produtos_Estoques (
     produto_id INT NOT NULL,
     tamanho_id INT NOT NULL,
     cor_id INT NOT NULL,
-    disponivel BOOLEAN NOT NULL,
     prontaEntrega BOOLEAN NOT NULL,
     unidades INT NOT NULL,
     excluido BOOLEAN,
@@ -145,25 +145,25 @@ INSERT INTO Cores (cor) VALUES ('Azul');
 INSERT INTO Cores (cor) VALUES ('Vermelho');
 INSERT INTO Cores (cor) VALUES ('Cinza');
 
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Camiseta CIC', 1, 50.99, "camisetacic.jpg", 0);
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Camiseta EC', 1, 50.99, "camisetaec.jpg", 0);
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Moletom INF', 1, 120.00, "moletominf.jpg", 0);
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Moletom CIC', 1, 120.00, "moletomcic.jpg", 0);
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Chaveiro UFGRS', 2, 5.00, "chaveiroufrgs.jpg", 0);
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Boné UFGRS', 1, 70.99, "boneufrgs.jpg", 0);
-INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido) VALUES ('Caderno UFRGS', 3, 30.00, "cadernoufrgs.jpg", 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Camiseta CIC', 1, 50.99, "camisetacic.jpg", 0, 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Camiseta EC', 1, 50.99, "camisetaec.jpg", 0, 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Moletom INF', 1, 120.00, "moletominf.jpg", 0, 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Moletom CIC', 1, 120.00, "moletomcic.jpg", 0, 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Chaveiro UFGRS', 2, 5.00, "chaveiroufrgs.jpg", 0, 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Boné UFGRS', 1, 70.99, "boneufrgs.jpg", 0, 0);
+INSERT INTO Produtos (nome, tipo_produto_id, valor_unidade, imagem, excluido, privado) VALUES ('Caderno UFRGS', 3, 30.00, "cadernoufrgs.jpg", 0, 0);
 
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (1, 3, 2, True, True, 10, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (1, 4, 2, True, True, 5, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (2, 5, 3, True, False, 0, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (2, 5, 6, True, False, 0, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (3, 2, 2, True, True, 20, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (3, 3, 2, True, True, 15, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (4, 4, 4, True, True, 20, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (4, 5, 5, True, True, 20, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (5, 1, 1, True, False, 0, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (6, 1, 3, False, False, 0, 0);
-INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, disponivel, prontaEntrega, unidades, excluido) VALUES (7, 1, 1, False, False, 0, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (1, 3, 2, True, 10, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (1, 4, 2, True, 5, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (2, 5, 3, False, 0, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (2, 5, 6, False, 0, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (3, 2, 2, True, 20, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (3, 3, 2, True, 15, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (4, 4, 4, True, 20, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (4, 5, 5, True, 20, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (5, 1, 1, False, 0, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (6, 1, 3, False, 0, 0);
+INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (7, 1, 1, False, 0, 0);
 
 INSERT INTO Compras_Status (status) VALUES ('Em andamento');
 INSERT INTO Compras_Status (status) VALUES ('Pagamento finalizado');

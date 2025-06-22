@@ -23,7 +23,15 @@ class ProdutosController extends Controller
 {
     public function list()
     {
-        $produtos = Produtos::all()->where('excluido', false) ; // Busca todos os produtos
+         // Busca todos os produtos em ordem decrescente de id (mais recentes primeiro)
+        $produtosAux = Produtos::where('excluido', false)->orderBy('produto_id', 'desc')->get();
+
+        // Ordena com os produtos disponiveis aparecendo primeiro
+        $produtos = $produtosAux->sortBy(function ($produto) {
+            $temEmEstoque = $produto->estoque()->where('unidades', '>=', 1)->exists();
+            // Retorna 0 para 'disponível' (temEmEstoque >= 1) para que venham primeiro, e 1 para 'indisponível'
+            return $temEmEstoque ? 0 : 1;
+        })->values();
         $tipos_produtos = TiposProdutos::all();
         $tamanhos = Tamanhos::all();
         $cores = Cores::all();
@@ -70,6 +78,7 @@ class ProdutosController extends Controller
             $produto->tipo_produto_id = $form->tipo_produto_id;
             $produto->valor_unidade = $form->valor_unidade;
             $produto->excluido = false;
+            $produto->privado = $form->has("privado") ? true : false;
 
             $imgPath = null;
             if($form->file('imagem')){
@@ -85,7 +94,6 @@ class ProdutosController extends Controller
                 $produtoEstoque->produto_id = $produto->produto_id;
                 $produtoEstoque->tamanho_id = $form->input("tamanho_id_$i");
                 $produtoEstoque->cor_id = $form->input("cor_id_$i");
-                $produtoEstoque->disponivel = $form->has("disponivel_$i") ? true : false;
                 $produtoEstoque->prontaEntrega = $form->has("pronta_entrega_$i") ? true : false;
                 $produtoEstoque->unidades = (int) $form->input("unidades_$i");
                 $produtoEstoque->excluido = false;
@@ -151,8 +159,7 @@ class ProdutosController extends Controller
             'cor_id'        => $e->cor_id,
             'prontaEntrega' => $e->prontaEntrega,
             'unidades'      => $e->unidades,
-            'produto_estoque_id' => $e->produto_estoque_id,
-            'disponivel' => $e->disponivel,
+            'produto_estoque_id' => $e->produto_estoque_id
         ]);
 
         return view('produtos.product', compact(
@@ -222,6 +229,7 @@ class ProdutosController extends Controller
             $produto->tipo_produto_id = $form->tipo_produto_id;
             $produto->valor_unidade = $form->valor_unidade;
             $produto->excluido = 0;
+            $produto->privado = $form->has("privado") ? true : false;
 
             $imgPath = null;
             if($form->file('imagem')){
@@ -239,7 +247,6 @@ class ProdutosController extends Controller
                 $produtoEstoque->produto_id = $produto->produto_id;
                 $produtoEstoque->tamanho_id = $form->input("tamanho_id_$i");
                 $produtoEstoque->cor_id = $form->input("cor_id_$i");
-                $produtoEstoque->disponivel = $form->has("disponivel_$i") ? true : false;
                 $produtoEstoque->prontaEntrega = $form->has("pronta_entrega_$i") ? true : false;
                 $produtoEstoque->unidades = (int) $form->input("unidades_$i");
                 $produtoEstoque->excluido = false;
@@ -274,7 +281,7 @@ class ProdutosController extends Controller
     }
 
     public function demonstrarInteresse(Request $request, ProdutosEstoques $estoque){
-        if ($estoque->disponivel != 0) {
+        if ($estoque->unidades >= 0) {
             return back()->withErrors('Este item ainda está disponível em estoque.');
         }
         $estoque->interessados()

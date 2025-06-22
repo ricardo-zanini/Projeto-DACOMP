@@ -31,6 +31,16 @@
             <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
         </div>
 
+        <div class="container_checks">
+            <span>Visibilidade:</span>
+            <div class="form-check">
+                <input {{$produto->privado == 1 ? "checked" : ""}} class="form-check-input" name="privado" type="checkbox" value="" id="privado">
+                <label class="form-check-label" for="privado">
+                    Privado
+                </label>
+            </div>
+        </div>
+
         <h5>VARIAÇÕES</h5>
 
         <div id="container_info_estoque">
@@ -71,7 +81,7 @@
     const campo = document.getElementById('valor_unidade');
     
     //================ Adição de Variações ==============
-    function adiciona_variacao(tamanho_id = null, cor_id = null, unidades = null, disponivel = null, pronta_entrega = null){
+    function adiciona_variacao(tamanho_id = null, cor_id = null, unidades = null, pronta_entrega = null){
         const elementosX = document.querySelectorAll('.container_interno_variacao');
         const numero_atual = elementosX.length;
 
@@ -99,13 +109,6 @@
                 
                 <div class="container_checks">
                     <div class="form-check">
-                        <input ${disponivel == 1 ? "checked" : ""} class="form-check-input" name="disponivel_${numero_atual}" type="checkbox" value="" id="disponivelCheck_${numero_atual}">
-                        <label class="form-check-label" for="disponivelCheck_${numero_atual}">
-                            Disponível
-                        </label>
-                    </div>
-
-                    <div class="form-check">
                         <input ${pronta_entrega == 1 ? "checked" : ""} class="form-check-input" name="pronta_entrega_${numero_atual}" type="checkbox" value="" id="defaultCheck1">
                         <label class="form-check-label" for="defaultCheck1">
                             Pronta-Entrega
@@ -116,16 +119,6 @@
         `);
         input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
         input_variacoes.value = parseInt(input_variacoes.value) + 1;
-
-        const newUnidadesInput = document.getElementById(`unidades_${numero_atual}`);
-        const newDisponivelCheckbox = document.getElementById(`disponivelCheck_${numero_atual}`);
-
-        if (newUnidadesInput) {
-            checkDisponibilidade(newUnidadesInput, newDisponivelCheckbox);
-            newUnidadesInput.addEventListener('input', function() {
-                checkDisponibilidade(this, newDisponivelCheckbox);
-            });
-        }
     }
 
     //================ Remoção de Variações =======================
@@ -135,19 +128,6 @@
             elementos[elementos.length - 1].remove();
             input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
             input_variacoes.value = parseInt(input_variacoes.value) - 1
-        }
-    }
-
-    //================ Muda disponibilidade conforme número de unidades =======================
-    function checkDisponibilidade(unidadesInput, disponivelCheckbox) {
-        const unidades = parseInt(unidadesInput.value) || 0;
-        if (unidades <= 0) {
-            disponivelCheckbox.checked = false;
-            disponivelCheckbox.setAttribute("disabled", "true")
-        }
-        else{
-            disponivelCheckbox.removeAttribute("disabled")
-            disponivelCheckbox.checked = true;
         }
     }
 
@@ -171,7 +151,6 @@
             p.tamanho_id,
             p.cor_id,
             p.unidades,
-            p.disponivel ? 1 : 0,
             p.prontaEntrega ? 1 : 0
         );
     });
@@ -197,19 +176,6 @@
     //================ Resposta para envio dos dados =======================
     $(document).ready(function(){
         $('form').on("submit", function(e){
-            const numeroVariacoes = parseInt($('.numero_variacoes').val());
-            for (let i = 0; i < numeroVariacoes; i++) {
-                const unidadesInput = $(`#unidades_${i}`);
-                const disponivelCheckbox = $(`#disponivelCheck_${i}`);
-
-                const unidades = parseInt(unidadesInput.val()) || 0;
-                
-                // Se unidades = 0, forçar disponivel = 0
-                if (unidades === 0) {
-                    disponivelCheckbox.prop('checked', false);
-                }
-            }
-
             e.preventDefault();
             var action = $(this).attr('action');
             $.ajax({

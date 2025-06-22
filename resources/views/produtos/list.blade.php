@@ -4,76 +4,51 @@
     @else
         <div class="grid">
             @foreach ($produtos as $produto)
-                <div class="card">
-                    @if(Auth::user() && Auth::user()->gestor)
-                        <div class="container_actions_card">
-                            <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
-                                <img class="editar_icone" src="{{asset('/icons/edit.svg')}}" alt="Editar" />
-                            </a>
-                            <a class="editar_produto">
-                                <img produto_id="{{$produto->produto_id}}" class="remover_icone open-delete" src="{{asset('/icons/trash.svg')}}" alt="Remover" />
-                            </a>
-                        </div>
-                    @endif
-                    <img class="img" src="@if ($produto->imagem == null) {{asset('icons/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
-                    <h2>{{ $produto->nome }}</h2>
-                    <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
-
-                    {{-- Botão Comprar para usuários não‐gestores --}}
-                     @php
-                        $temEmEstoque = $produto
-                            ->estoque()
-                            ->where('disponivel', 1)
-                            ->where('unidades', '>=', 1)
-                            ->exists();
-
-                        // pega um estoque indisponível para demonstrar interesse,
-                        // se não houver nenhum disponível
-                        $estoqueIndisp = $produto
-                            ->estoque()
-                            ->where(function ($query) {
-                                $query->where('disponivel', 0) // Condição 1: disponivel = 0
-                                    ->orWhere(function ($query) { // OU condição 2: disponivel = 1 AND unidades == 0
-                                        $query->where('disponivel', 1)
-                                                ->where('unidades', 0);
-                                    });
-                            })
-                            ->first();
-                    @endphp
-                    @if(!Auth::user() || !Auth::user()->gestor)
-                        @if($temEmEstoque)
-                        <button onclick="window.location='{{ route('produtos.show', $produto->produto_id) }}'"
-                                type="button"
-                                class="button botaoTransicao">
-                            Comprar
-                        </button>
+                @if(!$produto->privado || (Auth::user() && Auth::user()->gestor))
+                    <div class="card" @if(!Auth::user() || !Auth::user()->gestor) onclick="window.location='{{ route('produtos.show', $produto->produto_id) }}'" @endif>
+                        @if(Auth::user() && Auth::user()->gestor)
+                            <div class="container_actions_card">
+                                <a href="{{ route('produtos.edit', $produto->produto_id) }}" class="editar_produto">
+                                    <img class="editar_icone" src="{{asset('/icons/edit.svg')}}" alt="Editar" />
+                                </a>
+                                <a class="editar_produto">
+                                    <img produto_id="{{$produto->produto_id}}" class="remover_icone open-delete" src="{{asset('/icons/trash.svg')}}" alt="Remover" />
+                                </a>
+                            </div>
                         @endif
-                    @endif
+                        <img class="img" src="@if ($produto->imagem == null) {{asset('icons/no_image.svg')}} @else {{asset('images/' . $produto->imagem)}} @endif" alt="Imagem de {{ $produto->nome }}" />
+                        <h2>{{ $produto->nome }}</h2>
+                        <p>R$ {{ number_format($produto->valor_unidade, 2, ',', '.') }}</p>
 
-                    @if($temEmEstoque==0)
-                        <p class="text-danger">
-                            Produto indisponível
-                        </p>
-
-                       
-                            @if($estoqueIndisp && (!Auth::user() || !Auth::user()->gestor))
-                                <form action="{{ route('estoque.interesse', $estoqueIndisp->produto_estoque_id) }}"
-                                      method="POST">
-                                    @csrf
-                                    <button type="submit" class="button botaoTransicao btn-interesse">
-                                        Demonstrar Interesse
-                                    </button>
-                                </form>
+                        {{-- Botão Comprar para usuários não‐gestores --}}
+                        @php
+                            $temEmEstoque = $produto
+                                ->estoque()
+                                ->where('unidades', '>=', 1)
+                                ->exists();
+                        @endphp
+                        @if(Auth::user() && Auth::user()->gestor)
+                            @if($produto->privado)
+                                <p class="text-secondary">Produto privado</p>
+                            @elseif($temEmEstoque == 0)
+                                <p class="text-danger">Produto indisponível</p>
                             @endif
-                    @endif
-                        
-            
-
-                </div>
+                        @endif
+                        @if(!Auth::user() || !Auth::user()->gestor)
+                            @if($temEmEstoque >= 1)
+                                <button type="button" class="button botaoTransicao">Comprar</button>
+                            @else
+                                <p class="text-danger">Produto indisponível</p>
+                                <button type="button" class="button botaoTransicao">Visualizar</button>
+                            @endif
+                        @endif
+                    </div>
+                @endif
             @endforeach
         </div>
     @endif
 </div>
+
 @push('styles')
     <style>
         .products-container{
@@ -113,6 +88,7 @@
             background-color: rgba(255, 255, 255,1);
             margin-right: auto;
             margin-left: auto;
+            @if(!Auth::user() || !Auth::user()->gestor) cursor:pointer; @endif
         }
         .img{
             max-height: 12rem;
@@ -163,10 +139,7 @@
             top:10px;
             right:10px;
         }
-        .btn-interesse:hover{
-            background-color: #dc3545;
-        }
-        p.text-danger{
+        p.text-danger, p.text-secondary{
             justify-content: center;
             display: flex;
         }

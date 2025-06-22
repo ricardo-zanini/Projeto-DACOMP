@@ -21,7 +21,7 @@ class Produtos extends Model
     }
     public function estoqueIndisponivel()
     {
-        return $this->estoque()->where('disponivel', 0);
+        return $this->estoque()->where('unidades', 0);
     }
 
     public function totalInteresse(): int

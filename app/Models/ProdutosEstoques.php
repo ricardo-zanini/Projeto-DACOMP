@@ -19,7 +19,6 @@ class ProdutosEstoques extends Model
         'produto_id',
         'tamanho_id',
         'cor_id',
-        'disponivel',
         'prontaEntrega',
         'unidades',
         'excluido',
@@ -48,15 +47,5 @@ class ProdutosEstoques extends Model
             'produto_estoque_id',
             'usuario_id'
         )->withPivot('usuario_interesse_id');
-    }
-
-    public function isDisponivel(): bool
-    {
-        return (bool) $this->disponivel;
-    }
-
-    public function isIndisponivel(): bool
-    {
-        return ! $this->isDisponivel();
     }
 }
