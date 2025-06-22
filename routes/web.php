@@ -37,7 +37,6 @@ Route::get('/produtos/cadastro', [ProdutosController::class, 'create'])->middlew
 Route::post('/produtos/cadastro', [ProdutosController::class, 'insert'])->middleware('auth')->name('produtos.gravar');
 Route::post('/produtos/delete', [ProdutosController::class, 'delete'])->middleware('auth')->name('produtos.delete');
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
-Route::get('/produtos/relatorios', [ProdutosController::class, 'relatorios'])->middleware('auth')->name('produtos.relatorios');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');
 Route::post('/produtos/editar/{produto}', [ProdutosController::class, 'update'])->middleware('auth')->name('produtos.update');
@@ -49,6 +48,9 @@ Route::get('/pedidos', [ComprasController::class, 'list'])->name('compras.list')
 Route::get('/carrinho', [ComprasController::class, 'show'])->name('compras.show');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'createOrder'])->middleware('auth')->name('compras.create');
 Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middleware('auth')->name('compras.gravar');
+
+Route::get('/pedidos/relatorios', [ComprasController::class, 'relatorios'])->middleware('auth')->name('pedidos.relatorios');
+
 Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'])->middleware('auth')->name('compras.add');
 Route::post('/carrinho/{compra}/remove/{item}', [ComprasController::class, 'remove'])->middleware('auth')->name('compras.remove');
 Route::post('/carrinho/{compra}/delete/{item}', [ComprasController::class, 'delete'])->middleware('auth')->name('compras.delete');

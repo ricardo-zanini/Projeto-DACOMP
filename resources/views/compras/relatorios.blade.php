@@ -16,7 +16,7 @@
                 </div>
             </div>
 
-            
+
             <!-- ==================== MODAL ==================== -->
             <div id="filter-modal" class="filter-modal" style="display:none;">
                 <div class="filter-box">
@@ -78,7 +78,7 @@
         
         function search() {
             $.ajax({
-                url: "{{ route('produtos.search') }}",
+                url: "{{ route('pedidos.relatorios') }}",
                 method: "GET",
                 data: {
                     input: $('#search').val(),
@@ -110,6 +110,9 @@
             closeModal('#filter-modal');
             search();
         }
+
+
+        console.log({{$pedidos}});
     });
 </script>
 @endpush

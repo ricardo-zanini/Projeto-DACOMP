@@ -267,7 +267,7 @@
         <div class="containerMenusNavbar"> 
             <a href="{{ route('produtos.list') }}"><div>Produtos</div></a>
             @if(Auth::user() && Auth::user()->gestor)
-              <a href="{{ route('produtos.relatorios') }}"><div>Relatórios</div></a>
+              <a href="{{ route('pedidos.relatorios') }}"><div>Relatórios</div></a>
             @endif
         </div>
         <!-- Gestor -->
