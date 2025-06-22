@@ -39,6 +39,7 @@ Route::post('/produtos/delete', [ProdutosController::class, 'delete'])->middlewa
 Route::get('/produtos/pesquisar', [ProdutosController::class, 'search'])->name('produtos.search');
 Route::get('/produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
 Route::get('/produtos/editar/{produto}', [ProdutosController::class, 'edit'])->middleware('auth')->name('produtos.edit');
+Route::post('/produtos/editar/{produto}', [ProdutosController::class, 'update'])->middleware('auth')->name('produtos.update');
 Route::post('/produtos-estoque/{estoque}/interesse',[ProdutosController::class, 'demonstrarInteresse'])->middleware('auth')->name('estoque.interesse');
 //============================================================================================
 // Rotas de Compras

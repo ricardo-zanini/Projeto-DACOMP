@@ -69,6 +69,7 @@ class ProdutosController extends Controller
             $produto->nome = $form->nome;
             $produto->tipo_produto_id = $form->tipo_produto_id;
             $produto->valor_unidade = $form->valor_unidade;
+            $produto->excluido = false;
 
             $imgPath = null;
             if($form->file('imagem')){
@@ -84,9 +85,10 @@ class ProdutosController extends Controller
                 $produtoEstoque->produto_id = $produto->produto_id;
                 $produtoEstoque->tamanho_id = $form->input("tamanho_id_$i");
                 $produtoEstoque->cor_id = $form->input("cor_id_$i");
-                $produtoEstoque->disponivel = $form->input("disponivel_$i") ? 1 : 0;;
-                $produtoEstoque->prontaEntrega = $form->input("pronta_entrega_$i") ? 1 : 0;;
+                $produtoEstoque->disponivel = $form->has("disponivel_$i") ? true : false;
+                $produtoEstoque->prontaEntrega = $form->has("pronta_entrega_$i") ? true : false;
                 $produtoEstoque->unidades = (int) $form->input("unidades_$i");
+                $produtoEstoque->excluido = false;
 
                 $produtoEstoque->save();
             }
@@ -154,6 +156,7 @@ class ProdutosController extends Controller
             'tipo_produto'
         ));
     }
+
     public function edit($produto_id){
         if(Auth::user()->gestor == true){
             $produto = Produtos::findOrFail($produto_id);
@@ -174,6 +177,77 @@ class ProdutosController extends Controller
             return redirect()->route('home');
         }
     }
+
+    public function update($produto_id, Request $form){
+        if(Auth::user()->gestor == true){
+            //===============================================================
+            // Seta o produto antigo e suas variações como "excluido -> True"
+            //===============================================================
+            Produtos::where('produto_id', $produto_id)->update([
+                'excluido' => True
+            ]);
+            ProdutosEstoques::where('produto_id', $produto_id)->update([
+                'excluido' => True
+            ]);
+            //=======================================
+            // Regitra novo Produto e suas variações
+            //=======================================
+            $form->merge([
+                'valor_unidade' => str_replace(',', '.', $form->valor_unidade),
+            ]);
+
+            $form->validate([
+                'nome' => ['required', 'max:100'],
+                'tipo_produto_id' => ['required'],
+                'valor_unidade' => ['required', 'numeric'],
+                'numero_variacoes' => ['required', 'integer', 'min:1'],
+                'imagem' => ['nullable','image']
+            ]);
+
+            for($i = 0; $i < (int) $form->numero_variacoes; $i++){
+                $form->validate([
+                    "tamanho_id_$i" => ['required', 'integer'],
+                    "cor_id_$i" => ['required', 'integer'],
+                    "unidades_$i" => ['required', 'integer'],
+                ]);
+            }
+            
+            $produto = new Produtos();
+            $produto->nome = $form->nome;
+            $produto->tipo_produto_id = $form->tipo_produto_id;
+            $produto->valor_unidade = $form->valor_unidade;
+            $produto->excluido = 0;
+
+            $imgPath = null;
+            if($form->file('imagem')){
+                $imgPath = $form->file('imagem')->store('', 'imagens');
+            }else{
+                $imgPath = $form->old_image_name;
+            }
+            $produto->imagem = $imgPath;
+            
+            $produto->save();
+
+            for($i = 0; $i < (int) $form->numero_variacoes; $i++){
+                $produtoEstoque = new ProdutosEstoques();
+
+                $produtoEstoque->produto_id = $produto->produto_id;
+                $produtoEstoque->tamanho_id = $form->input("tamanho_id_$i");
+                $produtoEstoque->cor_id = $form->input("cor_id_$i");
+                $produtoEstoque->disponivel = $form->has("disponivel_$i") ? true : false;
+                $produtoEstoque->prontaEntrega = $form->has("pronta_entrega_$i") ? true : false;
+                $produtoEstoque->unidades = (int) $form->input("unidades_$i");
+                $produtoEstoque->excluido = false;
+                
+                $produtoEstoque->save();
+            }
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function delete(Request $form){
         if(Auth::user()->gestor == true){
             $form->validate([
@@ -189,8 +263,11 @@ class ProdutosController extends Controller
             ]);
 
             return true;
+        }else{
+            return false;
         }
     }
+
     public function demonstrarInteresse(Request $request, ProdutosEstoques $estoque){
         if ($estoque->disponivel != 0) {
             return back()->withErrors('Este item ainda está disponível em estoque.');

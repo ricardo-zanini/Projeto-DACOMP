@@ -4,7 +4,7 @@
 @section('content')
     <h1>CADASTRO DE PRODUTO</h1>
     <div class="conteudoCadastro">
-    <form method="post" enctype="multipart/form-data" action="{{ route('produtos.gravar') }}">
+    <form method="post" enctype="multipart/form-data" action="{{ route('produtos.update', $produto->produto_id) }}">
 
         @csrf
         
@@ -27,6 +27,7 @@
         </div>
 
         <div class="mb-3">
+            <input value="{{$produto->imagem}}" type="hidden" name="old_image_name"/>
             <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
         </div>
 
@@ -147,7 +148,7 @@
             p.cor_id,
             p.unidades,
             p.disponivel ? 1 : 0,
-            p.pronta_entrega ? 1 : 0
+            p.prontaEntrega ? 1 : 0
         );
     });
     })
