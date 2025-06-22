@@ -30,12 +30,14 @@
                         @if(Auth::user() && Auth::user()->gestor)
                             @if($produto->privado)
                                 <p class="text-secondary">Produto privado</p>
-                            @elseif($temEmEstoque == 0)
+                            @elseif($temEmEstoque >= 1)
+                                <p class="text-success">Produto disponível</p>
+                            @else
                                 <p class="text-danger">Produto indisponível</p>
                             @endif
-                        @endif
-                        @if(!Auth::user() || !Auth::user()->gestor)
+                        @else
                             @if($temEmEstoque >= 1)
+                                <p class="text-success">Produto disponível</p>
                                 <button type="button" class="button botaoTransicao">Comprar</button>
                             @else
                                 <p class="text-danger">Produto indisponível</p>
@@ -139,7 +141,7 @@
             top:10px;
             right:10px;
         }
-        p.text-danger, p.text-secondary{
+        p.text-danger, p.text-secondary, p.text-success{
             justify-content: center;
             display: flex;
         }
