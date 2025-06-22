@@ -14,7 +14,7 @@
                         @push('script')
                             console.log("Disponíve: ", $interesse->produtoEstoque->disponivel, $interesse->produtoEstoque->unidades)
                         @endpush
-                        @if ($interesse->produtoEstoque->disponivel === 0 || $interesse->produtoEstoque->unidades === 0)
+                        @if ($interesse->produtoEstoque->unidades === 0)
                             <form action="{{ route('interesses.cancel', $interesse) }}" method="POST">
                                 @csrf
                                 <button class="button cancel">Cancelar</button>
