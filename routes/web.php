@@ -3,6 +3,7 @@
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProdutosController;
 use App\Http\Controllers\ComprasController;
+use App\Http\Controllers\InteressesController;
 use App\Http\Controllers\Home;
 
 use Illuminate\Support\Facades\Route;
@@ -54,3 +55,8 @@ Route::post('/carrinho/{compra}/remove/{item}', [ComprasController::class, 'remo
 Route::post('/carrinho/{compra}/delete/{item}', [ComprasController::class, 'delete'])->middleware('auth')->name('compras.delete');
 Route::get('/pagamento/{compra}', [ComprasController::class, 'pagamento'])->middleware('auth')->name('compras.pagamento');
 Route::post('/pedidos/{compra}/remove', [ComprasController::class, 'cancel'])->middleware('auth')->name('compras.cancel');
+
+//============================================================================================
+// Rotas de Interesse
+Route::get('/interesses', [InteressesController::class, 'list'])->name('interesses.list');
+Route::post('/interesses/{interesse}/remove', [InteressesController::class, 'cancel'])->middleware('auth')->name('interesses.cancel');

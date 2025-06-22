@@ -266,19 +266,18 @@
       <div class="containerOpcoesNavbar">
         <div class="containerMenusNavbar"> 
             <a href="{{ route('produtos.list') }}"><div>Produtos</div></a>
+            @if(Auth::user() && !Auth::user()->gestor)
+              <a href="{{ route('compras.list') }}"><div>Meus Pedidos</div></a>
+              <a href="{{ route('interesses.list') }}"><div>Meus Interesses</div></a>
+            @endif
             @if(Auth::user() && Auth::user()->gestor)
               <a href="{{ route('produtos.relatorios') }}"><div>Relatórios</div></a>
             @endif
         </div>
         <!-- Gestor -->
         @if(Auth::user() && Auth::user()->gestor)
-           <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO GESTOR -->
-            <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
-            <div id="menuOptionsUser" class="hidden">
-              <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
-              <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
-              <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
-          </div>
+          <!-- COLOCAR AQUI OS MENUS PARA USUÁRIO GESTOR -->
+          <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
         @endif
         <!-- Não Gestor -->
         @if(Auth::user() && !Auth::user()->gestor)
@@ -287,14 +286,13 @@
             <a href="{{ route('compras.show') }}" role="button" class=""><div><img class="carrinhoIcon" src="{{asset('icons/shoppingCart.svg')}}" alt="Carrinho" /></div></a>
             <div class="userLogo"><span>{{ strtoupper(substr(Auth::user()->nome, 0, 2));}}</span></div>
           </div>
-          <div id="menuOptionsUser" class="hidden">
-            <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
-            <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
-            <a href="{{ route('compras.list') }}"><div>Meus Pedidos</div></a>
-            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
-          </div>
         @endif
         <!-- Comum a todos usuários -->
+         <div id="menuOptionsUser" class="hidden">
+            <a href="{{ route('perfil.edit') }}"><div>Alterar Dados</div></a>
+            <a href="{{ route('senha.edit') }}"><div>Alterar Senha</div></a>
+            <a href="{{ route('logout') }}" role="button" class="buttonLogout"><div>Sair<img class="navbarLogoutIcon" src="{{asset('icons/logout.svg')}}" alt="DACOMP" /></div></a>
+          </div>
         @if (Auth::user())
         <!-- Ainda não logado -->
         @else
