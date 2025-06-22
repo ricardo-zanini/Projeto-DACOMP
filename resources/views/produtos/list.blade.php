@@ -24,13 +24,20 @@
                         $temEmEstoque = $produto
                             ->estoque()
                             ->where('disponivel', 1)
+                            ->where('unidades', '>=', 1)
                             ->exists();
 
                         // pega um estoque indisponível para demonstrar interesse,
                         // se não houver nenhum disponível
                         $estoqueIndisp = $produto
                             ->estoque()
-                            ->where('disponivel', 0)
+                            ->where(function ($query) {
+                                $query->where('disponivel', 0) // Condição 1: disponivel = 0
+                                    ->orWhere(function ($query) { // OU condição 2: disponivel = 1 AND unidades == 0
+                                        $query->where('disponivel', 1)
+                                                ->where('unidades', 0);
+                                    });
+                            })
                             ->first();
                     @endphp
                     @if(!Auth::user() || !Auth::user()->gestor)

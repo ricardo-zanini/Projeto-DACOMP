@@ -93,14 +93,14 @@
                 </select>
 
                 <div class="form-floating class_unidades">
-                    <input value="${unidades !== null ? unidades : 0}" type="text" class="form-control first_input" id="unidades" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
-                    <label for="unidades">Unidades do Produto</label>
+                    <input value="${unidades !== null ? unidades : 0}" type="number" min="0" class="form-control first_input" id="unidades_${numero_atual}" placeholder="Unidades do Produto" name="unidades_${numero_atual}" maxlength="100" required>
+                    <label for="unidades_${numero_atual}">Unidades do Produto</label>
                 </div>
                 
                 <div class="container_checks">
                     <div class="form-check">
-                        <input ${disponivel == 1 ? "checked" : ""} class="form-check-input" name="disponivel_${numero_atual}" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
+                        <input ${disponivel == 1 ? "checked" : ""} class="form-check-input" name="disponivel_${numero_atual}" type="checkbox" value="" id="disponivelCheck_${numero_atual}">
+                        <label class="form-check-label" for="disponivelCheck_${numero_atual}">
                             Disponível
                         </label>
                     </div>
@@ -116,6 +116,16 @@
         `);
         input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
         input_variacoes.value = parseInt(input_variacoes.value) + 1;
+
+        const newUnidadesInput = document.getElementById(`unidades_${numero_atual}`);
+        const newDisponivelCheckbox = document.getElementById(`disponivelCheck_${numero_atual}`);
+
+        if (newUnidadesInput) {
+            checkDisponibilidade(newUnidadesInput, newDisponivelCheckbox);
+            newUnidadesInput.addEventListener('input', function() {
+                checkDisponibilidade(this, newDisponivelCheckbox);
+            });
+        }
     }
 
     //================ Remoção de Variações =======================
@@ -125,6 +135,19 @@
             elementos[elementos.length - 1].remove();
             input_variacoes = document.querySelectorAll(".numero_variacoes")[0]
             input_variacoes.value = parseInt(input_variacoes.value) - 1
+        }
+    }
+
+    //================ Muda disponibilidade conforme número de unidades =======================
+    function checkDisponibilidade(unidadesInput, disponivelCheckbox) {
+        const unidades = parseInt(unidadesInput.value) || 0;
+        if (unidades <= 0) {
+            disponivelCheckbox.checked = false;
+            disponivelCheckbox.setAttribute("disabled", "true")
+        }
+        else{
+            disponivelCheckbox.removeAttribute("disabled")
+            disponivelCheckbox.checked = true;
         }
     }
 
@@ -174,6 +197,19 @@
     //================ Resposta para envio dos dados =======================
     $(document).ready(function(){
         $('form').on("submit", function(e){
+            const numeroVariacoes = parseInt($('.numero_variacoes').val());
+            for (let i = 0; i < numeroVariacoes; i++) {
+                const unidadesInput = $(`#unidades_${i}`);
+                const disponivelCheckbox = $(`#disponivelCheck_${i}`);
+
+                const unidades = parseInt(unidadesInput.val()) || 0;
+                
+                // Se unidades = 0, forçar disponivel = 0
+                if (unidades === 0) {
+                    disponivelCheckbox.prop('checked', false);
+                }
+            }
+
             e.preventDefault();
             var action = $(this).attr('action');
             $.ajax({
