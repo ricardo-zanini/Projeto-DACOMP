@@ -53,3 +53,4 @@ Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'
 Route::post('/carrinho/{compra}/remove/{item}', [ComprasController::class, 'remove'])->middleware('auth')->name('compras.remove');
 Route::post('/carrinho/{compra}/delete/{item}', [ComprasController::class, 'delete'])->middleware('auth')->name('compras.delete');
 Route::get('/pagamento/{compra}', [ComprasController::class, 'pagamento'])->middleware('auth')->name('compras.pagamento');
+Route::post('/pedidos/{compra}/remove', [ComprasController::class, 'cancel'])->middleware('auth')->name('compras.cancel');
