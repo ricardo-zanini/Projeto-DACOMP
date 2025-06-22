@@ -277,4 +277,15 @@ class ProdutosController extends Controller
 
         return back()->with('success', 'Seu interesse foi registrado!');
     }
+   
+    public function relatorios(){
+        $tipos_produtos = TiposProdutos::all();
+        $tamanhos = Tamanhos::all();
+        $cores = Cores::all();
+        return view('produtos.relatorios', compact(
+            'tipos_produtos',
+            'tamanhos',
+            'cores'
+        ));
+    }
 }

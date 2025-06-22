@@ -201,4 +201,12 @@ class ComprasController extends Controller
 
         return back()->with('success', 'Item removido do carrinho.');
     }
+    public function pagamento(Compras $compra){
+        if(Auth::user()->usuario_id == $compra->usuario_id){
+            Compras::where('compra_id', $compra->compra_id)->update([
+                'status_id' => 2
+            ]);
+            return view('compras.pagamento');
+        }
+    }
 }
