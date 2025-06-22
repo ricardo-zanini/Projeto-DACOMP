@@ -21,7 +21,18 @@ class ComprasController extends Controller
 {
     public function list() 
     {
-        return view('compras.orders');
+        if (!Auth::check()) {
+            return redirect()->route('usuarios.login');
+        }
+        
+        $usuario = Auth::user();
+
+        $compras = Compras::where('usuario_id', $usuario->usuario_id)
+            ->with('status')
+            ->get()
+            ->groupBy('status.status');
+
+        return view('compras.orders', compact('compras'));
     }
 
     public function show()
@@ -200,5 +211,33 @@ class ComprasController extends Controller
         }
 
         return back()->with('success', 'Item removido do carrinho.');
+    }
+
+    public function pagamento(Compras $compra){
+        if(Auth::user()->usuario_id == $compra->usuario_id){
+            Compras::where('compra_id', $compra->compra_id)->update([
+                'status_id' => 2
+            ]);
+            return view('compras.pagamento');
+        }
+    }
+
+    public function cancel(Compras $compra)
+    {
+        if(Auth::user()->usuario_id == $compra->usuario_id){
+            foreach ($compra->produtosCompras as $item) {
+                $estoque = ProdutosEstoques::find($item->produto_estoque_id);
+                if ($estoque) {
+                    $estoque->unidades += $item->quantidade;
+                    $estoque->save();
+                }
+            }
+
+            Compras::where('compra_id', $compra->compra_id)->update([
+                'status_id' => 4
+            ]);
+
+            return back()->with('success', 'Pedido cancelado.');
+        }
     }
 }

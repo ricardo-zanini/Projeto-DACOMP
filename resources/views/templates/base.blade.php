@@ -164,10 +164,11 @@
       .menuUser{
         display: flex; 
         flex-direction: row; 
+        align-items:center;
         gap: 1rem;
       }
       .carrinhoIcon{
-        height: 40px; 
+        height: 30px; 
         width: auto;
       }
 
@@ -265,6 +266,9 @@
       <div class="containerOpcoesNavbar">
         <div class="containerMenusNavbar"> 
             <a href="{{ route('produtos.list') }}"><div>Produtos</div></a>
+            @if(Auth::user() && Auth::user()->gestor)
+              <a href="{{ route('produtos.relatorios') }}"><div>Relatórios</div></a>
+            @endif
         </div>
         <!-- Gestor -->
         @if(Auth::user() && Auth::user()->gestor)

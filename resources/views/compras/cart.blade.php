@@ -52,7 +52,7 @@
                             <p >Total ({{ $compra->quantidade_total }})</p>
                             <p>R$ {{ $compra->total }}</p>
                         </div>
-                        <button class="button">Pagar</button>
+                        <a class="button" href="{{ route('compras.pagamento', $compra) }}">Pagar</a>
                     </div>
                 @endforeach
             </div>
@@ -125,6 +125,9 @@
         border-radius: 500px;
         width: 25rem;
         color: #ffffff;
+        text-align:center;
+        text-decoration:none;
+        cursor:pointer;
     }
     .icon-button{
         background-color: white;
