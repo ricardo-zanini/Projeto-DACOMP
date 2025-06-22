@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="info total">
                                         <label>Total ({{ $compra->quantidade_total }})</label>
-                                        <label>R$ {{ $compra->total }}</label>
+                                        <label>R$ {{ number_format($compra->total, 2, ',', '.') }}</label>
                                     </div>
                                     @if ($compra->status_id == 1)
                                         <div class="acoes">

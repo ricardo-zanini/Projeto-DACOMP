@@ -49,7 +49,7 @@
                         </div>
                         <div class="info total">
                             <p >Total ({{ $compra->quantidade_total }})</p>
-                            <p>R$ {{ $compra->total }}</p>
+                            <p>R$ {{ number_format($compra->total, 2, ',', '.') }}</p>
                         </div>
                         <a class="button" href="{{ route('compras.pagamento', $compra) }}">Pagar</a>
                     </div>
