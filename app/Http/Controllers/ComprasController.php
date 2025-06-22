@@ -29,6 +29,7 @@ class ComprasController extends Controller
 
         $compras = Compras::where('usuario_id', $usuario->usuario_id)
             ->with('status')
+            ->orderBy('status_id')
             ->get()
             ->groupBy('status.status');
 

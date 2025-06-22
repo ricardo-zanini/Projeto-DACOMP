@@ -11,7 +11,7 @@
                 @foreach ($compras as $compra)
                     <div class="list-item">
                         <div class="info">
-                            <p>#{{ $compra->compra_id }} - {{ $compra->status->status }}</p>
+                            <p>#{{ $compra->compra_id }}</p>
                             <p>{{ $compra->horario->format('d-m-y') }}</p>
                         </div>
                         <div class="itens-container">

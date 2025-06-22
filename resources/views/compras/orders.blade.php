@@ -3,55 +3,59 @@
 
 @section('content')
     <h1>MEUS PEDIDOS</h1>
-    <div class="grid-container">
-        @foreach ($compras as $status => $comprasPorStatus)
-            <div class="status-section">
-                <h2>{{ strtoupper($status) }}</h2>
-                <div class="pedido-list">
-                    @forelse ($comprasPorStatus as $compra)
-                        <div class="pedido-card">
-                            <div class="info">
-                                <p style="font-weight: bold;">Pedido #{{ $compra->compra_id }}</p>
-                                <p>{{ $compra->horario->format('d-m-y') }}</p>
-                            </div>
-                            <div class="itens-container">
-                                @foreach ($compra->produtosCompras as $item)
-                                    <div class="item-wrapper">
-                                        <div class="info">
-                                            <p class="item-name">{{ $item->produtoEstoque->produto->nome ?? 'Produto não encontrado' }} ({{ $item->quantidade }})</p>
-                                            <p>R$ {{ number_format($item->valor_unidade, 2, ',', '.') }}</p>
-                                        </div>
+    <div class="pedidos-container">
+        @if ($compras->isEmpty())
+            <p>Você ainda não tem pedidos.</p>
+        @else
+            <div class="grid-container">
+                @foreach ($compras as $status => $comprasPorStatus)
+                    <div class="status-section">
+                        <h2>{{ strtoupper($status) }}</h2>
+                        <div class="pedido-list">
+                            @forelse ($comprasPorStatus as $compra)
+                                <div class="pedido-card">
+                                    <div class="info">
+                                        <p style="font-weight: bold;">Pedido #{{ $compra->compra_id }}</p>
+                                        <p>{{ $compra->horario->format('d-m-y') }}</p>
                                     </div>
-                                @endforeach
-                            </div>
-                            <div class="info total">
-                                <label>Total ({{ $compra->quantidade_total }})</label>
-                                <label>R$ {{ $compra->total }}</label>
-                            </div>
-                            @if ($compra->status_id == 1)
-                                <div class="acoes">
-                                    <a href="{{ route('compras.show') }}" class="button edit">Editar</a>
-                                    <form action="{{ route('compras.cancel', $compra) }}" method="POST">
-                                        @csrf
-                                        <button class="button cancel">Cancelar</button>
-                                    </form>
-                                    <a href="{{ route('compras.pagamento', $compra) }}" class="button pay">Pagar</a>
+                                    <div class="itens-container">
+                                        @foreach ($compra->produtosCompras as $item)
+                                            <div class="item-wrapper">
+                                                <div class="info">
+                                                    <p class="item-name">{{ $item->produtoEstoque->produto->nome ?? 'Produto não encontrado' }} ({{ $item->quantidade }})</p>
+                                                    <p>R$ {{ number_format($item->valor_unidade, 2, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="info total">
+                                        <label>Total ({{ $compra->quantidade_total }})</label>
+                                        <label>R$ {{ $compra->total }}</label>
+                                    </div>
+                                    @if ($compra->status_id == 1)
+                                        <div class="acoes">
+                                            <a href="{{ route('compras.show') }}" class="button edit">Editar</a>
+                                            <form action="{{ route('compras.cancel', $compra) }}" method="POST">
+                                                @csrf
+                                                <button class="button cancel">Cancelar</button>
+                                            </form>
+                                            <a href="{{ route('compras.pagamento', $compra) }}" class="button pay">Pagar</a>
+                                        </div>
+                                    @elseif ($compra->status_id == 2)
+                                        <div class="acoes">
+                                            <form action="{{ route('compras.cancel', $compra) }}" method="POST">
+                                                @csrf
+                                                <button class="button cancel">Cancelar</button>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </div>
-                            @elseif ($compra->status_id == 2)
-                                <div class="acoes">
-                                    <form action="{{ route('compras.cancel', $compra) }}" method="POST">
-                                        @csrf
-                                        <button class="button cancel">Cancelar</button>
-                                    </form>
-                                </div>
-                            @endif
+                            @endforeach
                         </div>
-                    @empty
-                        <p>Você ainda não tem pedidos.</p>
-                    @endforelse
-                </div>
+                    </div>
+                @endforeach
             </div>
-        @endforeach
+        @endif
     </div>
 @endsection
 
@@ -69,11 +73,18 @@
         border-bottom: 1px solid #ccc;
         padding-bottom: 0.5rem;
     }
+    .pedidos-container{
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items:center;
+    }
     .grid-container {
         display: grid;
         grid-template-rows: repeat(auto-fit, minmax(0px, 1fr));
         gap: 2rem;
         padding: 1rem 2rem;
+        width: 100%;
     }
     .status-section {
         border-radius: 8px;
