@@ -23,7 +23,7 @@ class ProdutosController extends Controller
 {
     public function list()
     {
-         // Busca todos os produtos em ordem decrescente de id (mais recentes primeiro)
+        // Busca todos os produtos em ordem decrescente de id (mais recentes primeiro)
         $produtosAux = Produtos::where('excluido', false)->orderBy('produto_id', 'desc')->get();
 
         // Ordena com os produtos disponiveis aparecendo primeiro
@@ -120,7 +120,7 @@ class ProdutosController extends Controller
             'cor_id' => ['nullable']
         ]);
 
-        $produtos = Produtos::query()
+        $produtosAux = Produtos::query()
             ->where('excluido', false) 
             ->when($form->filled('tipo_produto_id') && !$form->filled('tamanho_id') && !$form->filled('cor_id'), fn ($q) =>
                 $q->where('tipo_produto_id', $form->tipo_produto_id)
@@ -136,7 +136,15 @@ class ProdutosController extends Controller
             ->when($form->filled('input'), fn ($q) =>
             $q->where('nome', 'like', '%' . $form->input . '%'))
             ->distinct()
+            ->orderBy('produto_id', 'desc')
             ->get();
+
+        // Ordena com os produtos disponiveis aparecendo primeiro
+        $produtos = $produtosAux->sortBy(function ($produto) {
+            $temEmEstoque = $produto->estoque()->where('unidades', '>=', 1)->exists();
+            // Retorna 0 para 'disponível' (temEmEstoque >= 1) para que venham primeiro, e 1 para 'indisponível'
+            return $temEmEstoque ? 0 : 1;
+        })->values();
 
         $tipos_produtos = TiposProdutos::all();
         $tamanhos = Tamanhos::all();
