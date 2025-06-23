@@ -15,6 +15,8 @@
                     <img id="open-filter" class="filter-icon" src="../icons/filters.svg" alt="Filtros" />
                 </div>
             </div>
+            <div id="container_pedidos">
+            </div>
 
 
             <!-- ==================== MODAL ==================== -->
@@ -111,14 +113,41 @@
             search();
         }
 
+        // Função de listagem de pedidos, recebe Json de compras vindas do banco,
+        function listagem_produtos(pedidos, container){
 
-        console.log({{$pedidos}});
+            var ultimo_compra_id = -1;
+
+            pedidos.forEach((pedido)=>{
+                console.log(pedido)
+                if(ultimo_compra_id !== pedido.compra_id){
+                    container.append(`
+                        <div class="container_pedido" id="pedido_${pedido.compra_id}>
+                            aa
+                        </div>
+                    `)
+                }
+                ultimo_compra_id = pedido.compra_id
+            })
+        }
+        const container_append_pedidos = $("#container_pedidos")
+        const pedidos_json = @json($pedidos)
+
+        listagem_produtos(pedidos_json, container_append_pedidos);
+        
     });
 </script>
 @endpush
 
 @push('styles')
     <style>
+        .container_pedidos{
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            width: 100%;
+        }
         h1{
             font-family: "Cal Sans", sans-serif;
             text-align:center;

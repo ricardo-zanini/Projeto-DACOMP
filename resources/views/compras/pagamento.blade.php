@@ -5,6 +5,7 @@
     <h1>PAGAMENTO</h1>
     <div class="container">
         <p>Seu pagamento foi processado com sucesso!</p>
+        <p class="subtitle">Você será notificado por email com os códigos de retirada</p>
         <a href="{{ route('produtos.list') }}" class="button">Fazer outros pedidos</a>
     </div>
 @endsection
@@ -15,6 +16,9 @@
         font-family: "Cal Sans", sans-serif;
         text-align:center;
         padding: 50px 0px;
+    }
+    .subtitle{
+        color:#2e96d5;
     }
     .container{
         display: flex;
@@ -36,7 +40,7 @@
         text-decoration:none;
         cursor:pointer;
     }
-    p{
+    p:last-of-type{
         margin-bottom:50px;
     }
 </style>

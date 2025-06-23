@@ -115,6 +115,7 @@ CREATE TABLE Produtos_Compras (
     produto_estoque_id INT NOT NULL,
     quantidade INT NOT NULL,
     valor_unidade NUMERIC(5, 2) NOT NULL,
+    codigo_compra VARCHAR(9),
     FOREIGN KEY (compra_id) REFERENCES Compras(compra_id),
     FOREIGN KEY (produto_estoque_id) REFERENCES Produtos_Estoques(produto_estoque_id)
 );

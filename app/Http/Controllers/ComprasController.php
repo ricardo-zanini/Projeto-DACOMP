@@ -21,6 +21,9 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
+use App\Mail\ConfirmaCompra;
+use Illuminate\Support\Facades\Mail;
+
 class ComprasController extends Controller
 {
     public function list()
@@ -220,9 +223,43 @@ class ComprasController extends Controller
 
     public function pagamento(Compras $compra){
         if(Auth::user()->usuario_id == $compra->usuario_id){
+            $itens = ProdutosCompras::where('compra_id', $compra->compra_id)->get();
+
+            // Caso o usuario tente recarregar a página de pagamento estava gerando os codigos e enviando email novamente
+            foreach($itens as $item){
+                if(!is_null($item->codigo_compra)){
+                    return redirect()->route('home');
+                }
+            }
+            
             Compras::where('compra_id', $compra->compra_id)->update([
                 'status_id' => 2
             ]);
+            
+            $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            
+            
+            foreach ($itens as $item) {
+                $string_random = '';
+                for($i = 0; $i < 9; $i++){
+                    $string_random .= $caracteres[random_int(0, strlen($caracteres) - 1)];
+                }
+                $item->codigo_compra = $string_random; // ou qualquer lógica que você queira
+                $item->save();
+            }
+
+            $itens = ProdutosCompras::query()
+            ->join('produtos_estoques', 'produtos_estoques.produto_estoque_id', '=', 'produtos_compras.produto_estoque_id')
+            ->join('produtos', 'produtos.produto_id', '=', 'produtos_estoques.produto_id')
+            ->join('cores', 'cores.cor_id', '=', 'produtos_estoques.cor_id')
+            ->join('tamanhos', 'tamanhos.tamanho_id', '=', 'produtos_estoques.tamanho_id')
+            ->get();
+
+            Mail::to(Auth::user()->email)->send(new ConfirmaCompra([
+                'nome' => Auth::user()->nome,
+                'itens' => $itens
+            ]));    
+
             return view('compras.pagamento');
         }
     }
@@ -265,7 +302,7 @@ class ComprasController extends Controller
                     ->orWhere('usuarios.telefone', 'like', '%' . $form->input . '%');
                 });
             })
-
+            ->orderBy('compras.compra_id', 'asc')
             ->get();
 
         $tipos_produtos = TiposProdutos::all();
