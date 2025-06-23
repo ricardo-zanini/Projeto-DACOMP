@@ -7,7 +7,7 @@
         </p>
         <form class="container_cancelamento" method="post" action="{{ route('compras.cancel') }}">
             @csrf
-            <input id="input_cancel" type="hidden" name="compra_id" value=""/>
+            <input id="input_cancel" type="hidden" name="compra_id" value="1"/>
 
             <div class="mb-3">
                 <label for="chave" class="form-label">Chave Pix</label>

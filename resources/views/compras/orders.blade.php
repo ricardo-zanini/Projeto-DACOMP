@@ -96,7 +96,6 @@
                 $(".alerta_sucesso").removeClass("hidden")
                 $(".alerta_erro").addClass("hidden")
                 $(".container_cancelamento").addClass("hidden")
-                search()
                 setTimeout(function() {
                     closeModal('#delete-modal');
                     setTimeout(function() {
@@ -114,6 +113,7 @@
                 }
                 {{-- console.log("Erro:")
                 console.log(err) --}}
+                console.log(err)
                 $(".alerta_sucesso").addClass("hidden")
                 $(".alerta_erro").removeClass("hidden")
             }

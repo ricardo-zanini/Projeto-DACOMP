@@ -313,7 +313,7 @@ class ComprasController extends Controller
             'motivacao' => ['required'],
         ]);
 
-        $compra = Compras::where('compra_id', $form->compra_id)->get();
+        $compra = Compras::where('compra_id', $form->compra_id)->first();
 
         if(Auth::user()->usuario_id == $compra->usuario_id){
             $solicitacoes_cancelamentos = New SolicitacoesCancelamentos();

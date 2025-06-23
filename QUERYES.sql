@@ -134,6 +134,7 @@ CREATE TABLE Solicitacoes_Cancelamentos (
     cancelamento_status_id INT NOT NULL,
     motivacao VARCHAR(200) NOT NULL,
     chave_pix VARCHAR(200) NOT NULL,
+    FOREIGN KEY (compra_id) REFERENCES Compras(compra_id),
     FOREIGN KEY (cancelamento_status_id) REFERENCES Cancelamentos_Status(cancelamento_status_id)
 );
 
