@@ -10,7 +10,7 @@ use App\Models\ProdutosEstoques;
 use App\Models\TiposProdutos;
 use App\Models\Tamanhos;
 use App\Models\Cores;
-
+use App\Models\Usuario;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +23,7 @@ use Illuminate\Validation\Rule;
 
 class ComprasController extends Controller
 {
-    public function list() 
+    public function list()
     {
         if (!Auth::check()) {
             return redirect()->route('usuarios.login');
@@ -59,7 +59,7 @@ class ComprasController extends Controller
         return view('compras.cart', compact('compras'));
     }
 
-    public function createOrder($usuario)
+    public function createOrder(Usuario $usuario)
     {
         $compra = new Compras();
         $compra->usuario_id = $usuario->usuario_id;
@@ -70,7 +70,7 @@ class ComprasController extends Controller
         return $compra;
     }
 
-    public function getOpenOrder($usuario)
+    public function getOpenOrder(Usuario $usuario)
     {
         $compra = Compras::where('usuario_id', $usuario->usuario_id)
             ->where('status_id', 1)
