@@ -5,6 +5,14 @@
     <h1>CANCELAMENTOS</h1>
 @endsection
 
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let dados = @json($pedidos);
+        console.log(dados)
+    </script>
+@endpush
+
 @push('styles')
 <style>
    h1{

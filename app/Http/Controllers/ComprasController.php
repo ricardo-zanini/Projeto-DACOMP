@@ -319,19 +319,25 @@ class ComprasController extends Controller
             $solicitacoes_cancelamentos = New SolicitacoesCancelamentos();
             $solicitacoes_cancelamentos->cancelamento_status_id = 1;
             $solicitacoes_cancelamentos->motivacao = $form->motivacao;
-
+            $solicitacoes_cancelamentos->chave_pix = $form->chave;
+            $solicitacoes_cancelamentos->compra_id = $form->compra_id;
             $solicitacoes_cancelamentos->save();
+            return true;
         }else{
             return false;
         }
     }
 
     public function cancelamentos(){
-        $pedidos = SolicitacoesCancelamentos::query()
-        ->join('Compras', 'solicitacoes_cancelamentos.compra_id', '=', 'compras.compra_id')
-        ->where('solicitacao_cancelamento_id', '=', 1)
-        ->get();
+        if(Auth::user()->gestor == true){
+            $pedidos = SolicitacoesCancelamentos::query()
+            ->join('Compras', 'solicitacoes_cancelamentos.compra_id', '=', 'compras.compra_id')
+            ->where('solicitacao_cancelamento_id', '=', 1)
+            ->get();
 
-        return view('compras.cancelamentos', compact('pedidos'));
+            return view('compras.cancelamentos', compact('pedidos'));
+        }else{
+             return redirect()->route('login');
+        }
     }
 }
