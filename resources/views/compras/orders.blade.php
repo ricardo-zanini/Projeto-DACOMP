@@ -43,10 +43,11 @@
                                         </div>
                                     @elseif ($compra->status_id == 2)
                                         <div class="acoes">
-                                            <form action="{{ route('compras.cancel', $compra) }}" method="POST">
-                                                @csrf
-                                                <button class="button cancel">Cancelar</button>
-                                            </form>
+                                            @if (!$compra->solicitacao_cancelamento_id)
+                                            <button compra_id="{{$compra->compra_id}}"class="button cancel">Cancelar</button>
+                                            @else
+                                            <div class="cancelamento_solicitado">Cancelamento Solicitado</diiv>
+                                            @endif
                                         </div>
                                     @endif
                                 </div>
@@ -56,8 +57,78 @@
                 @endforeach
             </div>
         @endif
+        @include('compras.modal_cancel')
     </div>
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // ================= Modal de Deleção =================
+    $(document).on('click', '.open-cancel', function(){
+        const compraId = $(this).attr('compra_id');
+        $('#input_cancel').val(compraId);
+        openModal('#cancel-modal')
+    });
+
+    $('#close-cancel').on('click', () => closeModal('#cancel-modal'));
+    $('#cancelar_cancelamento').on('click', () => closeModal('#cancel-modal'));
+    $('.button.cancel').on('click', () => openModal('#cancel-modal'));
+
+    $('.container_cancelamento').on("submit", function(e){
+        e.preventDefault();
+        var action = $(this).attr('action');
+        $.ajax({
+            url: action,
+            method: $(this).attr('method'),
+            data: new FormData(this),
+            processData: false,
+            dataType: 'json',
+            contentType: false,
+            beforeSend: function() {
+                $(document).find('.text-danger').text('');
+                $(document).find('.border-danger').removeClass('is-invalid');
+                
+                $(".alerta_sucesso").addClass("hidden")
+                $(".alerta_erro").addClass("hidden")
+            },
+            success: function() {
+                $(".alerta_sucesso").removeClass("hidden")
+                $(".alerta_erro").addClass("hidden")
+                $(".container_cancelamento").addClass("hidden")
+                search()
+                setTimeout(function() {
+                    closeModal('#delete-modal');
+                    setTimeout(function() {
+                            $(".alerta_sucesso").addClass("hidden");
+                            $(".container_cancelamento").removeClass("hidden")
+                    }, 400);
+                }, 2000);
+            },
+            error: function(err) {
+                if (err.status == 422) {
+                    $.each(err.responseJSON.errors, function (i, error) {
+                        $('.'+i+'_error').text(error[0]);
+                        $(document).find('[name="'+i+'"]').addClass('is-invalid');
+                    });
+                }
+                {{-- console.log("Erro:")
+                console.log(err) --}}
+                $(".alerta_sucesso").addClass("hidden")
+                $(".alerta_erro").removeClass("hidden")
+            }
+        });
+    })
+
+    function openModal(element) {
+        $(element).hide().fadeIn()
+    }
+
+    function closeModal(element) {
+        $(element).fadeOut();
+    }
+</script>
+@endpush
 
 @push('styles')
 <style>

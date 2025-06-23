@@ -2,6 +2,8 @@
 -- ============================================= DROPS ===========================================================
 -- ===============================================================================================================
 
+DROP TABLE IF EXISTS Solicitacoes_Cancelamentos;
+DROP TABLE IF EXISTS Cancelamentos_Status;
 DROP TABLE IF EXISTS Produtos_Compras;
 DROP TABLE IF EXISTS Compras;
 DROP TABLE IF EXISTS Compras_Status;
@@ -104,6 +106,7 @@ CREATE TABLE Compras (
     horario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status_id INT NOT NULL,
     total NUMERIC(10,2),
+    codigo_compra VARCHAR(9),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
     FOREIGN KEY (status_id) REFERENCES Compras_Status(status_id)
 );
@@ -115,13 +118,41 @@ CREATE TABLE Produtos_Compras (
     produto_estoque_id INT NOT NULL,
     quantidade INT NOT NULL,
     valor_unidade NUMERIC(5, 2) NOT NULL,
-    codigo_compra VARCHAR(9),
     FOREIGN KEY (compra_id) REFERENCES Compras(compra_id),
     FOREIGN KEY (produto_estoque_id) REFERENCES Produtos_Estoques(produto_estoque_id)
 );
+-- da solicitacao de cancelamento de uma compra
+CREATE TABLE Cancelamentos_Status (
+    cancelamento_status_id INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(100) NOT NULL
+);
+
+-- Solicitações de Cancelamento feitas por usuários que pagaram produto
+CREATE TABLE Solicitacoes_Cancelamentos (
+    solicitacao_cancelamento_id INT AUTO_INCREMENT PRIMARY KEY,
+    compra_id INT NOT NULL,
+    cancelamento_status_id INT NOT NULL,
+    motivacao VARCHAR(200) NOT NULL,
+    FOREIGN KEY (cancelamento_status_id) REFERENCES Cancelamentos_Status(cancelamento_status_id)
+);
+
+
 
 -- ===============================================================================================================
 -- ============================================= INSERTS =========================================================
+-- ===============================================================================================================
+
+-- ====================================== INSERTS FUNDAMENTAIS !!! ===============================================
+
+INSERT INTO Compras_Status (status) VALUES ('Em andamento');
+INSERT INTO Compras_Status (status) VALUES ('Pagamento finalizado');
+INSERT INTO Compras_Status (status) VALUES ('Entregue');
+INSERT INTO Compras_Status (status) VALUES ('Cancelado');
+
+INSERT INTO Cancelamentos_Status (status) VALUES ('Em análise');
+INSERT INTO Cancelamentos_Status (status) VALUES ('Cancelado');
+INSERT INTO Cancelamentos_Status (status) VALUES ('Negado');
+
 -- ===============================================================================================================
 
 INSERT INTO Tipos_Usuarios (tipo) VALUES ('Aluno');
@@ -165,8 +196,3 @@ INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, un
 INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (5, 1, 1, False, 0, 0);
 INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (6, 1, 3, False, 0, 0);
 INSERT INTO Produtos_Estoques (produto_id, tamanho_id, cor_id, prontaEntrega, unidades, excluido) VALUES (7, 1, 1, False, 0, 0);
-
-INSERT INTO Compras_Status (status) VALUES ('Em andamento');
-INSERT INTO Compras_Status (status) VALUES ('Pagamento finalizado');
-INSERT INTO Compras_Status (status) VALUES ('Entregue');
-INSERT INTO Compras_Status (status) VALUES ('Cancelado');

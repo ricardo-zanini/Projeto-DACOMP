@@ -53,11 +53,14 @@ Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middlewa
 
 Route::get('/relatorios/pedidos', [ComprasController::class, 'relatorios'])->middleware('auth')->name('pedidos.relatorios');
 
+Route::get('/pedidos/cancelamentos', [ComprasController::class, 'cancelamentos'])->middleware('auth')->name('compras.cancelamentos');
+Route::post('/pedidos/remove', [ComprasController::class, 'cancel'])->middleware('auth')->name('compras.cancel');
+
 Route::post('/carrinho/{compra}/add/{item}',    [ComprasController::class, 'add'])->middleware('auth')->name('compras.add');
 Route::post('/carrinho/{compra}/remove/{item}', [ComprasController::class, 'remove'])->middleware('auth')->name('compras.remove');
 Route::post('/carrinho/{compra}/delete/{item}', [ComprasController::class, 'delete'])->middleware('auth')->name('compras.delete');
 Route::get('/pagamento/{compra}', [ComprasController::class, 'pagamento'])->middleware('auth')->name('compras.pagamento');
-Route::post('/pedidos/{compra}/remove', [ComprasController::class, 'cancel'])->middleware('auth')->name('compras.cancel');
+
 
 //============================================================================================
 // Rotas de Interesse

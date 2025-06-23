@@ -5,7 +5,7 @@
     <h1>PAGAMENTO</h1>
     <div class="container">
         <p>Seu pagamento foi processado com sucesso!</p>
-        <p class="subtitle">Você será notificado por email com os códigos de retirada</p>
+        <p class="subtitle">Você será notificado por email com o código de retirada</p>
         <a href="{{ route('produtos.list') }}" class="button">Fazer outros pedidos</a>
     </div>
 @endsection

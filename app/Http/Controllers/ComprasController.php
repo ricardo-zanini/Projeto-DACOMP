@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SolicitacoesCancelamentos;
 use App\Models\Compras;
 use App\Models\ProdutosCompras;
 use App\Models\ComprasStatus;
@@ -11,6 +12,7 @@ use App\Models\TiposProdutos;
 use App\Models\Tamanhos;
 use App\Models\Cores;
 use App\Models\Usuario;
+
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,16 +31,17 @@ class ComprasController extends Controller
     public function list()
     {
         if (!Auth::check()) {
-            return redirect()->route('usuarios.login');
+            return redirect()->route('login');
         }
         
         $usuario = Auth::user();
 
-        $compras = Compras::where('usuario_id', $usuario->usuario_id)
-            ->with('status')
-            ->orderBy('status_id')
-            ->get()
-            ->groupBy('status.status');
+        $compras = Compras::query()
+        ->where('usuario_id', $usuario->usuario_id)
+        ->with('status')
+        ->orderBy('status_id')
+        ->get()
+        ->groupBy('status.status');
 
         return view('compras.orders', compact('compras'));
     }
@@ -46,7 +49,7 @@ class ComprasController extends Controller
     public function show()
     {
         if (!Auth::check()) {
-            return redirect()->route('usuarios.login');
+            return redirect()->route('login');
         }
 
         $usuario = Auth::user();
@@ -99,7 +102,7 @@ class ComprasController extends Controller
         $valor_unidade = $request->input('valor_unidade');
 
         if (!Auth::check()) {
-            return redirect()->route('usuarios.login');
+            return redirect()->route('login');
         }
 
         $usuario = Auth::user();
@@ -134,7 +137,7 @@ class ComprasController extends Controller
     public function add(Compras $compra, ProdutosCompras $item)
     {
         if (!Auth::check()) {
-            return redirect()->route('usuarios.login');
+            return redirect()->route('login');
         }
 
         $usuario = Auth::user();
@@ -164,7 +167,7 @@ class ComprasController extends Controller
     public function remove(Compras $compra, ProdutosCompras $item)
     {
         if (!Auth::check()) {
-            return redirect()->route('usuarios.login');
+            return redirect()->route('login');
         }
 
         $usuario = Auth::user();
@@ -194,7 +197,7 @@ class ComprasController extends Controller
     public function delete(Compras $compra, ProdutosCompras $item)
     {
         if (!Auth::check()) {
-            return redirect()->route('usuarios.login');
+            return redirect()->route('login');
         }
 
         $usuario = Auth::user();
@@ -223,13 +226,12 @@ class ComprasController extends Controller
 
     public function pagamento(Compras $compra){
         if(Auth::user()->usuario_id == $compra->usuario_id){
-            $itens = ProdutosCompras::where('compra_id', $compra->compra_id)->get();
+            $item = Compras::where('compra_id', $compra->compra_id)->get();
+            $item = $item->first();
 
             // Caso o usuario tente recarregar a página de pagamento estava gerando os codigos e enviando email novamente
-            foreach($itens as $item){
-                if(!is_null($item->codigo_compra)){
-                    return redirect()->route('home');
-                }
+            if(!is_null($item->codigo_compra)){
+                return redirect()->route('home');
             }
             
             Compras::where('compra_id', $compra->compra_id)->update([
@@ -238,26 +240,16 @@ class ComprasController extends Controller
             
             $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             
-            
-            foreach ($itens as $item) {
-                $string_random = '';
-                for($i = 0; $i < 9; $i++){
-                    $string_random .= $caracteres[random_int(0, strlen($caracteres) - 1)];
-                }
-                $item->codigo_compra = $string_random; // ou qualquer lógica que você queira
-                $item->save();
+            $string_random = '';
+            for($i = 0; $i < 9; $i++){
+                $string_random .= $caracteres[random_int(0, strlen($caracteres) - 1)];
             }
-
-            $itens = ProdutosCompras::query()
-            ->join('produtos_estoques', 'produtos_estoques.produto_estoque_id', '=', 'produtos_compras.produto_estoque_id')
-            ->join('produtos', 'produtos.produto_id', '=', 'produtos_estoques.produto_id')
-            ->join('cores', 'cores.cor_id', '=', 'produtos_estoques.cor_id')
-            ->join('tamanhos', 'tamanhos.tamanho_id', '=', 'produtos_estoques.tamanho_id')
-            ->get();
+            $item->codigo_compra = $string_random; // ou qualquer lógica que você queira
+            $item->save();
 
             Mail::to(Auth::user()->email)->send(new ConfirmaCompra([
                 'nome' => Auth::user()->nome,
-                'itens' => $itens
+                'item' => $item
             ]));    
 
             return view('compras.pagamento');
@@ -312,22 +304,34 @@ class ComprasController extends Controller
         return view('compras.relatorios', compact('pedidos', 'tipos_produtos', 'tamanhos', 'cores'));
     }
 
-    public function cancel(Compras $compra)
+    public function cancel(Request $form)
     {
+        $form->validate([
+            'compra_id' => ['required', 'integer'],
+            'chave' => ['required'],
+            'chave_confirmation' => ['required'],
+            'motivacao' => ['required'],
+        ]);
+
+        $compra = Compras::where('compra_id', $form->compra_id)->get();
+
         if(Auth::user()->usuario_id == $compra->usuario_id){
-            foreach ($compra->produtosCompras as $item) {
-                $estoque = ProdutosEstoques::find($item->produto_estoque_id);
-                if ($estoque) {
-                    $estoque->unidades += $item->quantidade;
-                    $estoque->save();
-                }
-            }
+            $solicitacoes_cancelamentos = New SolicitacoesCancelamentos();
+            $solicitacoes_cancelamentos->cancelamento_status_id = 1;
+            $solicitacoes_cancelamentos->motivacao = $form->motivacao;
 
-            Compras::where('compra_id', $compra->compra_id)->update([
-                'status_id' => 4
-            ]);
-
-            return back()->with('success', 'Pedido cancelado.');
+            $solicitacoes_cancelamentos->save();
+        }else{
+            return false;
         }
+    }
+
+    public function cancelamentos(){
+        $pedidos = SolicitacoesCancelamentos::query()
+        ->join('Compras', 'solicitacoes_cancelamentos.compra_id', '=', 'compras.compra_id')
+        ->where('solicitacao_cancelamento_id', '=', 1)
+        ->get();
+
+        return view('compras.cancelamentos', compact('pedidos'));
     }
 }
