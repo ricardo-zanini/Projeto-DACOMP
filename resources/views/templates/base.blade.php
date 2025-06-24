@@ -273,7 +273,7 @@
             @endif
             @if(Auth::user() && Auth::user()->gestor)
               <a href="{{ route('relatorios.list') }}"><div>Relatórios</div></a>
-              <a href="{{ route('compras.cancelamentos') }}"><div>Cancelamentos</div></a>
+              <!-- <a href="{{ route('compras.cancelamentos') }}"><div>Cancelamentos</div></a> -->
             @endif
         </div>
         <!-- Gestor -->
