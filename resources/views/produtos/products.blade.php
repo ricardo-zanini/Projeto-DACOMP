@@ -37,6 +37,7 @@
         $('#modal-tamanho').on('change', () => filterAndSearch('tamanho'));
         $('#modal-cor').on('change', () => filterAndSearch('cor'));
         $('#search-form').on('submit', function (e) {e.preventDefault(); search();});
+        $('#search').on('blur', function (e) {search();});
 
         // ================= Modal de Deleção =================
         $(document).on('click', '.open-delete', function(){

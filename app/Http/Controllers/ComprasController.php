@@ -257,51 +257,62 @@ class ComprasController extends Controller
     }
     
     public function relatorios(Request $form){
-        $form->validate([
-            'input' => ['nullable'],
-            'tipo_produto_id' => ['nullable'],
-            'tamanho_id' => ['nullable'],
-            'cor_id' => ['nullable']
-        ]);
+        if(Auth::user()->gestor == true){
+            $form->validate([
+                'input' => ['nullable'],
+                'tipo_produto_id' => ['nullable'],
+                'tamanho_id' => ['nullable'],
+                'cor_id' => ['nullable']
+            ]);
 
-        $pedidos = Compras::query()
-            ->join('produtos_compras', 'compras.compra_id', '=', 'produtos_compras.compra_id')
-            ->join('produtos_estoques', 'produtos_estoques.produto_estoque_id', '=', 'produtos_compras.produto_estoque_id')
-            ->join('produtos', 'produtos.produto_id', '=', 'produtos_estoques.produto_id')
-            ->join('usuarios', 'usuarios.usuario_id', '=', 'compras.usuario_id')
+            $pedidos = Compras::query()
+                ->select('compras.compra_id','compras.usuario_id','compras.horario','compras.status_id','compras.total','compras.codigo_compra', 'usuarios.nome', 'compras_status.status')
+                ->leftJoin('produtos_compras', 'compras.compra_id', '=', 'produtos_compras.compra_id')
+                ->leftJoin('produtos_estoques', 'produtos_estoques.produto_estoque_id', '=', 'produtos_compras.produto_estoque_id')
+                ->leftJoin('produtos', 'produtos.produto_id', '=', 'produtos_estoques.produto_id')
+                ->leftJoin('usuarios', 'usuarios.usuario_id', '=', 'compras.usuario_id')
+                ->leftJoin('compras_status', 'compras_status.status_id', '=', 'compras.status_id')
 
-            ->when($form->filled('tipo_produto_id') && !$form->filled('tamanho_id') && !$form->filled('cor_id'), fn ($q) =>
-                $q->where('tipo_produto_id', $form->tipo_produto_id)
-            )
+                ->when($form->filled('tipo_produto_id') && !$form->filled('tamanho_id') && !$form->filled('cor_id'), fn ($q) =>
+                    $q->where('tipo_produto_id', $form->tipo_produto_id)
+                )
 
-            ->when($form->filled('tamanho_id') && !$form->filled('tipo_produto_id') && !$form->filled('cor_id'), function ($q) use ($form) {
-                $q->whereHas('estoque', fn ($estoque) =>
-                    $estoque->where('tamanho_id', $form->tamanho_id));
-            })
+                ->when($form->filled('tamanho_id') && !$form->filled('tipo_produto_id') && !$form->filled('cor_id'), function ($q) use ($form) {
+                    $q->whereHas('estoque', fn ($estoque) =>
+                        $estoque->where('tamanho_id', $form->tamanho_id));
+                })
 
-            ->when($form->filled('cor_id') && !$form->filled('tipo_produto_id') && !$form->filled('tamanho_id'), function ($q) use ($form) {
-                $q->whereHas('estoque', fn ($estoque) =>
-                    $estoque->where('cor_id', $form->cor_id));
-            })
+                ->when($form->filled('cor_id') && !$form->filled('tipo_produto_id') && !$form->filled('tamanho_id'), function ($q) use ($form) {
+                    $q->whereHas('estoque', fn ($estoque) =>
+                        $estoque->where('cor_id', $form->cor_id));
+                })
 
-            ->when($form->filled('input'), function ($q) use ($form) {
-                $q->where(function ($subQuery) use ($form) {
-                $subQuery
-                    ->where('produtos.nome', 'like', '%' . $form->input . '%')
-                    ->orWhere('usuarios.cartao_UFRGS', 'like', '%' . $form->input . '%')
-                    ->orWhere('usuarios.nome', 'like', '%' . $form->input . '%')
-                    ->orWhere('usuarios.email', 'like', '%' . $form->input . '%')
-                    ->orWhere('usuarios.telefone', 'like', '%' . $form->input . '%');
-                });
-            })
-            ->orderBy('compras.compra_id', 'asc')
-            ->get();
+                ->when($form->filled('input'), function ($q) use ($form) {
+                    $q->where(function ($subQuery) use ($form) {
+                    $subQuery
+                        ->where('produtos.nome', 'like', '%' . $form->input . '%')
+                        ->orWhere('usuarios.cartao_UFRGS', 'like', '%' . $form->input . '%')
+                        ->orWhere('usuarios.nome', 'like', '%' . $form->input . '%')
+                        ->orWhere('usuarios.email', 'like', '%' . $form->input . '%')
+                        ->orWhere('usuarios.telefone', 'like', '%' . $form->input . '%');
+                    });
+                })
+                ->groupBy('compras.compra_id','compras.usuario_id','compras.horario','compras.status_id','compras.total','compras.codigo_compra', 'usuarios.nome', 'compras_status.status')
+                ->orderBy('compras.horario', 'desc')
+                ->get();
 
-        $tipos_produtos = TiposProdutos::all();
-        $tamanhos = Tamanhos::all();
-        $cores = Cores::all();
+            $tipos_produtos = TiposProdutos::all();
+            $tamanhos = Tamanhos::all();
+            $cores = Cores::all();
 
-        return view('compras.relatorios', compact('pedidos', 'tipos_produtos', 'tamanhos', 'cores'));
+            if ($form->ajax()) {
+                return view('compras.list', compact('pedidos'));
+            }
+
+            return view('compras.relatorios', compact('pedidos', 'tipos_produtos', 'tamanhos', 'cores'));
+        }else{
+             return redirect()->route('login');
+        }
     }
 
     public function cancel(Request $form)

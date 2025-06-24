@@ -15,44 +15,9 @@
                     <img id="open-filter" class="filter-icon" src="../icons/filters.svg" alt="Filtros" />
                 </div>
             </div>
-            <div id="container_pedidos">
-            </div>
-
-
-            <!-- ==================== MODAL ==================== -->
-            <div id="filter-modal" class="filter-modal" style="display:none;">
-                <div class="filter-box">
-                    <span id="close-filter" class="close-btn">&times;</span>
-                    <label style="font-weight: bold;">FILTRAR POR</label>
-
-                    <form id="filter-form">
-                        <label for="modal-tipo">Categoria</label>
-                        <select id="modal-tipo" name="tipo_produto_id" class="form-control">
-                            <option value="">Todas</option>
-                            @foreach ($tipos_produtos as $tipo)
-                                <option value="{{ $tipo->tipo_produto_id }}">{{ $tipo->tipo }}</option>
-                            @endforeach
-                        </select>
-
-                        <label for="modal-tamanho">Tamanho</label>
-                        <select id="modal-tamanho" name="tamanho_id" class="form-control">
-                            <option value="">Todos</option>
-                            @foreach ($tamanhos as $tamanho)
-                                <option value="{{ $tamanho->tamanho_id }}">{{ $tamanho->tamanho }}</option>
-                            @endforeach
-                        </select>
-
-                        <label for="modal-cor">Cor</label>
-                        <select id="modal-cor" name="cor_id" class="form-control">
-                            <option value="">Todas</option>
-                            @foreach ($cores as $cor)
-                                <option value="{{ $cor->cor_id }}">{{ $cor->cor }}</option>
-                            @endforeach
-                        </select>
-                    </form>
-                </div>
-            </div>
         </form>
+        @include('compras.filters')
+        @include('compras.list', ['pedidos' => $pedidos])
     </div>
 @endsection
 
@@ -67,6 +32,7 @@
         $('#modal-tamanho').on('change', () => filterAndSearch('tamanho'));
         $('#modal-cor').on('change', () => filterAndSearch('cor'));
         $('#search-form').on('submit', function (e) {e.preventDefault(); search();});
+        $('#search').on('blur', function (e) {search();});
 
         // ================= Modal de Deleção =================
         $('.open-delete').on('click', function(){
@@ -79,6 +45,7 @@
         $('#cancelar_delecao').on('click', () => closeModal('#delete-modal'));
         
         function search() {
+            console.log('aaa')
             $.ajax({
                 url: "{{ route('pedidos.relatorios') }}",
                 method: "GET",
@@ -88,7 +55,7 @@
                     tamanho_id: $('#modal-tamanho').val(),
                     cor_id: $('#modal-cor').val()
                 },
-                success: data => $('#products-list').html(data),
+                success: data => $('#container_pedidos').html(data),
                 error:   () => alert('Erro ao buscar produtos.')
             });
         }
@@ -113,27 +80,11 @@
             search();
         }
 
-        // Função de listagem de pedidos, recebe Json de compras vindas do banco,
-        function listagem_produtos(pedidos, container){
+       
+        // const container_append_pedidos = $("#container_pedidos")
+        // const pedidos_json = @json($pedidos)
 
-            var ultimo_compra_id = -1;
-
-            pedidos.forEach((pedido)=>{
-                console.log(pedido)
-                if(ultimo_compra_id !== pedido.compra_id){
-                    container.append(`
-                        <div class="container_pedido" id="pedido_${pedido.compra_id}>
-                            aa
-                        </div>
-                    `)
-                }
-                ultimo_compra_id = pedido.compra_id
-            })
-        }
-        const container_append_pedidos = $("#container_pedidos")
-        const pedidos_json = @json($pedidos)
-
-        listagem_produtos(pedidos_json, container_append_pedidos);
+        // listagem_produtos(pedidos_json, container_append_pedidos);
         
     });
 </script>
@@ -141,13 +92,6 @@
 
 @push('styles')
     <style>
-        .container_pedidos{
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 0.375rem;
-            padding: 1rem;
-            width: 100%;
-        }
         h1{
             font-family: "Cal Sans", sans-serif;
             text-align:center;
@@ -215,52 +159,5 @@
             padding: 0.2rem;
             user-select: none;
         }
-
-
-
-
-    /* ========================================== */
-    /* ============== Estilo Modal ============== */
-    /* ========================================== */
-
-    .filter-modal{
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-    }
-    .filter-box{
-        background: white;
-        padding: 30px;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 400px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .close-btn{
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-        cursor: pointer;
-    }
-    .filter-box label{
-        margin-top: 10px;
-        display: block;
-    }
-    .filter-box select{
-        width: 100%;
-        padding: 6px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
 </style>
 @endpush
