@@ -17,12 +17,12 @@
         <div class="containerTextoProdutos">
             <div class="sobreProdutos1">
                 <p>
-                O DACOMP da UFRGS realiza a venda de produtos personalizados do curso de Ciência e Engenharia de Computação, fortalecendo a identidade estudantil. Entre os itens disponíveis estão camisetas, moletons, canecas e adesivos, todos com design voltado à comunidade acadêmica. A renda obtida auxilia em eventos, melhorias no espaço do diretório e apoio a iniciativas estudantis. As vendas são feitas em feiras, bancas e por encomenda online, promovendo integração entre os alunos e incentivando o orgulho de fazer parte do curso.
+                O DACOMP da UFRGS realiza a venda de produtos personalizados do curso de Ciência e Engenharia de Computação, fortalecendo a identidade estudantil. Entre os itens disponíveis estão camisetas, moletons, canecas e adesivos, todos com design voltado à comunidade acadêmica. A renda obtida auxilia em eventos, melhorias no espaço do diretório e apoio a iniciativas estudantis.
                 </p>
             </div>
             <div class="sobreProdutos2">
                 <p>
-                Além de apoiar financeiramente o diretório, adquirir os produtos é uma forma de demonstrar pertencimento e fortalecer o vínculo com o curso. Clique aqui para conhecer a loja virtual do DACOMP, e contribua para o desenvolvimento da nossa comunidade estudantil!
+                As vendas são feitas em feiras, bancas e por encomenda online, promovendo integração entre os alunos e incentivando o orgulho de fazer parte do curso. Além de apoiar financeiramente o diretório, adquirir os produtos é uma forma de demonstrar pertencimento e fortalecer o vínculo com o curso. Clique aqui para conhecer a loja virtual do DACOMP, e contribua para o desenvolvimento da nossa comunidade estudantil!
                 </p>
             </div>
         </div>

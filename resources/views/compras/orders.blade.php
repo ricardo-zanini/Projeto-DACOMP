@@ -16,7 +16,7 @@
                                 <div class="pedido-card">
                                     <div class="info">
                                         <p style="font-weight: bold;">Pedido #{{ $compra->compra_id }}</p>
-                                        <p>{{ $compra->horario->format('d-m-y') }}</p>
+                                        <p>{{ $compra->horario->format('d/m/y') }}</p>
                                     </div>
                                     <div class="itens-container">
                                         @foreach ($compra->produtosCompras as $item)
