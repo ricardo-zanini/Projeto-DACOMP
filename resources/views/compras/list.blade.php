@@ -16,7 +16,7 @@
                 <div class="total_compra">R${{number_format($pedido->total, 2, ',', '.')}}</div>
                 <div class="acao_compra">
                     @if($pedido->status_id == 2)
-                        <button class="botaoTransicao">
+                        <button onclick="window.location='{{ route('pedidos.entrega', [$pedido]) }}'" class="botaoTransicao">
                             Pronto para Entrega
                         </button>
                     @endif

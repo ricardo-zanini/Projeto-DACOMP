@@ -363,4 +363,14 @@ class ComprasController extends Controller
              return redirect()->route('login');
         }
     }
+
+    public function pedidoRetirada(Compras $pedido)
+    {
+        if(Auth::user()->gestor == true) {
+            $pedido = Compras::with('produtosCompras.produtoEstoque.produto', 'produtosCompras.produtoEstoque.tamanho', 'produtosCompras.produtoEstoque.cor')->findOrFail($pedido->compra_id);
+            return view('compras.entrega', compact('pedido'));
+        } else {
+             return redirect()->route('login');
+        }
+    }
 }
