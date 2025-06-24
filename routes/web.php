@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 //============================================================================================
 // Rota de Início da aplicação
 Route::get('/', function () {return view('home.index');})->name('home');
+Route::get('/sobrenos', function () {return view('home.about');})->name('about');
 
 //============================================================================================
 // Rotas para cadastro de usuários

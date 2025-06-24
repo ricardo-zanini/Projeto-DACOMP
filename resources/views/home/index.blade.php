@@ -7,6 +7,7 @@
         <img class="patternTitulo" src="../icons/curvePattern.svg" alt="Pattern" />
         <div><h1>DA<span>COMP</span></h1></div>
         <h3>Personalizados</h3>
+        <button onclick="window.location='{{ route('produtos.list') }}'" type="button" class="button">Conheça nossos produtos</button>
     </div>
     <div class="containerProdutos">
         <div class="containerProdutosTitulo">
@@ -23,23 +24,7 @@
                 <p>
                 Além de apoiar financeiramente o diretório, adquirir os produtos é uma forma de demonstrar pertencimento e fortalecer o vínculo com o curso. Clique aqui para conhecer a loja virtual do DACOMP, e contribua para o desenvolvimento da nossa comunidade estudantil!
                 </p>
-                <button onclick="window.location='{{ route('produtos.list') }}'" type="button" class="button">Conheça nossos produtos</button>
             </div>
-        </div>
-    </div>
-    <div class="containerSobreNos">
-        <div class="containerSobreNosTitulo">
-            <img class="titleIcon" src="../icons/book.svg" alt="Book icon" />
-            <h4>Sobre Nós</h4>
-        </div>
-        <div class="containerSobreNosTexto">
-            <p>
-            O DACOMP (Diretório Acadêmico de Computação) é a entidade representativa dos estudantes de cursos ligados à computação no Instituto de Informática (INF) da UFRGS, como Ciência da Computação e Engenharia de Computação. Ele atua como ponte entre o corpo discente e a universidade, defendendo os interesses dos alunos em questões acadêmicas, administrativas e políticas, além de ser um espaço de apoio, acolhimento e integração da comunidade estudantil.
-            </p><p>
-            Além da representação política, o DACOMP organiza atividades culturais, técnicas e sociais que promovem o engajamento entre os alunos. Isso inclui recepções aos calouros, palestras, minicursos, eventos esportivos, hackathons e semanas acadêmicas. Essas ações contribuem para um ambiente mais dinâmico, onde os estudantes têm oportunidade de crescer pessoal e profissionalmente, além de fortalecerem os laços com colegas e professores.
-            </p><p>
-            O diretório também realiza ações práticas no dia a dia estudantil, como a venda de produtos personalizados (camisetas, canecas, etc.), manutenção de espaços físicos compartilhados e apoio a grupos de estudo e projetos. A participação ativa dos estudantes é incentivada, tornando o DACOMP uma organização viva, construída por e para os alunos, refletindo os valores e as necessidades de quem faz parte do INF da UFRGS.
-            </p>
         </div>
     </div>
 @endsection
@@ -136,45 +121,11 @@
         font-family: "Cal Sans", sans-serif;
         border:none;
         padding:10px;
-        margin-top:20px;
-        background-color: #f0f0f0;
+        margin-top:2rem;
+        background-color: #2e96d5;
         border-radius:500px;
-        width:100%;
-    }
-
-    .containerSobreNos{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        background-color:#f0f0f0;
-        margin-bottom:20px;
-    }
-    .containerSobreNosTitulo{
-        width: 100%;
-        max-width: 1200px;
-        padding: 30px 20px 10px 20px;
-        display:flex;
-        align-items:center;
-    }
-    .containerSobreNosTitulo > h4{
-        font-family: "Cal Sans", sans-serif;
-        margin:0;
-    }
-    .containerSobreNosTexto{
-        display:flex;
-        justify-content:center;
-        margin-bottom:50px;
-        max-width:1200px;
-        padding: 0px 20px;
-        gap:20px;
-    }
-    .containerSobreNosTexto > p{
-        text-align:justify;
-        font-family: "Tinos", serif;
-        font-style: normal;
-        font-weight: 400;
-        margin-bottom:0;
-        line-height:2rem;
+        width:20rem;
+        color: white;
     }
 
     @media (max-width: 600px) {
@@ -187,13 +138,6 @@
         .patternTitulo{
             opacity:0.3;
         }
-    }
-
-    @media (max-width: 1000px) {
-        .containerSobreNosTexto {
-            flex-direction:column;
-        }
-
     }
 </style>
 @endpush

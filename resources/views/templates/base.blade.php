@@ -265,6 +265,7 @@
       </a>
       <div class="containerOpcoesNavbar">
         <div class="containerMenusNavbar"> 
+            <a href="{{ route('about') }}"><div>Sobre Nós</div></a>
             <a href="{{ route('produtos.list') }}"><div>Produtos</div></a>
             @if(Auth::user() && !Auth::user()->gestor)
               <a href="{{ route('compras.list') }}"><div>Meus Pedidos</div></a>
