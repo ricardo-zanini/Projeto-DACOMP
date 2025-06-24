@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 use App\Mail\ConfirmaCompra;
+use App\Mail\RetiradaDisponivel;
+
 use Illuminate\Support\Facades\Mail;
 
 class ComprasController extends Controller
@@ -369,6 +371,25 @@ class ComprasController extends Controller
         if(Auth::user()->gestor == true) {
             $pedido = Compras::with('produtosCompras.produtoEstoque.produto', 'produtosCompras.produtoEstoque.tamanho', 'produtosCompras.produtoEstoque.cor')->findOrFail($pedido->compra_id);
             return view('compras.entrega', compact('pedido'));
+        } else {
+             return redirect()->route('login');
+        }
+    }
+    public function confirmarEntrega(Request $form, Int $compra_id)
+    {
+        if(Auth::user()->gestor == true) {
+            $item = Compras::where('compra_id', $compra_id)->get();
+            $item = $item->first();
+
+            $item->status_id = 3;
+            $item->save();
+
+            Mail::to(Auth::user()->email)->send(new RetiradaDisponivel([
+                'nome' => Auth::user()->nome,
+                'item' => $item
+            ]));   
+            
+            return redirect()->route('pedidos.relatorios');
         } else {
              return redirect()->route('login');
         }

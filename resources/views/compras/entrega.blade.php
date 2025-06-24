@@ -25,10 +25,12 @@
         @endforeach
 
         <div class="button-container">
-            <form method="POST" action="">
+            <form method="POST" action="{{ route('compras.confirmarEntrega', $pedido->compra_id)}}">
                 @csrf
                 <button class="button" type="submit">Liberar para Retirada</button>
             </form>
+            <div class="alerta_sucesso hidden"> Usuário avisado </div>
+            <div class="alerta_erro hidden"> Ocorreu um erro </div>
         </div>
     </div>
 @endsection
