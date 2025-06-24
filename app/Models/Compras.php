@@ -17,6 +17,11 @@ class Compras extends Model
         'horario' => 'datetime',
     ];
 
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'usuario_id');
+    }
+
     public function produtosCompras()
     {
         return $this->hasMany(ProdutosCompras::class, 'compra_id', 'compra_id');
