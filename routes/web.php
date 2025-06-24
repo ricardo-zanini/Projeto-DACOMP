@@ -52,7 +52,7 @@ Route::post('/pedidos/cadastro', [ComprasController::class, 'createOrder'])->mid
 Route::post('/pedidos/cadastro', [ComprasController::class, 'insert'])->middleware('auth')->name('compras.gravar');
 
 Route::get('/relatorios/pedidos', [ComprasController::class, 'relatorios'])->middleware('auth')->name('pedidos.relatorios');
-Route::get('/relatorios/pedidos/entrega/{pedido}', [ComprasController::class, 'confirmacaoEntrega'])->name('pedidos.entrega');
+Route::get('/relatorios/pedidos/entrega/{pedido}', [ComprasController::class, 'pedidoRetirada'])->name('pedidos.entrega');
 
 Route::get('/pedidos/cancelamentos', [ComprasController::class, 'cancelamentos'])->middleware('auth')->name('compras.cancelamentos');
 Route::post('/pedidos/remove', [ComprasController::class, 'cancel'])->middleware('auth')->name('compras.cancel');

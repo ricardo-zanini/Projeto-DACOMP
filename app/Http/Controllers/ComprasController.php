@@ -352,7 +352,7 @@ class ComprasController extends Controller
         }
     }
 
-    public function confirmacaoEntrega(Compras $pedido)
+    public function pedidoRetirada(Compras $pedido)
     {
         if(Auth::user()->gestor == true) {
             $pedido = Compras::with('produtosCompras.produtoEstoque.produto', 'produtosCompras.produtoEstoque.tamanho', 'produtosCompras.produtoEstoque.cor')->findOrFail($pedido->compra_id);
