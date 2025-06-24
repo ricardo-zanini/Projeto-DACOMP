@@ -324,7 +324,19 @@ class ComprasController extends Controller
             'motivacao' => ['required'],
         ]);
 
+        $cancelamentos = SolicitacoesCancelamentos::query()
+        ->join('compras', 'compras.compra_id', '=', 'solicitacoes_cancelamentos.compra_id')
+        ->where('cancelamento_status_id', '=', 1)
+        ->where('solicitacoes_cancelamentos.compra_id', $form->compra_id)
+        ->count();
+
         $compra = Compras::where('compra_id', $form->compra_id)->first();
+
+        if($cancelamentos > 0){
+            return response()->json([
+                'message' => 'Você já enviou um pedido de cancelamento.'
+            ], 409);
+        };
 
         if(Auth::user()->usuario_id == $compra->usuario_id){
             $solicitacoes_cancelamentos = New SolicitacoesCancelamentos();

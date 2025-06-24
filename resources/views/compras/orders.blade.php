@@ -65,7 +65,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // ================= Modal de Deleção =================
-    $(document).on('click', '.open-cancel', function(){
+    $(document).on('click', '.cancel', function(){
         const compraId = $(this).attr('compra_id');
         $('#input_cancel').val(compraId);
         openModal('#cancel-modal')
@@ -110,7 +110,10 @@
                         $('.'+i+'_error').text(error[0]);
                         $(document).find('[name="'+i+'"]').addClass('is-invalid');
                     });
+                }else if(err.status == 409){
+                    $('.alerta_erro').text(err.responseJSON.message)
                 }
+              
                 {{-- console.log("Erro:")
                 console.log(err) --}}
                 console.log(err)
